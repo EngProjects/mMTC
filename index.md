@@ -6,6 +6,8 @@ permalink: /index.html
 
 # Massive Machine Type Communication
 
+![Unsourced MAC](assets/UMAC.png)
+
 Machine-type communication (MTC) is predicted to surge in the near future, disrupting the foundation on which most wireless systems are built.
 This envisioned growth poses new challenges for existing communication infrastructures designed with human connectivity in mind.
 This transition to MTC data transfers has been recognized by several researchers in recent years, yielding several important contributions along this direction.
