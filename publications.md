@@ -16,6 +16,9 @@ IEEE Transactions on Communications, 67(12):8258–8272, December 2019.
 
 ## Conference Proceedings
 
+* V.K. Amalladinne, A. Hao, S. Rini, and J.-F. Chamberland.
+Multi-Class Unsourced Random Access via Coded Demixing.
+In International Symposium on Information Theory (ISIT), Melbourne, Australia, July 2021. IEEE.
 * A. K. Pradhan, V. Amalladinne, K. R. Narayanan, and J.-F. Chamberland.
 LDPC Codes with Soft Interference Cancellation for Uncoordinated unsourced Multiple Access.
 In International Conference on Communications (ICC), Montreal, Canada, June 2021. IEEE.
