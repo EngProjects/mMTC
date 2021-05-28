@@ -26,6 +26,7 @@ Stochastic Binning and Coded Demixing for Unsourced Random Access
 * M. Gkagkos, A. K. Pradhan, V. Amalladinne,  K. Narayanan, J.-F. Chamberland and C. N. Georghiades
 Approximate Support Recovery using Codes for Unsourced Multiple Access.
 In International Symposium on Information Theory (ISIT), Melbourne, Australia, July 2021. IEEE.
+[arXiv](https://arxiv.org/abs/2105.12840)
 * V. K. Amalladinne, A. Hao, S. Rini, and J.-F. Chamberland.
 Multi-Class Unsourced Random Access via Coded Demixing.
 In International Symposium on Information Theory (ISIT), Melbourne, Australia, July 2021. IEEE.
