@@ -34,8 +34,9 @@ In International Symposium on Information Theory (ISIT), Melbourne, Australia, J
 * A. K. Pradhan, V. Amalladinne, K. R. Narayanan, and J.-F. Chamberland.
 LDPC Codes with Soft Interference Cancellation for Uncoordinated unsourced Multiple Access.
 In International Conference on Communications (ICC), Montreal, Canada, June 2021. IEEE.
+[arXiv](https://arxiv.org/abs/2105.13985)
 * J. R. Ebert, V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
-A Hybrid Approach to Coded Compressed Sensing where Coupling Takes Place via the Outer Code.
+[A Hybrid Approach to Coded Compressed Sensing where Coupling Takes Place via the Outer Code](https://dx.doi.org/10.1109/ICASSP39728.2021.9414469).
 In International Conference on Acoustics, Speech, and Signal Processing (ICASSP), 
 Toronto, Canada, June 2021. IEEE.
 [arXiv](https://arxiv.org/abs/2010.11380)
