@@ -1,6 +1,6 @@
 ---
 layout: page
-title: People
+title: Research Team
 permalink: /People.html
 ---
 
