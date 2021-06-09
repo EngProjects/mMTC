@@ -15,7 +15,7 @@ This research initiative is conducted primarily at [Texas A&M University](https:
 
 ## Recent Collaborators
 
-* [Yury Polyanskiy] (http://people.lids.mit.edu/yp/homepage/)
+* Yury Polyanskiy (http://people.lids.mit.edu/yp/homepage/)
 * [Costas Georghiades](https://orcid.org/0000-0001-8333-1638)
 * [Henry Pfister](https://orcid.org/0000-0001-5521-4397)
 * [Stefano Rini](https://orcid.org/0000-0003-1681-3316)
