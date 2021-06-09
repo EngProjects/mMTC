@@ -4,6 +4,8 @@ title: Team
 permalink: /People.html
 ---
 
+This research initiative is conducted primarily at [Texas A&M University](https://www.tamu.edu/).
+
 * [Krishna Narayanan](https://github.com/krntamu), [Google Scholar](https://scholar.google.com/citations?hl=en&user=oDivxXQAAAAJ), [ORCID](https://orcid.org/0000-0001-8742-5332)
 * [Jean-Francois Chamberland](https://github.com/chmbrlnd), [Google Scholar](https://scholar.google.com/citations?user=8Dk3NR0AAAAJ), [ORCID](https://orcid.org/0000-0002-2983-9884)
 * Asit Pradhan, [Google Scholar](https://scholar.google.com/citations?hl=en&user=EvluuLMAAAAJ)
