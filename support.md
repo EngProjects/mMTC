@@ -4,6 +4,9 @@ title: Support
 permalink: /Support.html
 ---
 
+The principal investigators gratefully acknowledge support for this research initiative.
+
+
 ## National Science Foundation 
 
 This material is based upon work supported, in part, by the
