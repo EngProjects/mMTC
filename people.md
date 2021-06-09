@@ -11,8 +11,10 @@ permalink: /People.html
 * [Michail Gkagkos](https://github.com/mgkagk01)
 * [Jamison Ebert](https://github.com/jrebert)
 
-## Alumni
+## Recent Collaborators
 
+* [Costas Georghiades](https://orcid.org/0000-0001-8333-1638)
+* [Henry Pfister](https://orcid.org/0000-0001-5521-4397)
+* [Stefano Rini](https://orcid.org/0000-0003-1681-3316)
+* [Cynthia Rush](https://orcid.org/0000-0001-6857-2855)
 * [Avinash Vem](https://github.com/avinashvem)
-
-
