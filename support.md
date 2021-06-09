@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Acknowledgement of Support
+title: Support
 permalink: /Support.html
 ---
 
