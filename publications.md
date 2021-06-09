@@ -18,6 +18,11 @@ IEEE Transactions on Information Theory, 66(10):6509–6533, October 2020.
 [A user-independent successive interference cancellation based coding scheme for the unsourced random access Gaussian channel](https://dx.doi.org/10.1109/TCOMM.2019.2940216).
 IEEE Transactions on Communications, 67(12):8258–8272, December 2019.
 
+## Tutorial Presentations
+* J.-F. Chamberland, K.R. Narayanan
+Algorithms for Coded Random Access and Inference in Large Dimensional Spaces
+Signal Processing and Communications (SPCOM) 2020 Conference, Indian Institute of Science
+[YouTube](https://youtube.com/playlist?list=PLUd5FtcfdZfkT9gUpYw7q97yHUABQzZbL).
 
 ## Conference Proceedings
 * J. R. Ebert, V. K. Amalladinne, S. Rini, J.-F. Chamberland, K. R. Narayanan
