@@ -1,0 +1,44 @@
+\begin{tikzpicture}[
+  font=\small, >=stealth', line width=0.75pt,
+  infobits/.style={rectangle, minimum height=3mm, minimum width=10mm, draw=black, fill=gray!10, rounded corners},
+  paritybits/.style={rectangle, minimum height=3mm, minimum width=10mm, draw=black, fill=gray!40, rounded corners}
+]
+
+\node[infobits] (vb1) at (1,0) {$\mathbf{v}(1)$};
+\node[infobits] (vb2) at (2,0) {$\mathbf{v}(2)$};
+\node[infobits] (vb4) at (3,0) {$\mathbf{v}(4)$};
+\node[infobits] (vb5) at (4,0) {$\mathbf{v}(5)$};
+\node[infobits] (vb7) at (5,0) {$\mathbf{v}(7)$};
+\node[infobits] (vb8) at (6,0) {$\mathbf{v}(8)$};
+\node[infobits] (vb10) at (7,0) {$\mathbf{v}(10)$};
+\node[infobits] (vb11) at (8,0) {$\mathbf{v}(11)$};
+
+\node[paritybits] (vp3) at (1.5,-1) {$\mathbf{v}(3)$};
+\node[paritybits] (vp6) at (3.5,-1) {$\mathbf{v}(6)$};
+\node[paritybits] (vp9) at (5.5,-1) {$\mathbf{v}(9)$};
+\node[paritybits] (vp12) at (7.5,-1) {$\mathbf{v}(12)$};
+\node[paritybits] (vp13) at (2.5,1) {$\mathbf{v}(13)$};
+\node[paritybits] (vp14) at (4.5,1) {$\mathbf{v}(14)$};
+\node[paritybits] (vp15) at (6.5,1) {$\mathbf{v}(15)$};
+
+\node[paritybits] (vp16) at (5.5,2) {$\mathbf{v}(16)$};
+
+\draw  (vb1.south) edge (vp3);
+\draw  (vb2.south) edge (vp3);
+\draw  (vb4.south) edge (vp6);
+\draw  (vb5.south) edge (vp6);
+\draw  (vb7.south) edge (vp9);
+\draw  (vb8.south) edge (vp9);
+\draw  (vb10.south) edge (vp12);
+\draw  (vb11.south) edge (vp12);
+
+\draw  (vb1.north) edge (vp13);
+\draw  (vb7.north) edge (vp13);
+\draw  (vb2.north) edge (vp14);
+\draw  (vb10.north) edge (vp14);
+\draw  (vb5.north) edge (vp15);
+\draw  (vb11.north) edge (vp15);
+\draw  (vp14.north) edge (vp16);
+\draw  (vp15.north) edge (vp16);
+
+\end{tikzpicture}

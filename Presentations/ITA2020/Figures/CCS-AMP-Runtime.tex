@@ -1,0 +1,64 @@
+\begin{tikzpicture}
+\definecolor{mycolor1}{rgb}{0.63529,0.07843,0.18431}%
+\definecolor{mycolor2}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor3}{rgb}{0.00000,0.49804,0.00000}%
+\definecolor{mycolor4}{rgb}{0.87059,0.49020,0.00000}%
+\definecolor{mycolor5}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor6}{rgb}{0.74902,0.00000,0.74902}%
+
+\begin{axis}[%
+font=\small,
+width=7cm,
+height=5.5cm,
+scale only axis,
+every outer x axis line/.append style={white!15!black},
+every x tick label/.append style={font=\color{white!15!black}},
+xmin=0,
+xmax=250,
+xtick = {0,50,100,...,250},
+xlabel={Number of active users $K$},
+xmajorgrids,
+every outer y axis line/.append style={white!15!black},
+every y tick label/.append style={font=\color{white!15!black}},
+ymin=0,
+ymax=18,
+ytick = {0,6,...,18},
+ylabel={Average run-time (sec)},
+ymajorgrids,
+legend style={at={(0,1)},anchor=north west, draw=black,fill=white,legend cell align=left}
+]
+
+
+
+\addplot [color=mycolor2,densely dotted,line width=2.0pt,mark size=1.4pt,mark=o, mark options={solid}]
+  table[row sep=crcr]{10 4.54\\
+25	4.76\\
+50	6.17\\
+75	6.46\\
+100	6.5\\
+125	6.52\\
+150	6.77\\
+175 7.5\\
+200 9.34\\
+225 10.12\\
+250 10.3\\
+};
+\addlegendentry{Original AMP+Tree};
+
+\addplot [color=mycolor3,solid,line width=2.0pt,mark size=1.4pt,mark=o,mark options={solid}]
+  table[row sep=crcr]{10 6.903\\
+  25  7.4\\
+50	8.63\\
+75	9.42\\
+100	9.86\\
+125	10.08\\
+150 11.75\\
+175 12.46\\
+200 12.9\\
+225 13.6\\
+250 14.06\\
+};
+\addlegendentry{Enhanced AMP+Tree};
+\end{axis}
+
+\end{tikzpicture}

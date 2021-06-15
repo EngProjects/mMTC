@@ -1,0 +1,534 @@
+%\RequirePackage{atbegshi}
+\documentclass[10pt]{beamer}
+
+\usetheme{default}
+\usepackage{amssymb}
+\usepackage{biblatex}
+%\usepackage[cmex10]{amsmath}
+\usepackage{stmaryrd,epsfig}
+\usepackage[english]{babel}
+\usepackage{tikz,pgf,pgfplots}
+\pgfplotsset{compat=newest}
+\usepgflibrary{shapes}
+\usetikzlibrary{%
+  arrows,%
+  decorations,%decorations
+  shapes.misc,% wg. rounded rectangle
+  shapes.arrows,%
+  shapes.callouts, %
+  shapes,%
+  shadows,%
+  shadows.blur,%
+  chains,%
+  matrix,%
+  positioning,% wg. " of "
+  patterns,% slanted lines fill
+  scopes,patterns,calc,
+decorations.markings,
+decorations.pathmorphing
+}
+
+
+\makeatletter
+\def\myfootnote{\xdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+%\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% Radius of regular polygons
+\newdimen\R
+\R=0.8cm
+
+\definecolor{tutorial}{RGB}{50,93,61}
+
+
+\title{Leveraging Structural Properties of Tree Coding\\
+in AMP for the Unsourced MAC}
+\author{J.-F.~Chamberland \newline
+\textcolor{gray}{Vamsi K. Amalladinne, Asit Kumar Pradhan,\\
+Cynthia Rush$^\dagger$, Krishna R. Narayanan}}
+\institute{Electrical and Computer Engineering @ Texas A\&M University \\
+$^\dagger$Statistics @ Columbia University}
+\date{Information Theory and Applications Workshop \\ February 4, 2020}
+
+%\setbeamertemplate{footline}[page number]
+\setbeamertemplate{navigation symbols}{\textcolor{black}{\insertframenumber / \inserttotalframenumber}}
+
+\begin{document}
+
+\begin{frame}
+{\usebeamercolor{frametitle}}
+  \titlepage
+
+\myfootnote{\scriptsize This material is based upon work supported, in part, by NSF under Grant No.~1619085}
+\myfootnote{\scriptsize This material is also based upon work support, in part, by Qualcomm Technologies, Inc., through their University Relations Program}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Current Wireless Landscape}
+\begin{columns}
+\column{.55\textwidth}
+\begin{block}{Current and Future Trends}
+  \begin{itemize}
+  \item \textbf{Growth and Market Penetration}: \\
+  Number of connected wireless devices exceeds world population
+  \item \textbf{Screen Quality}: \\
+  Screens are near boundary of visual acuity (less than 2 inches)
+  \item \textbf{Content-Rich Apps}: \\
+  Video watching \& gaming are prevalent (4 hours per day)
+  \end{itemize}
+  \vspace{5mm}
+  \begin{center}
+  \begin{tikzpicture}
+  \shade[draw=none,
+  left color={rgb:red,1;green,2;blue,3},
+  right color=frametitle.fg,
+  shading angle=60,
+  rounded corners,
+  blur shadow={shadow blur steps=5}] (-2.25,-0.625) rectangle (2.25,0.625);
+  \shade[fill=white, fill opacity=0.1] (-2.25,-0.625) rectangle (2.25,0.625);
+  \node at (0,0) {\textcolor{white}{\Large \textbf{What's Next?}}};
+  \end{tikzpicture}
+  \end{center}
+\end{block}
+\column{.43\textwidth}
+  \begin{center}
+  \includegraphics[width=1.2in]{Figures/Machine-Micro.jpg}
+  \end{center}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Emerging Machine-Driven Traffic Characteristics}
+\begin{center}
+Anticipated traffic characteristics \textbf{invalidate acquisition-estimation-scheduling} paradigm!
+\end{center}
+\begin{columns}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.4}{\input{Figures/Balance1}}
+  \end{center}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.4}{\input{Figures/Balance2}}
+  \end{center}
+\end{columns}
+\begin{block}{New Reality}
+  \begin{itemize}
+  \item Must address \textbf{sporadic} nature of machine-driven communications
+  \item Transfer of \textbf{small payloads} without ability to amortize cost of acquiring channel and buffer states over long connections
+  \item Preclude use of opportunistic scheduling
+  \end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Uncoordinated and Unsourced MAC}
+\begin{center}
+\scalebox{0.75}{\input{Figures/unsourced}}
+\end{center}
+\begin{columns}
+\column{.53\textwidth}
+\begin{block}{Without Personalized Feedback}
+  \begin{itemize}
+  \item All devices employ same encoder
+  \item No explicit knowledge of identities
+  \item Need only return unordered list
+  \end{itemize}
+\end{block}
+\column{.45\textwidth}
+\begin{block}{Model}
+  \begin{equation*}
+  \textstyle \mathbf{y}
+  = \sum_{i \in \mathbf{S}_{\mathrm{a}}} \mathbf{A} \mathbf{s}_i + \mathbf{n}
+  \end{equation*}
+  where $\mathbf{s}_i = f(\mathbf{w}_i)$ is codeword, only depends on message
+\end{block}
+\end{columns}
+\myfootnote{\tiny
+Y. Polyanskiy. \emph{A Perspective on Massive Random-Access}. ISIT, 2017}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{UMAC -- Compressed Sensing Interpretation}
+\centerline{\centerline{\input{Figures/stackedsignals1}}}
+\vfill
+\begin{itemize}
+\item Bit sequence $\mathbf{w}_i \in \{ 0,1 \}^B$ converted to index $\mathbf{s}_i$ in $[0,2^B-1]$
+\item Stack codewords into $N \times 2^B$ \emph{sensing} matrix with $B \approx 128$
+\item Message index determines transmitted codeword
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Quest for Low-Complexity Unsourced MAC}
+\begin{block}{Idea~1: Divide and Conquer Information Bits}
+\begin{center}
+\input{Figures/dividebits2}
+\end{center}
+\begin{itemize}
+\item Split problem into sub-components suitable for CS framework
+\item Get lists of sub-packets, one list for every slot
+\item Stitch pieces of one packet together using error correction
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Device Perspective}
+\centerline{\input{Figures/dividebits3}}
+\vfill
+\begin{itemize}
+\item Collection of $L$ CS matrices and 1-sparse vectors
+\item Each CS generated signal is sent in specific time slot
+\end{itemize}
+\myfootnote{\tiny
+V. Amalladinne, A. Vem, D. Soma, K. R. Narayanan, J.-F. Chamberland.
+\emph{Coupled Compressive Sensing Scheme for Unsourced Multiple Access}.
+ICASSP 2018}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Multiple Access}
+\centerline{\input{Figures/dividebits4}}
+\vfill
+\begin{itemize}
+\item $L$ instances of CS problem, each solved with non-negative LS
+\item Produces $L$ lists of $K$ decoded sub-packets (with parity)
+\item Must piece sub-packets together using tree decoder
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Stitching Process}
+  \begin{center}
+  \input{Figures/dividebits5}
+  \end{center}
+\begin{columns}
+\column{.45\textwidth}
+\begin{block}{Tree Decoding Principles}
+  \begin{itemize}
+  \item Every parity is linear combination of bits in preceding blocks
+  \item Late parity bits offer better performance
+  \item Early parity bits decrease decoding complexity
+  %\item Correct fragment is on list
+  \end{itemize}
+\end{block}
+\column{.45\textwidth}
+  \centerline{\scalebox{0.5}{\input{Figures/treegrowth}}}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Extending CCS Framework}
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=4in]{Figures/SparcsUMAC.png}};
+\end{tikzpicture}
+\end{center}
+  \begin{itemize}
+  \item Alexander Fengler, Peter Jung, Giuseppe Caire on arXiv
+  \item Connection between CCS indexing and sparse regression codes
+  \item Circumvent slotting under CCS and dispersion effects
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{UMAC -- CCS Revisited}
+\begin{center}
+\input{Figures/stackedCCS1}
+\end{center}
+\begin{itemize}
+\item Bit sequence split into $L$ fragments
+\item Each bit $+$ parity block converted to index in $[ 1, 2^{M/L} ]$
+\item Stack sub-codewords into $(N/L) \times 2^{M/L}$ sensing matrices
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{UMAC -- CCS Unified CS Analogy}
+\centerline{\input{Figures/stackedCCS2}}
+\begin{itemize}
+\item Initial non-linear indexing step
+\item Index vector is block sparse
+\item Connection to sparse regression codes
+\end{itemize}
+\myfootnote{\tiny
+C. Rush, A. Greig, R. Venkataramanan.
+\emph{Capacity-Achieving Sparse Superposition Codes via Approximate Message Passing Decoding}.
+IEEE IT Trans 2017}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{CCS-AMP}
+\centerline{\input{Figures/stackedCCS3}}
+\begin{itemize}
+\item Complexity management comes from dimensionality reduction
+\item Use full sensing matrix on sparse regression codes
+\item Decode inner code with low-complexity AMP
+\item Decode outer code with tree decoding
+\end{itemize}
+\myfootnote{\tiny
+A. Fengler, P. Jung, and G. Caire.
+\emph{SPARCs and AMP for Unsourced Random Access}.
+ISIT 2019}
+\end{frame}
+
+\begin{frame}
+\frametitle{Approximate Message Passing Algorithm}
+\begin{block}{Governing Equations}
+\begin{itemize}
+\item AMP algorithm iterates through
+\begin{align*}
+\mathbf{z}^{(t)} &= \mathbf{y} - \mathbf{A} \mathbf{D} \boldsymbol{\eta}_t \left( \mathbf{r}^{(t)} \right)
++ \underbrace{\frac{\mathbf{z}^{(t-1)}}{n} \operatorname{div} \mathbf{D} \boldsymbol{\eta}_t \left( \mathbf{r}^{(t)} \right)}_{\text{Onsager correction}} \\
+\mathbf{r}^{(t+1)} &= \mathbf{A}^{\mathrm{T}} \mathbf{z}^{(t)} + \mathbf{D}
+\underbrace{\boldsymbol{\eta}_t \left( \mathbf{r}^{(t)} \right)}_{\text{Denoiser}}
+\end{align*}
+\textcolor{gray}{Initial conditions $\mathbf{z}^{(0)} = \mathbf{0}$ and $\boldsymbol{\eta}_0 \left( \mathbf{r}^{(0)} \right) = \mathbf{0}$}
+\item Application falls within framework for non-separable functions
+\end{itemize}
+\end{block}
+\begin{exampleblock}{Tasks}
+\begin{columns}
+\column{.30\textwidth}
+\begin{itemize}
+\item Define denoiser
+\end{itemize}
+\column{.60\textwidth}
+\begin{itemize}
+\item Derive correction term
+\end{itemize}
+\end{columns}
+\end{exampleblock}
+\myfootnote{\tiny
+R. Berthier, A. Montanari, and P.-M. Nguyen.
+\emph{State Evolution for Approximate Message Passing with Non-Separable Functions}.
+arXiv 2017}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Marginal Posterior Mean Estimate (PME)}
+\begin{block}{Proposed Denoiser (Fengler, Jung, and Caire)}
+\begin{itemize}
+\item State estimate based on Gaussian model
+\begin{equation*}
+\begin{split}
+\hat{s}^{\mathrm{OR}} & \left( q, r, \tau \right)
+= \mathbb{E} \left[ s | \sqrt{P_{\ell}} s + \tau \zeta = r \right] \\
+%&= \frac{0 \cdot \Pr (s = 0) f \left( \frac{r}{\tau} \right) + 1 \cdot \Pr (s = 1) f \left( \frac{r - d_{\ell}}{\tau} \right)}{\Pr (s = 0) f \left( \frac{r}{\tau} \right) + \Pr (s = 1) f \left( \frac{r - d_{\ell}}{\tau} \right)} \\
+&= \textstyle \frac{q \exp \left( - \frac{ \left( r - \sqrt{P_{\ell}} \right)^2}{2 \tau^2} \right)}
+{(1-q) \exp \left( -\frac{r^2}{2 \tau^2} \right)
++ q \exp \left( - \frac{ \left( r - \sqrt{P_{\ell}} \right)^2}{2 \tau^2} \right)}
+\end{split}
+\end{equation*}
+with prior $q = K/m$ fixed
+\item $\boldsymbol{\eta}_t \left( \mathbf{r}^{(t)} \right)$ is aggregate of PME values
+\item $\tau_t$ is obtained from state evolution or $\tau_t^2 = {\| \mathbf{z}^{(t)} \|^2}/{n}$
+\end{itemize}
+\end{block}
+\vfill
+\begin{center}
+\begin{tikzpicture}
+\shade[draw=none,
+left color={rgb:red,1;green,2;blue,3},
+right color=frametitle.fg,
+shading angle=60,
+rounded corners,
+blur shadow={shadow blur steps=5}] (-3.75,-0.625) rectangle (3.75,0.625);
+\shade[fill=white, fill opacity=0.1] (-3.75,-0.625) rectangle (3.75,0.625);
+\node at (0,0) {\textcolor{white}{\Large \textbf{
+Performance is quite good!
+}}};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Marginal PME Revisited}
+\begin{block}{Enhanced CCS-AMP}
+\begin{itemize}
+\item Can one use tree structure to inform AMP denoiser?
+\item Idea: Propagate beliefs through $q$ within PME exisiting framework
+\begin{equation*}
+\begin{split}
+\hat{s}^{\mathrm{OR}} & \left( q, r, \tau \right)
+= \mathbb{E} \left[ s | \sqrt{P_{\ell}} s + \tau \zeta = r \right] \\
+&= \textstyle \frac{q \exp \left( - \frac{ \left( r - \sqrt{P_{\ell}} \right)^2}{2 \tau^2} \right)}
+{(1-q) \exp \left( -\frac{r^2}{2 \tau^2} \right)
++ q \exp \left( - \frac{ \left( r - \sqrt{P_{\ell}} \right)^2}{2 \tau^2} \right)}
+\end{split}
+\end{equation*}
+but leverage extrinsic information to compute $q = \Pr (s = 1)$
+\item Proposed denoiser becomes
+\begin{equation*}
+\left( \boldsymbol{\eta}_t \left( \mathbf{r} \right) \right)_k
+= \hat{s}^{\mathrm{OR}} \left( \left( \mathbf{q} \left( \mathbf{r} \right) \right)_k, \left( \mathbf{r} \right)_k, \tau_t \right)
+\end{equation*}
+where $( \cdot )_k$ is $k$th component
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Updated CCS-AMP Equations}
+\begin{itemize}
+\item Onsager correction from divergence of $\boldsymbol{\eta}_t (\mathbf{r})$
+\begin{equation*}
+\frac{1}{n} \operatorname{div} \mathbf{D} \boldsymbol{\eta}_t \left( \mathbf{r} \right)
+= \frac{1}{n \tau_t^2} \left( K P - \left\| \mathbf{D} \boldsymbol{\eta}_t \left( \mathbf{r} \right) \right\|^2 \right)
+\end{equation*}
+\item Robust to tree dynamics
+\item Simplified AMP equations
+\begin{align*}
+\mathbf{z}^{(t)} &= \mathbf{y} - \mathbf{A} \mathbf{D} \mathbf{s}^{(t)} + \frac{\mathbf{z}^{(t-1)}}{n \tau_t^2} \left( K P - \left\| \mathbf{D} \mathbf{s}^{(t)} \right\|^2 \right) \\
+\mathbf{s}^{(t+1)} &= \boldsymbol{\eta}_{t+1} \left( \mathbf{A}^{\mathrm{T}} \mathbf{z}^{(t)} + \mathbf{D} \mathbf{s}^{(t)} \right)
+\end{align*}
+with $\left( \boldsymbol{\eta}_t \left( \mathbf{r} \right) \right)_k = \hat{s}^{\mathrm{OR}} \left( \left( \mathbf{q} \left( \mathbf{r} \right) \right)_k, \left( \mathbf{r} \right)_k, \tau_t \right)$
+\end{itemize}
+\begin{exampleblock}{Tasks}
+\begin{enumerate}
+\item Devise a suitable tree code
+\item Compute $\mathbf{q} \left( \mathbf{r} \right)$ from tree code
+\end{enumerate}
+\end{exampleblock}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Redesigning Outer Code}
+\begin{block}{Properties of Original Tree Code}
+\begin{itemize}
+\item Aimed at stitching message fragments together
+\item Works on short lists of $K$ fragments
+\item Parities allocated to control growth and complexity
+\end{itemize}
+\end{block}
+\centerline{\input{Figures/dependencies1}}
+\begin{block}{Challenges to Integrate into AMP}
+\begin{enumerate}
+\item Must compute beliefs for all possible $2^v$ fragments
+\item Must provide pertinent information to AMP
+\item Should maintain ability to stitch outer code
+\end{enumerate}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Redesigning Outer Code}
+\begin{block}{Solutions to Integrate into AMP}
+\begin{itemize}
+\item Parity bits are generated over Abelian group amenable to\\
+Hadamard transform (original) or FFT (modified)
+\item Discrimination power proportional to \# parities
+\end{itemize}
+\end{block}
+\centerline{\input{Figures/dependencies2}}
+\begin{block}{New Design Strategy}
+\begin{enumerate}
+\item Information sections with parity bits interspersed in-between
+\item Parity over two blocks (triadic dependencies)
+\item Multiplicative effect across concentrated sections
+\end{enumerate}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Redesigning Outer Code}
+\begin{itemize}
+\item Circular convolution structure
+\begin{equation*}
+\text{Extrinsic Info }
+\left( \mathbf{q}(\ell) \right)_k
+\textstyle \propto \sum_{\{ g_j \}, \sum_{j} g_j \equiv k} \left( \prod_{j}
+\mathcal{L}_{j} \left( \hat{\mathbf{s}}(j) \right) \right)
+\end{equation*}
+where $\hat{\mathbf{s}}(j) \in \mathbf{G}_{j,\ell}^{-1}(g_j)$.
+\item Fast transform techniques
+\begin{equation*}
+\text{Extrinsic Info Vector }
+\mathbf{q}(\ell)
+\textstyle \propto \operatorname{FFT}^{-1} \left( \prod_{j} \operatorname{FFT} \left( \boldsymbol{\mathcal{L}}_{j,\ell} \right) \right)
+\end{equation*}
+\end{itemize}
+\centerline{\input{Figures/architecture}}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Preliminary Performance Enhanced CCS}
+\centerline{
+  \scalebox{0.65}{\input{Figures/CCS-AMP-Performance}}
+  \scalebox{0.65}{\input{Figures/CCS-AMP-Runtime}}}
+\vspace{5mm}
+\begin{itemize}
+\item Overall performance improves significantly with enhanced CCS-AMP decoding
+\item Computational complexity is approximately maintained
+\item Reparametrization may offer additional gains in performance?
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Discussion -- Unsourced Multiple Access Channel}
+\begin{block}{Summary}
+\begin{itemize}
+\item Introduced new framework for CCS-AMP and unsourced multiple access
+\item There are close connections between compressive sensing, graph-based codes, and UMAC
+\item Many theoretical and practical challenges/opportunities exist
+\end{itemize}
+\end{block}
+\vspace{5mm}
+\begin{center}
+  \begin{tikzpicture}
+  \shade[draw=none,
+  left color={rgb:red,1;green,2;blue,3},
+  right color=frametitle.fg,
+  shading angle=60,
+  rounded corners,
+  blur shadow={shadow blur steps=5}] (-2.25,-0.625) rectangle (2.25,0.625);
+  \shade[fill=white, fill opacity=0.1] (-2.25,-0.625) rectangle (2.25,0.625);
+  \node at (0,0) {\textcolor{white}{\Large \textbf{Questions?}}};
+  \end{tikzpicture}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+  \begin{center}
+  \begin{tikzpicture}
+  \shade[draw=none,
+  left color={rgb:red,1;green,2;blue,3},
+  right color=frametitle.fg,
+  shading angle=60,
+  rounded corners,
+  blur shadow={shadow blur steps=5}] (-2.25,-0.625) rectangle (2.25,0.625);
+  \shade[fill=white, fill opacity=0.1] (-2.25,-0.625) rectangle (2.25,0.625);
+  \node at (0,0) {\textcolor{white}{\Large \textbf{Thank You!}}};
+  \end{tikzpicture}
+  \end{center}
+\vfill
+\begin{center}
+\scalebox{0.75}{\input{Figures/BellDiagram}}
+\end{center}
+\myfootnote{\scriptsize This material is based upon work supported, in part, by NSF under Grant No.~1619085}
+\myfootnote{\scriptsize This material is also based upon work support, in part, by Qualcomm Technologies, Inc., through their University Relations Program}
+\end{frame}
+
+\end{document}

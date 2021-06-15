@@ -1,0 +1,36 @@
+\begin{tikzpicture}
+  [
+  line width=1.25pt, draw=black, >=stealth',
+  checknode/.style={circle, line width=2pt, inner sep=0pt, minimum size=5mm, draw=black}
+  ]
+
+  \node[checknode, draw=darkgray] (b1) at (0,4) {};
+
+  \foreach \x in {1,2,3} {
+    \node[checknode] (c1\x) at (-6+3*\x,2) {}
+      edge[<-] (b1);
+  }
+
+  \foreach \y in {1,2,3,4,5} {
+    \node[checknode] (b1\y) at (-4.8+0.6*\y,0) {}
+      edge[<-] (c11)
+      edge[-,dotted] (-4.8+0.6*\y,-0.5);
+    \node[checknode] (b2\y) at (-1.8+0.6*\y,0) {}
+      edge[<-] (c12)
+      edge[-,dotted] (-1.8+0.6*\y,-0.5);
+    \node[checknode] (b3\y) at (1.2+0.6*\y,0) {}
+      edge[<-] (c13)
+      edge[-,dotted] (1.2+0.6*\y,-0.5);
+  }
+  
+  \node[checknode] (c22) at (0,-2) {}
+    edge[<-] (0,-1);
+
+  \foreach \y in {1,2,3,4,5} {
+    \node[checknode] (b4\y) at (-1.8+0.6*\y,-4) {}
+      edge[<-] (c22);
+  }
+
+\draw [line width=2.5pt,color=blue!70!black] plot[smooth, tension=.5] coordinates {(b1.south) (c12) (b24) (c22) (b45)};
+\draw [line width=2.5pt,dashed, color=blue] plot[smooth, tension=.5] coordinates {(b1.south) (c11) (b12) (-3,-2) (-4,-4)};
+\end{tikzpicture}
