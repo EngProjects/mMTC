@@ -6,3 +6,5 @@
 
 
 ## Conference Presentations
+
+* [Leveraging Structural Properties of Tree Coding in AMP for the Unsourced MAC](./ita2020.pdf), Information Theory and ApplicationsWorkshop, 2020
