@@ -2,7 +2,12 @@
 
 This Git repository pertains to massive machine-type communication (mMTC), with a focus on uncoordinated/unsourced random access (URA).
 The repository features three branches:
-  * **main**: Generic information about this project, along with related resources.
+  * **main**: Generic information about this project, along with related resources
   * **github.io**: Source code for [mMTC](https://engprojects.github.io/mMTC/) website
   * **code**: Source code for simulations
+
+
+## Presentations and Tutorials
+
+Presentation slides and some LaTeX source code are available in the [Presentations](./Presentations) folder.
 
