@@ -1,0 +1,983 @@
+%\RequirePackage{atbegshi}
+\documentclass[10pt]{beamer}
+
+\usetheme{default}
+\usepackage{amssymb}
+\usepackage{biblatex}
+%\usepackage[cmex10]{amsmath}
+\usepackage{stmaryrd,epsfig}
+\usepackage[english]{babel}
+\usepackage{tikz,pgf,pgfplots}
+\pgfplotsset{compat=newest}
+\usepgflibrary{shapes}
+\usetikzlibrary{%
+  arrows,%
+  decorations,%decorations
+  shapes.misc,% wg. rounded rectangle
+  shapes.arrows,%
+  shapes.callouts, %
+  shapes,%
+  chains,%
+  matrix,%
+  positioning,% wg. " of "
+  patterns,% slanted lines fill
+  scopes,patterns,calc,
+decorations.markings,
+decorations.pathmorphing
+}
+
+%\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% Radius of regular polygons
+\newdimen\R
+\R=0.8cm
+
+\definecolor{tutorial}{RGB}{50,93,61}
+
+
+\title{Recent Advances in Communication Schemes for Massive Uncoordinated and Unsourced Multiple Access}
+\author{J.-F.~Chamberland, Krishna R. Narayanan A.~Vem, A.~Taghavi}
+\institute{Electrical and Computer Engineering \\ Texas A\&M University}
+\date{Indian Institute of Science, Bengaluru \\ July 7, 2017}
+
+%\setbeamertemplate{footline}[page number]
+\setbeamertemplate{navigation symbols}{\textcolor{black}{\insertframenumber / \inserttotalframenumber}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+
+\footnotetext[1]{\scriptsize This material is based upon work supported by NSF under Grant No.~1619085.}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\textcolor{black}{Internet of Things \& Anticipated Device Growth}}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Figures/Wordle.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Motivation for Massive Multiple Access}
+\begin{itemize}
+\item Current: A few devices with sustained connections
+\item 5G: Not just \emph{4G but faster}; includes IoT and M2M communication
+\item Future: \textbf{Many uncoordinated} devices with \textbf{sporadic transmissions}
+\end{itemize}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Figures/5Gchanginglandscape.pdf}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{An Evolving Wireless Landscape}
+\begin{columns}
+\column{.35\textwidth}
+  \begin{center}
+  \scalebox{0.6}{\input{Figures/Scheduling}}
+  \end{center}
+\column{.6\textwidth}
+  \begin{block}{Conventional Systems}
+  \begin{itemize}
+  \item Human operators, sustained connections
+  \item Scheduling decisions based on channel quality \& queue length
+  \item Acquisition of side information amortized over long connections
+  \end{itemize}
+  \end{block}
+  \begin{block}{Envisioned IoT Environments}
+  \begin{itemize}
+  \item Machine-to-machine communications
+  \item Sporadic single transmissions from large number of devices
+  \item Minute payloads
+  \end{itemize}
+  \end{block}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The Cost of Acquiring Side Information}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{Figures/SideInfo2.png}
+\end{center}
+\vfill
+\begin{columns}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.45}{\input{Figures/Balance1}}
+  \end{center}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.45}{\input{Figures/Balance2}}
+  \end{center}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Uncoordinated Massive Multiple Access}
+\begin{center}
+  \scalebox{0.7}{\input{Figures/uncoordinated1}}
+\end{center}
+\vfill
+\begin{columns}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.45}{\input{Figures/Balance1}}
+  \end{center}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.45}{\input{Figures/Balance2}}
+  \end{center}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Possible MAC Frame Structure}
+\begin{itemize}
+\item $K$ active devices out of $Q$ devices
+\item $Q$ is very large, and $K$ is much less than $Q$
+\end{itemize}
+\begin{center}
+  \scalebox{0.8}{\input{Figures/frame1}}
+\end{center}
+\begin{itemize}
+\item Beacon is used to obtain coarse synchronization
+\item Each device transmits a signature sequence
+\item Access point estimates \# of devices $K$
+\item Picks frame length $M$ and inform devices
+\end{itemize}
+\footnotetext[1]{X. Chen and D. Guo. ``Many-access channels: The Gaussian case with random user activities.'' ISIT, 2014.}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Random Access -- Revisiting the Tradition}
+\begin{center}
+\input{Figures/slots0}
+\end{center}
+\begin{block}{Slotted ALOHA}
+  \begin{itemize}
+  \item $K$ \textbf{uncoordinated} devices
+  \item Time is \textbf{slotted}; transmissions occur within slots
+  \item Collided packets are discarded
+  \item Receiver provides \textbf{feedback} about collision events
+  \item Back-off strategy determines performance, bounded by $1/e \approx 0.37$
+  \end{itemize}
+\end{block}
+\footnotetext[1]{\scriptsize{N. Abramson, ``The ALOHA system: Another alternative for computer communications,'' in Proc.\ Computer Conference (1970).}}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Random Access with Twist}
+\begin{center}
+\input{Figures/slots}
+\end{center}
+\begin{block}{System Model}
+  \begin{itemize}
+  \item $K$ \textbf{uncoordinated} devices, each with 1 packet to send
+  \item Time is \textbf{slotted}; transmissions occur within slots
+  \item Receiver knows full schedule, collection of packets in every slot
+  \item Successive interference cancellation
+  \end{itemize}
+\end{block}
+\footnotetext[1]{\scriptsize  E. Casini, R. De Gaudenzi, and O. Del Rio Herrero. ``Contention resolution diversity slotted ALOHA (CRDSA): An enhanced random access scheme for satellite access packet networks.'' IEEE Trans.\ on Wireless Communications (2007).}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Graphical Representation}
+\begin{itemize}
+\item Tanner graph representation for transmission scheme
+\item Variable nodes $\leftrightarrow$ packets;
+Check nodes $\leftrightarrow$ received signals
+\item Message-passing decoder (SIC) -- \textbf{peeling decoder} for erasure channel
+\end{itemize}
+\begin{columns}
+\column{.48\textwidth}
+  \begin{center}
+  \scalebox{0.8}{\input{Figures/graph1}}
+  \end{center}
+\column{.48\textwidth}
+  \begin{center}
+  \scalebox{0.8}{\input{Figures/graph2}}
+  \end{center}
+\end{columns}
+\footnotetext[1]{\scriptsize G. Liva. ``Graph-based analysis and optimization of contention resolution diversity slotted ALOHA.'' IEEE Trans.\ on Communications (2011).}
+\footnotetext[2]{\scriptsize  E. Paolini, G. Liva, and M. Chiani. ``Coded slotted ALOHA: A graph-based method for uncoordinated multiple access.'' IEEE Trans.\ on Information Theory (2015).}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Decoder -- Peeling Algorithm}
+Joint decoding via successive interference cancellation
+  \begin{center}
+  \scalebox{1}{\input{Figures/framework}}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Representations: Schedule, Tanner Graph, Compressed}
+\begin{center}
+  \scalebox{1}{\input{Figures/access}}
+\end{center}
+\begin{columns}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.8}{\input{Figures/tanner}}
+  \end{center}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.8}{\input{Figures/ldgm}}
+  \end{center}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Graphical Methods: Tools from Iterative Decoding}
+\begin{itemize}
+\item $L(z) = \sum_i L_i z^i$ variable dist.\ from node
+\item $\lambda(z) = \sum_i \lambda_i x^{i-1} = {L'(z)}/{L'(1)}$ variable dist.\ from edge
+\item $R(z) = \sum_j R_j z^i$ check dist.\ from node
+\item $\rho(z) = \sum_j \rho_j x^{j-1} = {R'(z)}/{R'(1)}$ check dist.\ from edge
+\end{itemize}
+\begin{columns}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.8}{\input{Figures/tanner}}
+  \end{center}
+\column{.5\textwidth}
+  \begin{center}
+  \scalebox{0.7}{\input{Figures/tanner2}}
+  \end{center}
+\end{columns}
+\footnotetext[1]{\scriptsize V. Zyablov, and M. Pinsker. ``Decoding complexity of low-density codes for transmission in a channel with erasures.'' Problemy Peredachi Informatsii (1974).}
+\end{frame}
+
+
+\begin{frame}{Computation Tree and Message Passing}
+\begin{columns}
+\column{.55\textwidth}
+\begin{centering}
+\scalebox{0.7}{\input{./Figures/comptree}}
+\end{centering}
+\column{.4\textwidth}
+\begin{block}{Standard Tricks}
+\begin{itemize}
+\item Unravel bipartite graph into computation graph
+\item For large systems, graph is locally tree-like
+\item Focus on outgoing messages
+\item Analyze over random code ensemble
+\end{itemize}
+\end{block}
+\end{columns}
+\footnotetext[1]{\scriptsize M. Luby, M. Mitzenmacher, A. Shokrollahi, and D. Spielman. ``Efficient erasure correcting codes.'' IEEE Trans.\ on Information Theory (2001).}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Graphical Methods: Tools from Iterative Decoding}
+\begin{itemize}
+\item $x$: Prob.\ outgoing message from variable node erased
+\item $y$: Prob.\ outgoing message from check node erased
+\end{itemize}
+\begin{center}
+\scalebox{0.7}{\input{Figures/tanner3}}
+\end{center}
+\begin{itemize}
+\item Outgoing variable message is erased when all incoming check messages are erased
+\begin{equation*}
+x = \mathrm{E} \left[ y^{i-1} \right] = \lambda (y)
+\end{equation*}
+\item Outgoing check message is erased when one incoming variable message is erased
+\begin{equation*}
+y = \mathrm{E} \left[ 1 - (1 - x)^{j-1} \right] = 1 - \rho(1-x)
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Extrinsic Information Transfer (EXIT) Chart}
+\begin{columns}
+\column{.65\textwidth}
+  \scalebox{0.85}{\input{Figures/exitchart}}
+\column{.3\textwidth}
+  \scalebox{0.85}{\input{Figures/tanner4}}
+\end{columns}
+\vfill
+\textbf{Step-by-Step Progression}
+\begin{xalignat*}{2}
+y &= 1 - \rho(1-x) &
+x &= \lambda(y) \quad \text{ \textcolor{gray}{(flipped)}}
+\end{xalignat*}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example -- Traditional Fountain Codes}
+\begin{columns}
+\column{.48\textwidth}
+\begin{center}
+  \scalebox{0.55}{\input{Figures/fountainmatrix1}}
+\end{center}
+\column{.5\textwidth}
+\begin{itemize}
+\item Select \# of bit nodes
+\item Pick bits uniformly
+\item Columns not selected independently
+\item Cannot be employed in massive uncoordinated multiple access
+\end{itemize}
+\end{columns}
+\begin{center}
+  \scalebox{0.8}{\input{Figures/fountain1}}
+\end{center}
+\footnotetext[1]{K. Narayanan and H. Pfister. ``Iterative collision resolution for slotted ALOHA: An optimal uncoordinated transmission policy.'' ISTC, 2012.}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example -- Transpose of LT Codes}
+\begin{columns}
+\column{.48\textwidth}
+\begin{center}
+  \scalebox{0.55}{\input{Figures/fountainmatrix2}}
+\end{center}
+\column{.5\textwidth}
+\begin{itemize}
+\item Devices pick \# of transmissions
+\item Selects slots uniformly
+\item Columns are independently
+\item Admissible massive uncoordinated multiple access
+\end{itemize}
+\end{columns}
+\begin{center}
+  \scalebox{0.8}{\input{Figures/fountain2}}
+\end{center}
+\footnotetext[1]{K. Narayanan and H. Pfister. ``Iterative collision resolution for slotted ALOHA: An optimal uncoordinated transmission policy.'' ISTC, 2012.}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Optimal Scheme when Number of Devices Known}
+\begin{center}
+\input{Figures/sideinfo}
+\end{center}
+\begin{itemize}
+\item Every device picks random slot count according to Soliton
+  \begin{equation*}
+  p_{\mathrm{sol}(t)}(m)
+  = \begin{cases}
+  {1}/{t} & m = 1 \\
+  {1}/{((m-1)m)} & m = 2, \ldots t
+  \end{cases}
+  \end{equation*}
+\item Given count, select $m$ slots uniformly at random
+\item Induce Soliton on left and Poisson on right of Tanner graph
+\item Asymptotically \textbf{optimal} when number of devices is known
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Proof Sketch -- Access with Dual Fountain Codes}
+\begin{columns}
+\column{.40\textwidth}
+\begin{block}{LT Codes}
+\begin{itemize}
+\item Degree distributions
+\begin{gather*}
+L(\cdot) \text{ Poisson dist}\\
+R(\cdot) \text{ Soliton dist}
+\end{gather*}
+\item Fountain codes optimal (asymptotically)
+\begin{align*}
+\lambda(z) = e^{- r_{\mathrm{avg}}(1-z)} \\
+\rho(z) = - \ln (1-z)
+\end{align*}
+\item Density evolution
+\begin{align*}
+y &= 1 - \rho(1-x) \\
+x &= \lambda(y)
+\end{align*}
+%\item Original LT Recursions
+%\begin{align*}
+%y_{t+1} &= 1 - \rho(1 - \lambda(y_t)) \rightarrow 0 \\
+%x_{t+1} &= \lambda(1 - \rho(1 - x_t)) \rightarrow 0
+%\end{align*}
+\end{itemize}
+\end{block}
+\column{.55\textwidth}
+\begin{block}{Uncoordinated MAC}
+\begin{itemize}
+\item Degree distributions
+\begin{gather*}
+\tilde{L}(\cdot) = R(\cdot) \text{ Soliton dist}\\
+\tilde{R}(\cdot) = L(\cdot) \text{ Poisson dist}
+\end{gather*}
+\item Density evolution
+\begin{align*}
+y %&= 1 - \tilde{\rho}(1-x) \\
+%&= 1 - \lambda(1-x) \\
+&= 1 - e^{- r_{\mathrm{avg}}x} \\
+x %&= \tilde{\lambda}(y)
+%= \rho(y)
+&= - \ln (1-y)
+\end{align*}
+\item Recursions
+\begin{equation*}
+\begin{split}
+y_{t+1} %&= 1 - \lambda(1 - \rho(y_t)) \\
+&= 1 - e^{ r_{\mathrm{avg}} \ln (1-y)} \\
+&= 1 - (1-y)^{r_{\mathrm{avg}}}
+\end{split}
+\end{equation*}
+\end{itemize}
+\end{block}
+\end{columns}
+\centerline{Throughput $\rightarrow 1$ when $K$ known}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Revised System Assumptions}
+\begin{itemize}
+\item Devices operate with \textbf{no side information}, $K$ unknown
+\item Access point broadcasts start/end of every round
+\item Joint decoding via successive interference cancellation: \textbf{peeling} algorithm
+\end{itemize}
+\begin{block}{Other Considerations}
+\begin{itemize}
+\item \textbf{Slots per round} can differ based on number of devices
+\item Perhaps length of round  can be determined dynamically?
+\end{itemize}
+\begin{center}
+\input{Figures/rounds}
+\end{center}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Universality}
+\begin{itemize}
+	\item Previous frameworks require the number of users to be known
+		\begin{itemize}
+			\item to determine the round duration
+			\item or to determine the slot access probability (Frameless ALOHA)
+		\end{itemize}
+\vspace{3mm}
+
+	\item<2-> \textbf{Number of active devices} may be \textbf{unknown} a priori
+	\item<2-> Access point may not need to know beforehand!
+
+\vspace{3mm}
+	\item<3-> Joint Estimation and Contention-Resolution-STPP'13\footnotemark
+		\begin{itemize}
+			\item<3-> Joint estimation of number of users and resolution of user packets
+			\item<3-> Multiple rounds, estimate of number of users is improved each round
+			\item<3-> Dynamic round durations as a function of fraction of users resolved
+		\end{itemize}
+\end{itemize}
+
+\vspace{3mm}
+\only<4->{\textit{Our framework is universal: Does not require number of users to be known or estimated}}
+
+\only<3->{\footnotetext[1]{\scriptsize{[STPP'13] \v{C}. Stefanovi\'{c}, K. F. Trilingsgaard, N. K. Pratas,  P. Popovski, ``Joint Estimation and Contention-Resolution Protocol for Wireless Random Access'', IEEE ICC 2013.}}}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Soliton Distribution when Number of Devices Unknown}
+  \begin{center}
+  \input{Figures/count}
+  \end{center}
+  \begin{itemize}
+  \item When number of active devices is $t$, we want round to end after approximately $t$ slots
+  \item \textbf{First Guess:} When number of device is $t$, random slot count for each device at end time~$t$ should have Soliton distribution $p_{\mathrm{sol}(t)}(\cdot)$, independent of one another
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Challenge in Designing Universal Schemes}
+\begin{block}{Challenge}
+\begin{itemize}
+\item If device operates in isolation, it does not know total number of active devices nor slot count for current round
+\item Yet, packet count should have Soliton distribution $p_{\mathrm{sol}(s)}(\cdot)$ at end of round
+\item  One way to fulfill requirement is for rolling message count to possess Soliton distribution $p_{\mathrm{sol}(s)}(\cdot)$ at every time~$s$
+\end{itemize}
+\end{block}
+\begin{center}
+\textbf{Can this be achieved?}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Potential Solution -- Time-Varying Markov Chain}
+\begin{center}
+\input{Figures/statemachine}
+\end{center}
+\begin{itemize}
+\item Every device contains state machine initialized to 0 at onset of round
+\item Device transmits a copy of message whenever Markov chain jumps to right neighbor
+\item State denotes number of copies transmitted thus far
+\item Transition probabilities are time varying
+\item Progression of Markov chain independent from one device to another
+%\item Chain is semi-infinite to accommodate round of any size
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Computing Transition Probabilities}
+\begin{center}
+\scalebox{0.9}{\input{Figures/distributions1}}
+\end{center}
+\begin{itemize}
+\item Must find transition probabilities to shift from $p_{\mathrm{sol}(3)}(\cdot)$ to $p_{\mathrm{sol}(4)}(\cdot)$
+\end{itemize}
+\begin{center}
+\scalebox{0.9}{\input{Figures/distributions2}}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Shifting from One Distribution to Another}
+\begin{center}
+\scalebox{0.9}{\input{Figures/distributions3}}
+\end{center}
+\begin{enumerate}
+\item Condition~1: Need enough probability mass to push over to neighbor
+\item Condition~2: Can't push probability mass past immediate neighbor
+\item Conditions can be expressed mathematically in terms of first-order stochastic dominance
+\begin{equation*}
+X \preceq Y \text{ whenever }
+\Pr (X > m) \leq \Pr (Y > m) \quad \forall m
+\end{equation*}
+or, equivalently, cumulative distribution function (CDF) of $X$ dominates CDF of $Y$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Markov Chains and Distribution Shaping}
+\begin{itemize}
+\item Let $p_0(\cdot), p_1(\cdot), p_2(\cdot), \ldots$ be a sequence of probability distributions
+\item Let $S$ denote standard right shift operator acting on one-sided infinite sequences
+\end{itemize}
+\begin{center}
+ \scalebox{0.9}{\input{Figures/distributions4}}
+\end{center}
+\textbf{Theorem:}
+Sequence of distributions can be achieved through monotone increasing Markov chain with self-transitions and transitions to nearest neighbors on the right iff
+\begin{itemize}
+\item $p_t \preceq p_{t+1}$ for every $t$ \textcolor{gray}{-- enough probability mass to push to right}
+\item $p_{t+1} \preceq S p_t$ for every $t$ \textcolor{gray}{-- cannot push mass past the neighbor}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Applying Markov Shaping Strategy}
+\begin{center}
+\input{Figures/statemachine2}
+\end{center}
+\begin{itemize}
+\item Suppose $p_0, p_1, \ldots$ is admissible sequence of distributions
+\item Let $\{ X_t \}$ be first-order, time-inhomogeneous Markov chain
+\item Denote transition probabilities by
+\begin{gather*}
+\Pr (X_{t+1} = m | X_t = m) = 1 - \gamma^{(t)}_m \\
+\Pr (X_{t+1} = m+1 | X_t = m) = \gamma^{(t)}_m
+\end{gather*}
+\item Desired transition probabilities are
+\begin{equation*}
+\gamma^{(t)}_m = \begin{cases}
+\frac{ \sum_{\ell=0}^m p_t(\ell)
+- \sum_{\ell=0}^m p_{t+1}(\ell) }{p_t(m)}
+& p_t(m) > 0 \\ 0 & p_t(m) = 0
+\end{cases}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example: Soliton Distributions}
+\begin{columns}
+\column{.45\textwidth}
+  Soliton Distribution
+  \begin{equation*}
+  p_{\mathrm{sol}(t)}(m)
+  = \begin{cases}
+  \frac{1}{t} & m = 1 \\
+  \frac{1}{(m-1)m} & m = 2, \ldots t
+  \end{cases}
+  \end{equation*}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.9}{\input{Figures/distributions}}
+  \end{center}
+\end{columns}
+\begin{block}{Checking Condition~1: $p_{\mathrm{sol}(t)} \preceq p_{\mathrm{sol}(t+1)}$}
+\begin{itemize}
+\item CDF comparison yields
+\begin{equation*}
+\sum_{\ell=0}^m p_t(\ell) - \sum_{\ell=0}^m p_{t+1}(\ell)
+= \frac{1}{t} - \frac{1}{t+1}
+= \frac{1}{t(t+1)}
+\end{equation*}
+\item Difference vanishes for $m \geq t+1$
+\item Hence $p_{\mathrm{sol}(t)} \preceq p_{\mathrm{sol}(t+1)}$
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example: Soliton Distributions}
+\begin{block}{Checking Condition~2: $p_{\mathrm{sol}(t+1)} \preceq S p_{\mathrm{sol}(t)}$}
+\begin{itemize}
+\item For $m=1$, we have
+\begin{equation*}
+\sum_{\ell=0}^m p_{t+1}(\ell)
+- \sum_{\ell=0}^{m-1} p_t(\ell)
+= \frac{1}{t+1} \geq 0
+\end{equation*}
+\item For $m = 2, \ldots, t$, we get
+\begin{equation*}
+\begin{split}
+\sum_{\ell=0}^m p_{t+1}(\ell)
+- \sum_{\ell=0}^{m-1} p_t(\ell)
+&= \frac{1}{(m-1)m} - \frac{1}{t(t+1)} \geq 0
+\end{split}
+\end{equation*}
+\item Difference vanishes for $m \geq t+1$
+\item Hence $p_{\mathrm{sol}(t+1)} \preceq S p_{\mathrm{sol}(t)}$
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example: Soliton Distributions}
+\begin{itemize}
+\item Conditions~1~\&~2 are \textbf{fulfilled}
+\item There exits \textbf{Markov chain} containing solely self-transitions and transitions to nearest neighbors on the right that possesses \textbf{Soliton distribution} at every time~$t$
+\end{itemize}
+\vfill
+\begin{columns}
+\column{.6\textwidth}
+  \begin{itemize}
+  \item Transition probabilities are
+  \begin{equation*}
+  \gamma^{(t)}_m = \begin{cases}
+  \frac{1}{t+1} & m = 1 \\
+  \frac{(m-1)m}{t(t+1)} & m = 2, \ldots, t \\
+  0 & \text{otherwise}
+  \end{cases}
+  \end{equation*}
+  \item Probability that device transmit during slot~$t$ is Wasserstein distance
+  \end{itemize}
+\column{.35\textwidth}
+  \begin{center}
+  \scalebox{0.9}{\input{Figures/distributions5}}
+  \end{center}
+\end{columns}
+\vfill
+\begin{center}
+\textbf{Is this complete story?}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Realization of Standard Soliton Access Pattern (Goal)}
+\begin{center}
+  \scalebox{0.6}{\input{Figures/ldgm1}}
+\end{center}
+\vfill
+\begin{center}
+  \scalebox{0.8}{\input{Figures/empiricaldist1}}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Realization of Markov Soliton Access Pattern (Outcome)}
+\begin{center}
+  \scalebox{0.6}{\input{Figures/ldgm2}}
+\end{center}
+\vfill
+\begin{center}
+  \scalebox{0.8}{\input{Figures/empiricaldist2}}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Universal Framework with Markov Transmission Scheme}
+\begin{itemize}
+\item Access point solely broadcast start/end of round
+\item Devices employ Markov chain to elect when to transmit
+\item Mathematical framework provide methodology to shape marginal distributions at every time step
+\end{itemize}
+\begin{block}{Positive Aspects}
+\begin{itemize}
+\item Design space is large in terms of distribution shaping
+\item Slot count can differ from number of active devices
+\item Stopping condition can include state of peeling decoder
+\end{itemize}
+\end{block}
+\begin{block}{Limitations}
+\begin{itemize}
+\item Probability that device transmit packet is not uniform over time
+\item Tanner graph may be front-loaded
+\item Uniformly optimal universal scheme may not exist 
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Candidate Distributions Used in Numerical Results}
+\begin{block}{Stateless Distributions}
+\begin{itemize}
+\item Device use emission probabilities based on time elapsed
+\end{itemize}
+\begin{equation*}
+\gamma^{(t)}_m = \gamma^{(t)}
+= 1 - \exp \left( \frac{c \log(\epsilon)}{t} \right)
+\end{equation*}
+\end{block}
+\begin{block}{Skewed Distributions}
+\begin{itemize}
+\item Skewed family favors nodes that have transmitted several packets
+\end{itemize}
+\begin{equation*}
+\gamma_m^{(t)} = \begin{cases}
+0, & \sum_{i=0}^m p_t(i) < 1 - \overline{\gamma}^{(t)} \\
+1, & \sum_{i=m}^{t} p_t(i) \leq \overline{\gamma}^{(t)} \\
+\frac{\overline{\gamma}^{(t)} - \sum_{i=m+1}^{t} p_t(i)}{p_t(m)}
+& \text{otherwise}
+\end{cases}
+\end{equation*}
+\end{block}
+\begin{block}{Skewed Distributions}
+\begin{center}
+In numerical results, we use mixture of these two families
+\end{center}
+\end{block}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Numerical Results -- Parameterized Distribution}
+\begin{itemize}
+\item Parameter~1: Number of time slots per round
+\item Parameter~2: Tuning factor to favor nodes that have already transmitted several copies of their messages
+\item \textbf{Performance Criterion:} average number of decoded packet per time slot (shown for 1250~devices)
+\end{itemize}
+\begin{center}
+\input{Figures/PerformanceK1000}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Discussion -- Universal Framework}
+\begin{itemize}
+\item New framework for Universal Multiple Access
+\item Necessary and sufficient conditions for proposed approach
+\item Large design space need to be explored
+\item Efficiency shown up to 69 percent
+\item Substantially exceeds performance of traditional ALOHA
+\item Performance and complexity need to be compared with case where number of devices is estimated at onset of every round
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Unsourced MAC}
+\begin{block}{Assumptions}
+\begin{itemize}
+\item $K$ active devices out of $Q$ devices
+\item $Q$ is very large, and $K$ is much less than $Q$
+\item Every device transmits a message
+\end{itemize}
+\end{block}
+\centerline{\textbf{Access point interested in messages, not in identity of sources}}
+\begin{block}{Entropy of Identities}
+\begin{itemize}
+\item Size of active subset is $K$
+\item Link identity of source to every message
+\begin{equation*}
+\log_2 \frac{Q!}{(Q-K)!}
+= \mathcal{O} \left( K \log_2 Q \right)
+\end{equation*}
+\item Explore alternate approches
+\item Performance bounds for Unsourced MAC with finite-length codes
+\footnote[1]{
+Y. Polyanskiy. ``A perspective on massive random access.'' ISIT, 2017.}
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Unsourced MAC -- Compressive Sensing Viewpoint}
+\begin{center}
+\scalebox{0.55}{\input{Figures/compressivesampling1}}
+\end{center}
+\begin{columns}
+\column{.45\textwidth}
+\begin{itemize}
+\item $M = 2^B$ entries
+\item $K \approx 100$ active devices
+\item Non-negative coefficients
+\end{itemize}
+\column{.5\textwidth}
+\begin{itemize}
+\item $B \approx 100, N \approx 30,000$
+\item $\mathcal{O} (K \log M)$
+\item May be too large
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Unsourced MAC -- A Quest for Low Complexity}
+\begin{center}
+\scalebox{0.55}{\input{Figures/restrictedmatrix1}}
+\end{center}
+\begin{columns}
+\column{.45\textwidth}
+\begin{itemize}
+\item Partition into $V$ slot
+\item $\tilde{N} = N/V$ channel uses
+\end{itemize}
+\column{.5\textwidth}
+\begin{itemize}
+\item Aim is $T$-user adder channel
+%\begin{equation*}
+%\tilde{y}_j = \sum_{i \in \mathcal{N}_j} \tilde{x}_{w_i} + \tilde{z}_j,
+%\end{equation*}
+%where $\mathcal{N}_j$ is active users in slot~$j$
+\item Admits graphical representation
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Unsourced MAC -- Low Complexity State-of-the-Art}
+\begin{center}
+\scalebox{0.75}{\input{Figures/lcscheme1}}
+\end{center}
+\begin{itemize}
+\item Every active devices randomly select one sub-block
+\item Inner code designed to recover modulo-$p$ sum of codewords
+\item Outer code is designed to decode multiple messages given the modulo-$p$ sum of their codewords
+%\item Scheme uses large number of slots to ensure that every message is received in slot containing fewer than $T$ messages.
+\end{itemize}
+\footnotetext[1]{
+O. Ordentlich and Y. Polyanskiy. ``Low Complexity Schemes for the Random Access Gaussian Channel.'' ISIT, 2017.}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Unsourced MAC -- Proposed Scheme}
+\begin{center}
+\scalebox{0.75}{\input{Figures/lcscheme2}}
+\end{center}
+\begin{itemize}
+\item Schedule selected based on \textbf{message}
+\item Devices can transmit in multiple sub-blocks
+\item Scheme facilitates successive interference cancelation
+\end{itemize}
+\footnotetext[1]{
+A. Vem, K. Narayanan, J. Cheng, J.-F. Chamberland}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{What Really Happens within Slot?}
+\begin{center}
+\scalebox{1}{\input{Figures/UnsMAC_encoder}}
+\end{center}
+\begin{itemize}
+\item Message is partitioned into two parts $w = (w_1, w_2)$
+\item Every device uses identical codebook built from LDPC-type codes tailored to $T$-user real-adder channel
+\item $w_2$ dictate permutation on encoder and recovered through CS
+\item Non-negative $\ell_1$-regularized LASSO
+\item Spatially-coupled low-density parity check code is employed
+%\item MMSE estimator on list
+\end{itemize}
+\footnotetext[1]{
+A. Vem, K. Narayanan, J. Cheng, J.-F. Chamberland}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{What Really Happens within Slot?}
+\begin{center}
+\scalebox{0.5}{\input{Figures/decodergraph_permutation}}
+\end{center}
+\begin{itemize}
+\item Run joint belief propagation (BP) decoder
+\end{itemize}
+\footnotetext[1]{
+A. Vem, K. Narayanan, J. Cheng, J.-F. Chamberland}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Side by Side}
+\begin{center}
+\scalebox{0.5}{\input{Figures/sim_results_30000_0.04_0.01}}
+\end{center}
+\begin{itemize}
+\item Minimum $E_b/N_0$ required as function of \# of devices
+\item For $T=2,4$ and $4$-fold ALOHA, prob.\ of decoding every slot $\geq 0.99$
+\item Prob.\ recovered messages $\geq 0.96$ given $T$-user decoding successful
+\end{itemize}
+\footnotetext[1]{
+A. Vem, K. Narayanan, J. Cheng, J.-F. Chamberland}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Discussion -- Unsourced Multiple Access}
+\begin{itemize}
+\item New framework for Unsourced Multiple Access
+\item Leverages power and lessons from graphical model
+\item Proposed scheme outperforms state-of-the-art
+\begin{itemize}
+\item Takes advantage of successive interference cancellation
+\item Relax requirement for keeping maximum devices per slot below $T$
+\item Takes advantage of $T$-user real-adder channel via BP
+\end{itemize}
+\item Complexity needs to be tracked better
+\item Design of sampling matrix $A$ can be optimized
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Questions?}
+\centerline{\Large Thank You}
+\end{frame}
+
+
+\end{document}

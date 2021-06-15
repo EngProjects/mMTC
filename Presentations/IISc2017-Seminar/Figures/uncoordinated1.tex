@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+  [
+  font=\small, line width=1pt, draw=black, >=stealth',
+  bitnode/.style={rectangle, rounded corners, inner sep=4pt, minimum size=5mm, draw=black,line width=1.5pt},
+  checknode/.style={rectangle, rounded corners, inner sep=4pt, minimum size=5mm, draw=black,line width=1.5pt},
+  ]
+
+  \node[bitnode] (b1) at (0,4) {Access Point};
+
+  \foreach \x in {1,2,3,4,5,6,7} {
+    \node[checknode] (c1\x) at (-8+2*\x,2) {Device~\x}
+      edge[dashed] (b1.south);
+  }
+
+\end{tikzpicture}
+

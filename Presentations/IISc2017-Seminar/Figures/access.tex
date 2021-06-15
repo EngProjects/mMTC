@@ -1,0 +1,39 @@
+\begin{tikzpicture}[
+  line width=1pt, font=\footnotesize, >=stealth', draw=black,
+  packet/.style={rectangle, minimum height=4mm, minimum width=14mm, draw=black, fill=gray!20, rounded corners, line width=0.5pt},
+  check/.style={rectangle, inner sep=0pt, minimum size=1.5mm, fill=black},
+  varnode/.style={circle, inner sep=0pt, minimum size=1.5mm, fill=black}
+]
+
+\draw [->,line width=1.25pt] (0,-0.05) -- (8.25,-0.05);
+\draw[line width=1.25pt] (0.25,-0.175) -- (0.25,2.45);
+\foreach \x in {1,...,4} {
+  \draw (1.5*\x+0.25,-0.175) -- (1.5*\x+0.25,0.075);
+  \draw[dotted,line width=1.25pt] (1.5*\x+0.25,0.075) -- (1.5*\x+0.25,2.25);
+}
+
+\foreach \v in {1,...,4} {
+  \node[varnode] (v\v) at (0,0.5*\v-0.25) {};
+}
+
+\foreach \x in {1,...,5} {
+  \node[check] (c\x) at (1.5*\x-0.5,-0.3) {};
+  \node (t\x) at (1.5*\x-0.5,2.3) {slot~\x};
+}
+
+\draw[thick] (7.75,-0.175) -- (7.75,2.45);
+\draw[dashed,line width=1.25pt] (0,2.05) -- (8,2.05);
+
+\node[packet] (p12) at (2.5,0.25) {$m_1$};
+\node[packet] (p21) at (1.0,0.75) {$m_2$};
+\node[packet] (p23) at (4.0,0.75) {$m_2$};
+\node[packet] (p24) at (5.5,0.75) {$m_2$};
+\node[packet] (p31) at (1.0,1.25) {$m_3$};
+\node[packet] (p33) at (4.0,1.25) {$m_3$};
+\node[packet] (p35) at (7.0,1.25) {$m_3$};
+\node[packet] (p42) at (2.5,1.75) {$m_4$};
+\node[packet] (p43) at (4.0,1.75) {$m_4$};
+\node[packet] (p45) at (7.0,1.75) {$m_4$};
+
+\end{tikzpicture}
+

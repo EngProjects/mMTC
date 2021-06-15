@@ -1,0 +1,25 @@
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >=stealth',
+  line width=1pt,
+]
+
+\draw [<->] (0,2.5) -- (0,0) -- (3,0);
+\foreach \x in {0,...,5} {
+  \draw (0.5*\x,-0.175) -- (0.5*\x,0.075);
+}
+\foreach \x in {1,...,4} {
+  \draw (-0.175,0.5*\x) -- (0.075,0.5*\x);
+}
+\draw[fill=gray!20,line width=0.5pt] (0.55,0) rectangle (0.95,1);
+\draw[fill=gray!50,line width=0.5pt] (0.55,1+0.05) rectangle (0.95,4/3+0.05);
+\draw[fill=gray!20,line width=0.5pt] (1.05,0) rectangle (1.45,5/3);
+\draw[fill=gray!50,line width=0.5pt] (1.05,5/3+0.05) rectangle (1.45,2+0.05);
+\draw[fill=gray!20,line width=0.5pt] (1.55,0) rectangle (1.95,1/3);
+\draw[fill=gray!50,line width=0.5pt] (1.55,1/3+0.05) rectangle (1.95,2/3+0.05);
+
+\draw [->] (0.75,4/3+0.1) to [out=90, in=180, looseness=3] (1.,11/6+0.05);
+\draw [->] (1.5,11/6+0.05) to [out=0, in=90, looseness=3] (1.75,2/3+0.1);
+\draw [->] (2,1/2+0.05) to [out=0, in=90, looseness=3] (2.25,0.05);
+
+\end{tikzpicture}

@@ -1,0 +1,27 @@
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >=stealth',
+  line width=1pt,
+]
+
+\draw [<->] (0,2.5) -- (0,0) -- (3,0);
+\foreach \x in {0,...,5} {
+  \draw (0.5*\x,-0.175) -- (0.5*\x,0.075);
+}
+\foreach \x in {0,1,...,4} {
+  \node (tx\x) at (0.5*\x+0.25,-0.3) {\x};
+}
+\foreach \x in {1,...,4} {
+  \draw (-0.175,0.5*\x) -- (0.075,0.5*\x);
+}
+\node (tyy1) at (1.25,2.5) {$p_{\mathrm{sol}(t)}(\cdot)$};
+\node (ty1) at (-0.6,0.5) {0.125};
+\node (ty2) at (-0.6,1) {0.25};
+\node (ty3) at (-0.6,1.5) {0.375};
+\node (ty4) at (-0.6,2) {0.5};
+\draw[fill=gray!20,line width=0.5pt] (0.55,0) rectangle (0.95,4/4);
+\draw[fill=gray!20,line width=0.5pt] (1.05,0) rectangle (1.45,4/2);
+\draw[fill=gray!20,line width=0.5pt] (1.55,0) rectangle (1.95,4/6);
+\draw[fill=gray!20,line width=0.5pt] (2.05,0) rectangle (2.45,4/12);
+
+\end{tikzpicture}

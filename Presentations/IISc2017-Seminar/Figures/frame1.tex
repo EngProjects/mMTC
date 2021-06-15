@@ -1,0 +1,44 @@
+\begin{tikzpicture}[>=stealth', thick]
+
+% --------
+\draw [fill=gray!10] (0,0) rectangle (13,0.5);
+\draw [<->] (3,0.7) -- node[above]{\footnotesize Frame Length $M$} (11.5,0.7);
+
+\draw [fill=gray!25] (0,0) rectangle (1.5,0.5);
+\node at (0.75,0.25) {\scriptsize Beacon};
+
+\draw [fill=gray!25] (1.5,0) rectangle (3,0.5);
+\node at (2.25,0.25) {\scriptsize Inference};
+
+\draw (3,0) -- (3,0.5);
+\draw (4.5,0) -- (4.5,0.5);
+\draw (6,0) -- (6,0.5);
+\draw (8.5,0) -- (8.5,0.5);
+\draw (10,0) -- (10,0.5);
+\draw (11.5,0) -- (11.5,0.5);
+
+\node at (3.75,0.25) {\scriptsize Slot~$1$};
+\node at (5.25,0.25) {\scriptsize Slot~$2$};
+\node at (7.25,0.25) {$\cdots$};
+\node at (9.25,0.25) {\scriptsize Slot~$M - 1$};
+\node at (10.75,0.25) {\scriptsize Slot~$M$};
+
+\draw [fill=gray!25] (11.5,0) rectangle (13,0.5);
+\node at (12.25,0.25) {\scriptsize Feedback};
+
+% --------
+\draw [fill=gray!10] (8,-0.9) rectangle (10.5,-0.4);
+\draw [dotted] (8.5,0)--(8,-0.4);
+\draw [dotted] (10,0)--(10.5,-0.4);
+\node at (9.25,-0.65) {\scriptsize Time Slot};
+
+% --------
+\draw [fill=gray!25] (0.25,-0.9) rectangle (5.75,-0.4);
+\node at (1.6875,-0.675) {\scriptsize Population Estimation};
+\node at (4.4375,-0.675) {\scriptsize Slot Count Reporting};
+\draw [dotted] (1.5,0)--(0.25,-0.4);
+\draw [dotted] (3,0)--(5.75,-0.4);
+\draw[thin] (3.125,-0.4) -- (3.125,-0.9);
+
+\end{tikzpicture} 
+

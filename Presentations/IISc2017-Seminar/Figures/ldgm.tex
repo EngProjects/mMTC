@@ -1,0 +1,50 @@
+\begin{tikzpicture}
+[draw=black, line width=1.5pt, >=stealth',
+entry1/.style={rectangle, draw, fill=gray, inner sep=0pt, minimum size=5mm},
+entry0/.style={rectangle, draw, inner sep=0pt, minimum size=5mm},
+symbol/.style={circle, draw, inner sep=0pt, minimum size=5mm}]
+
+\node[anchor=north] (schedule) at (0.75,-0.25) {schedule};
+\node[entry0] (m00) at (0,0) {};
+\node[entry0] (m01) at (0.5,0) {};
+\node[entry1] (m02) at (1,0) {};
+\node[entry1] (m03) at (1.5,0) {};
+
+\node[entry0] (m00) at (0,0.5) {};
+\node[entry1] (m11) at (0.5,0.5) {};
+\node[entry0] (m12) at (1,0.5) {};
+\node[entry0] (m13) at (1.5,0.5) {};
+
+\node[entry0] (m20) at (0,1) {};
+\node[entry1] (m21) at (0.5,1) {};
+\node[entry1] (m22) at (1,1) {};
+\node[entry1] (m23) at (1.5,1) {};
+
+\node[entry1] (m30) at (0,1.5) {};
+\node[entry0] (m31) at (0.5,1.5) {};
+\node[entry0] (m32) at (1,1.5) {};
+\node[entry1] (m33) at (1.5,1.5) {};
+
+\node[entry0] (m40) at (0,2) {};
+\node[entry1] (m41) at (0.5,2) {};
+\node[entry1] (m42) at (1,2) {};
+\node[entry0] (m43) at (1.5,2) {};
+
+\node[symbol,fill=blue!50] (s1) at (2.5,0.25) {};
+\node[symbol,fill=red!60!blue!30] (s2) at (2.5,0.75) {};
+\node[symbol,fill=red!30!blue!60] (s3) at (2.5,1.25) {};
+\node[symbol,fill=red!50] (s4) at (2.5,1.75) {};
+\node[anchor=south,rotate=-90] (variables) at (2.75,1) {nodes};
+
+
+\node (equal) at (3.75,1) {\Large =};
+
+\node[entry0,fill=black!20] (y0) at (4.75,0) {};
+\node[entry0,fill=red!30!blue!60] (y1) at (4.75,0.5) {};
+\node[entry0,fill=black!30] (y2) at (4.75,1) {};
+\node[entry0,fill=black!20] (y3) at (4.75,1.5) {};
+\node[entry0,fill=black!20] (y4) at (4.75,2) {};
+\node[anchor=south,rotate=-90] (slots) at (5,1) {slots};
+
+\end{tikzpicture}
+

@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+
+%Message node and final codeword Rectangle
+\node[draw,rectangle] (msg) at (3,1) {$w=(w_1,w_2)$};
+\node[rectangle, draw, minimum width=2.7in,thick] (codeword) at (3.5,3) {$\pi_{\tau_{w_2}}({c}_{w_1})$}; 
+%$c_{w}(\pi_{\tau_{w_2}^1}),c_{w}(\pi_{\tau_{w_2}^2}),\ldots,c_{w}(\pi_{\tau_{w_2}})$};
+
+
+% From messages to Ch. Encoder and Compressive Sensing Encoder
+\draw [->] (msg.east) -- +(0:1) node[midway, above] {$w_1$} node[draw, inner sep=5pt,at end, anchor= west] (encoder) {Ch. Encoder} ;
+\draw [->] (msg.west) -- +(0:-1) node[midway, above] {$w_2$} node[draw, inner sep=5pt,at end, anchor= east] (CSencoder) {$\mathbf{A}$}; %{Sensing Matrix $\mathbf{A}$};
+
+\path (encoder.north)-- +(90:0.6) node[draw, rectangle,fill=white](CWperm){Permute};
+\draw[->] (encoder.north)-- (CWperm.south) node[midway,right]{${c}_{w_1}$};
+\draw[->](CWperm.north)-- (CWperm.north |- codeword.south) node[midway, right]{$\pi_{\tau_{w_2}}({c}_{w_1})$};
+
+\draw[->](CSencoder.north)-- (CSencoder.north |- codeword.south) node[midway, left]{${a}^T_{w_2}$};
+
+\path let \p{A}=(codeword) in (3-1.7,\y{A})node (partition){} -- (partition |- codeword.north);
+\draw (partition |- codeword.north) -- (partition |- codeword.south) ;
+\node () at (partition -| CSencoder) {${a}_{w_2}$};
+\node [above] at (codeword.north) {${\tilde{c}}_{w}$};
+
+\draw [->] (msg.north) -- (msg.north |- CWperm.west)node[midway,left]{$w_2$} -- (CWperm.west) node[midway,above] {$\pi_{\tau_{w_2}}=f(w_2)$};
+\end{tikzpicture}

@@ -1,0 +1,38 @@
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >=stealth',
+  line width=1pt,
+  packet/.style={rectangle, minimum height=4mm, minimum width=14mm, draw=black, fill=gray!20, rounded corners, line width=0.5pt}
+]
+
+\draw [->] (0,-0.05) -- (9.75,-0.05);
+\draw (0.25,-0.175) -- (0.25,2.95);
+\foreach \x in {1,...,5} {
+  \draw (1.5*\x+0.25,-0.175) -- (1.5*\x+0.25,0.075);
+  \draw[dotted] (1.5*\x+0.25,0.075) -- (1.5*\x+0.25,2.75);
+}
+\draw (9.25,-0.175) -- (9.25,2.95);
+\draw[dashed] (0,2.05) -- (9.5,2.05);
+\draw[dashed] (0,2.55) -- (9.5,2.55);
+
+\foreach \x in {1,...,6} {
+  \node (t\x) at (1.5*\x-0.5,2.3) {slot~\x};
+}
+\node (round) at (4.75,2.95) {\textbf{Round}};
+\node (start) at (0.25,3.2) {start};
+\node (end) at (9.25,3.2) {end};
+
+%\node[packet] (p12) at (2.5,0.25) {$m_1$};
+\node[packet,fill=gray] (p15) at (7.0,0.25) {$m_1$};
+\node[packet,fill=gray] (p21) at (1.0,0.75) {$m_2$};
+%\node[packet] (p23) at (4.0,0.75) {$m_2$};
+\node[packet] (p24) at (5.5,0.75) {$m_2$};
+\node[packet,fill=gray] (p31) at (1.0,1.25) {$m_3$};
+\node[packet,fill=gray] (p35) at (7.0,1.25) {$m_3$};
+\node[packet] (p36) at (8.5,1.25) {$m_3$};
+\node[packet] (p42) at (2.5,1.75) {$m_4$};
+%\node[packet] (p43) at (4.0,1.75) {$m_4$};
+%\node[packet] (p45) at (7.0,1.75) {$m_4$};
+
+\end{tikzpicture}
+

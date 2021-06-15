@@ -1,0 +1,48 @@
+\begin{tikzpicture}
+  [
+  font=\small, line width=1pt, draw=black, >=stealth',
+  slot/.style={rectangle, minimum height=5mm, minimum width=14mm, draw=black, fill=gray!30},
+  encoder/.style={rectangle, minimum height=6mm, minimum width=14mm, draw=black, fill=gray!10, rounded corners},
+  decoder/.style={rectangle, minimum height=6mm, minimum width=14mm, draw=black, rounded corners},
+  message/.style={rectangle, minimum height=5mm, minimum width=14mm, draw=black, rounded corners}
+  ]
+
+\foreach \e in {1,2,3,4,5,6} {
+  \node[encoder] (e\e) at (2,0.5-\e) {Encoder};
+}
+
+\foreach \m in {1,2,3,4,5,6} {
+  \node[message] (m\m) at (0,0.5-\m) {$m_{\m}$}
+  edge[->] (e\m);
+  \draw[<-] (m\m) -- (-1.25,0.5-\m);
+}
+  
+\foreach \s in {1,2,3,4} {
+  \node[slot] (c\s) at (5.5,-0.5-\s) {slot~\s};
+  %\node[decoder] (d\s) at (8,-0.5-\s) {Decoder};
+  \draw[->] (c\s) -- (7,-0.5-\s);
+}
+
+\draw[rounded corners] (7,-1) rectangle (8.5,-5);
+\node[rotate=90] (d1) at (7.5,-3) {$T$-user decoder per slot};
+\node[rotate=90] (d2) at (8,-3) {Interference cancellation};
+
+\draw[->] (8.5,-1.5) -- (9.5,-1.5);
+\draw[->] (8.5,-2.5) -- (9.5,-2.5);
+\draw[->] (8.5,-3.5) -- (9.5,-3.5);
+\draw[->] (8.5,-4.5) -- (9.5,-4.5);
+
+\draw[->] (e1.east) -- (c2.west);
+\draw[->] (e2.east) -- (c1.west);
+\draw[->] (e3.east) -- (c3.west);
+\draw[->] (e4.east) -- (c4.west);
+\draw[->] (e5.east) -- (c1.west);
+\draw[->] (e6.east) -- (c3.west);
+\draw[->] (e1.east) -- (c3.west);
+\draw[->] (e2.east) -- (c2.west);
+\draw[->] (e3.east) -- (c4.west);
+\draw[->] (e4.east) -- (c1.west);
+\draw[->] (e5.east) -- (c2.west);
+\draw[->] (e6.east) -- (c2.west);
+\end{tikzpicture}
+

@@ -1,0 +1,64 @@
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >=stealth',
+  line width=1pt,
+  device/.style={circle, inner sep = 0pt, minimum height=3mm, minimum width=3mm, draw=black, fill=gray!40, line width=0.5pt},
+  slot/.style={circle, inner sep = 0pt, minimum height=1.5mm, fill=black, line width=0.5pt},
+  packet/.style={rectangle, minimum height=4mm, minimum width=14mm, draw=black, fill=gray!20, rounded corners, line width=0.5pt}
+]
+
+\draw (0,-0.05) -- (8.25,-0.05);
+\draw (0.25,-0.175) -- (0.25,3.0);
+\foreach \x in {1,...,4} {
+  \draw (1.5*\x+0.25,-0.175) -- (1.5*\x+0.25,0.075);
+  \draw[dotted] (1.5*\x+0.25,0.075) -- (1.5*\x+0.25,2.8);
+}
+\draw (7.75,-0.175) -- (7.75,3.0);
+\draw[dashed] (0,2.55) -- (8,2.55);
+
+\foreach \x in {1,...,5} {
+  \node[slot] (s\x) at (1.5*\x-0.5,-0.25) {};
+  \node (t\x) at (1.5*\x-0.5,2.8) {slot~\x};
+}
+
+\node (count) at (9,2.8) {Count};
+\node (M1) at (9.0,0.25) {$M_1 = 1$};
+\node (M2) at (9.0,0.75) {$M_2 = 3$};
+\node (M3) at (9.0,1.25) {$M_3 = 3$};
+\node (M4) at (9.0,1.75) {$M_4 = 3$};
+\node (M5) at (9.0,2.25) {$M_5 = 2$};
+
+\node[device] (d1) at (1,-1) [label=below:device~1]{};
+\node[device] (d2) at (2.5,-1) [label=below:device~2]{};
+\node[device] (d3) at (4,-1) [label=below:device~3]{};
+\node[device] (d4) at (5.5,-1) [label=below:device~4]{};
+\node[device] (d5) at (7.0,-1) [label=below:device~5]{};
+
+\draw (d1) -- (s2);
+\draw (d2) -- (s1);
+\draw (d2) -- (s3);
+\draw (d2) -- (s4);
+\draw (d3) -- (s1);
+\draw (d3) -- (s3);
+\draw (d3) -- (s5);
+\draw (d4) -- (s2);
+\draw (d4) -- (s3);
+\draw (d4) -- (s5);
+\draw (d5) -- (s2);
+\draw (d5) -- (s5);
+
+\node[packet] (p12) at (2.5,0.25) {$m_1$};
+\node[packet] (p21) at (1.0,0.75) {$m_2$};
+\node[packet] (p23) at (4.0,0.75) {$m_2$};
+\node[packet] (p24) at (5.5,0.75) {$m_2$};
+\node[packet] (p31) at (1.0,1.25) {$m_3$};
+\node[packet] (p33) at (4.0,1.25) {$m_3$};
+\node[packet] (p35) at (7.0,1.25) {$m_3$};
+\node[packet] (p42) at (2.5,1.75) {$m_4$};
+\node[packet] (p43) at (4.0,1.75) {$m_4$};
+\node[packet] (p45) at (7.0,1.75) {$m_4$};
+\node[packet] (p52) at (2.5,2.25) {$m_5$};
+\node[packet] (p55) at (7.0,2.25) {$m_5$};
+
+\end{tikzpicture}
+

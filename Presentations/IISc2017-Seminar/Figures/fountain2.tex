@@ -1,0 +1,54 @@
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >=stealth',
+  line width=1pt,
+]
+
+\draw [<->] (0,2.5) -- (0,0) -- (4,0);
+\foreach \x in {0,...,7} {
+  \draw (0.5*\x,-0.175) -- (0.5*\x,0.075);
+}
+\foreach \x in {0,1,...,6} {
+  \node (tx\x) at (0.5*\x+0.25,-0.3) {\x};
+}
+\foreach \x in {1,...,4} {
+  \draw (-0.175,0.5*\x) -- (0.075,0.5*\x);
+}
+\node (ty0) at (1.75,3) {\small Variable Node Degree Distribution $L(\cdot)$};
+\node (ty00) at (1.75,2.5) {\small Soliton Distribution};
+\node (ty1) at (-0.6,0.5) {0.125};
+\node (ty2) at (-0.6,1) {0.25};
+\node (ty3) at (-0.6,1.5) {0.375};
+\node (ty4) at (-0.6,2) {0.5};
+\draw[fill=blue!20,line width=0.5pt] (0.55,0) rectangle (0.95,4/10);
+\draw[fill=blue!20,line width=0.5pt] (1.05,0) rectangle (1.45,4/2);
+\draw[fill=blue!20,line width=0.5pt] (1.55,0) rectangle (1.95,4/6);
+\draw[fill=blue!20,line width=0.5pt] (2.05,0) rectangle (2.45,4/12);
+\draw[fill=blue!20,line width=0.5pt] (2.55,0) rectangle (2.95,4/20);
+\draw[fill=blue!20,line width=0.5pt] (3.05,0) rectangle (3.45,4/24);
+
+\draw [<->] (6,2.5) -- (6,0) -- (10,0);
+\foreach \x in {0,...,7} {
+  \draw (0.5*\x+6,-0.175) -- (0.5*\x+6,0.075);
+}
+\foreach \x in {0,1,...,6} {
+  \node (txx\x) at (0.5*\x+6.25,-0.3) {\x};
+}
+\foreach \x in {1,...,4} {
+  \draw (6-0.175,0.5*\x) -- (6.075,0.5*\x);
+}
+\node (tyy0) at (7.75,3) {\small Check Node Degree Distribution $R(\cdot)$};
+\node (ty00) at (7.75,2.5) {\small Poisson Distribution};
+\node (tyy1) at (6-0.6,0.5) {0.125};
+\node (tyy2) at (6-0.6,1) {0.25};
+\node (tyy3) at (6-0.6,1.5) {0.375};
+\node (tyy4) at (6-0.6,2) {0.5};
+\draw[fill=red!20,line width=0.5pt] (6.05,0) rectangle (6.45,0.414);
+\draw[fill=red!20,line width=0.5pt] (6.55,0) rectangle (6.95,1.054);
+\draw[fill=red!20,line width=0.5pt] (7.05,0) rectangle (7.45,1.208);
+\draw[fill=red!20,line width=0.5pt] (7.55,0) rectangle (7.95,0.820);
+\draw[fill=red!20,line width=0.5pt] (8.05,0) rectangle (8.45,0.365);
+\draw[fill=red!20,line width=0.5pt] (8.55,0) rectangle (8.95,0.112);
+\draw[fill=red!20,line width=0.5pt] (9.05,0) rectangle (9.45,0.024);
+\end{tikzpicture}
+

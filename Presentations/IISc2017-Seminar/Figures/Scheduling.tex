@@ -1,0 +1,27 @@
+\begin{tikzpicture}
+[draw=black, line width=2pt, >=stealth',
+queue/.style={circle, draw, inner sep=0pt, minimum size=10mm}]
+
+\draw[fill=cyan!40, rounded corners] (2.125,6.125) rectangle (2.875,6.625);
+\draw[fill=cyan!40, rounded corners] (2.125,6.625) rectangle (2.875,7.125);
+\draw[fill=cyan!40, rounded corners] (2.125,7.125) rectangle (2.875,7.625);
+\draw (2,8) -- (2,6) -- (3,6) -- (3,8);
+\node[anchor=south,rotate=90] (queuelength) at (1.875,7) {\LARGE Queue};
+\node[queue] (queue0) at (2.5,5.5) {};
+
+\draw[fill=black!20, rounded corners] (2,-0.5) rectangle (3,0.5);
+\node (destination) at (2.5,-1) {\LARGE Destination};
+
+\draw (queue0.south) -- (2.5,4.5);
+\draw[fill] (2.5,4.5) circle (0.125);
+\draw[dashed, line width=0.5pt] (2.5,2) -- (2.5,3.5);
+\node[anchor=south,rotate=-90] (wireless) at (2.625,2.75) {\LARGE Wireless};
+\draw[fill] (2.5,1) circle (0.125);
+\draw (2.5,0.5) -- (2.5,1);
+
+
+\draw[<->, draw=gray] (1.75,-0.25) -- (0,-0.25) -- (0,5.5) -- (1.75,5.5);
+\node[rotate=90] (feedback) at (-0.5,2.625) {\color{gray}{\LARGE Feedback}};
+\node[rotate=-90] (sideinfo) at (0.5,2.625) {\color{gray}{\LARGE Side Information}};
+\end{tikzpicture}
+

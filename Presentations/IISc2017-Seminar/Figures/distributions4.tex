@@ -1,0 +1,31 @@
+\begin{tikzpicture}[
+  >=stealth',
+  line width=1pt,
+]
+
+\draw [<->] (0,2.5) -- (0,0) -- (3,0);
+\foreach \x in {0,...,5} {
+  \draw (0.5*\x,-0.175) -- (0.5*\x,0.075);
+}
+\foreach \x in {1,...,4} {
+  \draw (-0.175,0.5*\x) -- (0.075,0.5*\x);
+}
+\node (ty1) at (1.25,2.5) {\small $p(\cdot)$};
+\draw[fill=gray!20,line width=0.5pt] (0.55,0) rectangle (0.95,4/3);
+\draw[fill=gray!20,line width=0.5pt] (1.05,0) rectangle (1.45,4/2);
+\draw[fill=gray!20,line width=0.5pt] (1.55,0) rectangle (1.95,4/6);
+
+
+\draw [<->] (5,2.5) -- (5,0) -- (8,0);
+\foreach \x in {0,...,5} {
+  \draw (0.5*\x+5,-0.175) -- (0.5*\x+5,0.075);
+}
+\foreach \x in {1,...,4} {
+  \draw (5-0.175,0.5*\x) -- (5.075,0.5*\x);
+}
+\node (tyy1) at (6.25,2.5) {$S p(\cdot)$};
+\draw[fill=gray!20,line width=0.5pt] (6.05,0) rectangle (6.45,4/3);
+\draw[fill=gray!20,line width=0.5pt] (6.55,0) rectangle (6.95,4/2);
+\draw[fill=gray!20,line width=0.5pt] (7.05,0) rectangle (7.45,4/6);
+
+\end{tikzpicture}
