@@ -1,0 +1,409 @@
+% % % % % % % % % % % % % % % % % % % %
+
+\part{Connecting Coding and \newline
+Compressed Sensing via \newline
+Approximate Message Passing}
+\frame{\partpage}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Divide and Conquer}
+% % % % %
+\begin{center}
+\input{Figures-AMP/dividebits7}
+\end{center}
+\begin{itemize}
+\item Data fragmentation and indexing
+\item Outer encoding for disambiguation
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{CCS -- Approximate Message Passing}
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=4in]{Figures-AMP/SparcsUMAC.png}};
+\end{tikzpicture}
+\end{center}
+  \begin{itemize}
+  \item Connection between CCS indexing and sparse regression codes
+  \item Circumvent slotting under CCS and dispersion effects
+  \item Introduce denoiser tailored to CCS
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{CCS Revisited}
+\begin{center}
+\input{Figures-AMP/stackedCCS1}
+\end{center}
+\begin{itemize}
+\item Bit sequence split into $L$ fragments
+\item Each bit $+$ parity block converted to index in $[ 0, 2^{m/L}-1 ]$
+\item Stack sub-codewords into $(n/L) \times 2^{m/L}$ sensing matrices
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressed Sensing -- Unified View}
+% % % % %
+\begin{center}
+\input{Figures-AMP/stackedCCS2}
+\end{center}
+\begin{itemize}
+\item Slots produce block diagonal (unified) matrix
+\item Message is one-sparse per section
+\item Width of $\Am$ is smaller: $L 2^{m/L}$ instead of $2^m$
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{CCS -- Full Sensing Matrix}
+% % % % %
+\begin{center}
+\input{Figures-AMP/stackedCCS3}
+\end{center}
+\begin{itemize}
+\item Complexity reduction due to narrower $\Am$
+\item Use full sensing matrix $\Am$
+\item Decode inner code with low-complexity AMP
+\end{itemize}
+%\myfootnote{\tiny
+%A. Fengler, P. Jung, and G. Caire.
+%\emph{SPARCs and AMP for Unsourced Random Access}.
+%ISIT 2019}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{CCS -- Approximate Message Passing}
+% % % % %
+\begin{block}{Governing Equations}
+\begin{itemize}
+\item AMP algorithm iterates through
+\begin{align*}
+\zv^{(t)} &= \yv - \Am \Dm \etav_t \big( \rv^{(t)} \big)
++ \underbrace{\frac{\zv^{(t-1)}}{n} \operatorname{div} \mathbf{D} \etav_t \big( \rv^{(t)} \big)}_{\text{Onsager correction}} \\
+\rv^{(t+1)} &= \Am^{\transpose} \zv^{(t)} + \Dm
+\underbrace{\etav_t \big( \rv^{(t)} \big)}_{\text{Denoiser}}
+\end{align*}
+\textcolor{gray}{Initial conditions $\zv^{(0)} = \zerov$ and $\etav_0 \left( \rv^{(0)} \right) = \zerov$}
+\item Application falls within framework for non-separable functions
+\end{itemize}
+\end{block}
+% % % % %
+\vfill
+% % % % %
+\begin{exampleblock}{Task}
+\begin{itemize}
+\item Define denoiser and compute Onsager correction term
+\end{itemize}
+\end{exampleblock}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Marginal Posterior Mean Estimate (PME)}
+% % % % %
+\begin{block}{Proposed Denoiser (Fengler, Jung, and Caire)}
+\begin{itemize}
+\item State estimate based on Gaussian model
+\begin{equation*}
+\begin{split}
+\hat{s}^{\mathrm{OR}} & \left( q, r, \tau \right)
+= \mathbb{E} \left[ s \middle| \sqrt{P_{\ell}} s + \tau \zeta = r \right] \\
+%&= \frac{0 \cdot \Pr (s = 0) f \left( \frac{r}{\tau} \right) + 1 \cdot \Pr (s = 1) f \left( \frac{r - d_{\ell}}{\tau} \right)}{\Pr (s = 0) f \left( \frac{r}{\tau} \right) + \Pr (s = 1) f \left( \frac{r - d_{\ell}}{\tau} \right)} \\
+&= \frac{q \exp \left( - \frac{ \left( r - \sqrt{P_{\ell}} \right)^2}{2 \tau^2} \right)}
+{(1-q) \exp \left( -\frac{r^2}{2 \tau^2} \right)
++ q \exp \left( - \frac{ \left( r - \sqrt{P_{\ell}} \right)^2}{2 \tau^2} \right)}
+\end{split}
+\end{equation*}
+with (essentially) uninformative prior $q = K/m$ fixed
+\item $\etav_t \left( \mathbf{r}^{(t)} \right)$ is aggregate of PME values
+\item $\tau_t$ is obtained from state evolution or $\tau_t^2 = {\| \mathbf{z}^{(t)} \|^2}/{n}$
+\end{itemize}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Performance of CCS-AMP versus Previous Schemes}
+% % % % %
+\begin{center}
+\input{Figures-AMP/CCS-AMP-Performance1}
+\end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Incorporating Lessons from Enhanced CCS}
+% % % % %
+\begin{itemize}
+\item Integrate outer code structure into inner decoding
+\end{itemize}
+\begin{center}
+\input{Figures-AMP/eAMP}
+\end{center}
+\begin{alertblock}{Challenges}
+\begin{itemize}
+\item CCS-AMP inner decoding is not a sequence of hard decisions
+\item List size for CCS-AMP is effective length of index vector
+\end{itemize}
+\end{alertblock}
+\myfootnote{\tiny
+V.~K. Amalladinne, A.~K. Pradhan, C. Rush, J.-F. Chamberland, K.~R. Narayanan.
+\emph{On approximate message passing for unsourced access with coded compressed sensing.}
+ISIT 2020}
+
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Redesigning Outer Code}
+% % % % %
+\begin{block}{Properties of Original Outer Code}
+\begin{itemize}
+\item Aimed at stitching message fragments together
+\item Works on short lists of $K$ fragments
+\item Parities allocated to control growth and complexity
+\end{itemize}
+\end{block}
+\begin{center}
+\input{Figures-AMP/dependencies1}
+\end{center}
+\begin{block}{Challenges to Integrate into AMP}
+\begin{enumerate}
+\item Must compute beliefs for all possible $2^v$ fragments
+\item Must provide pertinent information to inner AMP decoder
+\item Should maintain ability to stitch outer code
+\end{enumerate}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Factor Graph Interpretation of Outer Code}
+% % % % %
+\begin{center}
+\scalebox{0.9}{\input{Figures-AMP/graphBP2}}
+\end{center}
+\begin{itemize}
+\item Outer code with circular convolution structure
+\end{itemize}
+\begin{equation*}
+\muv_{a_p \to s_{\ell}} \left( \left[ \hat{\vv}(\ell) \right]_2 \right)
+\propto
+\frac{1}{\left\| \gv_{\ell, p}^{(g)} \right\|_0}
+\left( \operatorname{FFT}^{-1} \left( \prod_{s_j \in N(a_p) \setminus s_{\ell}} \operatorname{FFT} \left( \lambdav_{j,p} \right) \right) \right) (g)
+\end{equation*}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Outer Code and Mixing}
+% % % % %
+\begin{center}
+\scalebox{0.9}{\input{Figures-AMP/mixing}}
+\end{center}
+\begin{itemize}
+\item Multiple devices on same graph
+\item Parity factor mix concentrated values
+\item Suggests triadic outer structure
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Redesigning Outer Code}
+% % % % %
+\begin{block}{Solutions to Integrate into AMP}
+\begin{itemize}
+\item Parity bits are generated over Abelian group amenable to\\
+FWHT or FFT
+\item Discrimination power proportional to \# parities
+\end{itemize}
+\end{block}
+\begin{center}
+\input{Figures-AMP/dependencies2}
+\end{center}
+\begin{block}{New Design Strategy}
+\begin{enumerate}
+\item Information sections with parity bits interspersed in-between
+\item Parity over two blocks (triadic dependencies)
+\end{enumerate}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Belief Propagation -- Message Passing Rules}
+% % % % %
+\begin{center}
+\scalebox{0.85}{\input{Figures-AMP/architecture}}
+\end{center}
+\begin{itemize}
+\item Message from check node $a_p$ to variable node $s \in N(a_p)$:
+\begin{equation*}
+\textstyle \muv_{a_p \to s} (k)
+= \sum_{\kv_{a_p}: k_p = k} \mathcal{G}_{a_p} \left( \kv_{a_p} \right)
+\prod_{s_j \in N(a_p) \setminus s} \muv_{s_j \to a_p} (k_j)
+\end{equation*}
+\item Message from variable node $s_{\ell}$ to check node $a \in N(s)$:
+\begin{equation*}
+\textstyle \muv_{s_{\ell} \rightarrow a} (k)
+\propto \lambdav_{\ell} (k) \prod_{a_p \in N(s_{\ell}) \setminus a} \muv_{a_p \to s_{\ell}} (k)
+\end{equation*}
+\item Estimated marginal distribution
+\begin{equation*}
+\textstyle p_{s_{\ell}} (k) \propto \boldsymbol{\lambda}_{\ell} (k) \prod_{a \in N(s_{\ell})} \boldsymbol{\mu}_{a \to s_{\ell}} (k)
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Approximate Message Passing Algorithm}
+% % % % %
+\begin{block}{Updated Equations}
+AMP two-step algorithm
+\begin{align*}
+\zv^{(t)} &= \yv - \Am \Dm \etav_t \big( \rv^{(t)} \big)
++ \underbrace{\frac{\zv^{(t-1)}}{n} \operatorname{div} \mathbf{D} \etav_t \big( \rv^{(t)} \big)}_{\text{Correction}} \\
+\rv^{(t+1)} &= \Am^{\transpose} \zv^{(t)} + \Dm
+\underbrace{\etav_t \big( \rv^{(t)} \big)}_{\text{Denoiser}}
+\end{align*}
+\textcolor{gray}{Initial conditions $\zv^{(0)} = \zerov$ and $\etav_0 \left( \rv^{(0)} \right) = \zerov$}
+\end{block}
+\begin{itemize}
+\item Denoiser is BP estimate from factor graph
+\item Message passing uses fresh effective observation $\rv$
+\item Fewer rounds than shortest cycle on factor graph
+\item Close to PME, but incorporating beliefs from outer code
+\end{itemize}
+\myfootnote{\tiny
+R. Berthier, A. Montanari, and P.-M. Nguyen.
+\emph{State Evolution for Approximate Message Passing with Non-Separable Functions}.
+Information and Inference: A Journal of the IMA 2020}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Preliminary Performance Enhanced CCS}
+% % % % %
+\centerline{
+  \scalebox{0.65}{\input{Figures-AMP/CCS-AMP-Performance}}
+  \scalebox{0.65}{\input{Figures-AMP/CCS-AMP-Runtime}}}
+\vspace{5mm}
+\begin{itemize}
+\item Performance improves significantly with enhanced CCS-AMP decoding
+\item Computational complexity is approximately maintained
+\item Reparametrization may offer additional gains in performance?
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{CCS and AMP Summary}
+% % % % %
+\begin{block}{Summary}
+\begin{itemize}
+\item New connection between CCS and AMP
+\item Natural application of BP on factor graph as denoiser
+\item Outer code design depends on sparsity
+\begin{enumerate}
+\item Degree distributions (small graph)
+\item Message size (birthday problem)
+\item Final step is disambiguation
+\end{enumerate}
+\item Many theoretical and practical challenges/opportunities exist
+\end{itemize}
+\end{block}
+\begin{center}
+\scalebox{0.75}{\input{Figures-AMP/graphBP1}}
+\end{center}
+\centerline{Coding plays increasingly central role in large-scale CS}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Demixing for Single-Class URA}
+% % % % %
+\begin{columns}
+\column{0.52\textwidth}
+  \centerline{\input{Figures-AMP/demixing1}}
+  \begin{itemize}
+  \item Create multiple bins with (incoherent) matrices
+  \item Devices pick a bucket randomly and use CCS-AMP encoding
+  \item Perform joint demixing CCS-AMP decoding at access point
+  \end{itemize}
+\column{0.46\textwidth}
+  \centerline{\input{Figures-AMP/demixing2}}
+\end{columns}
+\myfootnote{\tiny
+J.~R. Ebert, V.~K. Amalladinne, S. Rini, J.-F. Chamberland, K.~R. Narayanan.
+\emph{Stochastic Binning and Coded Demixing for Unsourced Random Access.}
+arXiv:2104.05686}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Pertinent References}
+\begin{scriptsize}
+\begin{itemize}
+\item
+A.~Fengler, P.~Jung, and G.~Caire.
+SPARCs and AMP for Unsourced Random Access.
+In \emph{International Symposium on Information Theory (ISIT)}, 2019.
+
+\item
+V.~K. Amalladinne, A.~K. Pradhan, C. Rush, J.-F. Chamberland, K.~R. Narayanan.
+On approximate message passing for unsourced access with coded compressed sensing.
+In \emph{International Symposium on Information Theory (ISIT)}, 2020.
+
+\item
+V.~K. Amalladinne, A. Hao, S. Rini, J.-F. Chamberland.
+Multi-Class Unsourced Random Access via Coded Demixing.
+In \emph{International Symposium on Information Theory (ISIT)}, 2021.
+
+\item
+A. Joseph, and A. R. Barron.
+Least squares superposition codes of moderate dictionary size are reliable at rates up to capacity
+\emph{IEEE Trans.\ on Information Theory}, 2012.
+
+\item
+C. Rush, A. Greig, and R. Venkataramanan.
+Capacity-achieving sparse superposition codes via approximate message passing decoding.
+\emph{IEEE Trans.\ on Information Theory}, 2017.
+
+\item
+R. Berthier, A. Montanari, and P.-M. Nguyen.
+State Evolution for Approximate Message Passing with Non-Separable Functions.
+\emph{Information and Inference: A Journal of the IMA}, 2020.
+\end{itemize}
+\end{scriptsize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %

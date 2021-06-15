@@ -1,0 +1,29 @@
+\begin{tikzpicture}[
+  font=\footnotesize, >=stealth', line width=0.75pt,
+  infobits/.style={rectangle, minimum height=4mm, minimum width=10mm, draw=black, fill=gray!10, rounded corners},
+  paritybits/.style={rectangle, minimum height=4mm, minimum width=10mm, draw=black, fill=gray!40, rounded corners},
+  dot/.style={circle, minimum width=2pt, draw=black, inner sep=0pt}
+]
+
+\node[infobits] (vb0) at (0,1) {};
+\node[infobits] (vb1) at (1,1) {};
+\node[paritybits] (vp2) at (2,0) {};
+\node[infobits] (vb3) at (3,1) {};
+\node[infobits] (vb4) at (4,1) {};
+\node[paritybits] (vp5) at (5,0) {};
+
+\node[dot] (vb0dot) at (0,0.7) {};
+\node[dot] (vb1dot) at (1,0.7) {};
+\node[dot] (vp2dot) at (2,0.3) {}
+  edge[-] (vb0dot)
+  edge[-] (vb1dot);
+\node[dot] (vb3dot) at (3,0.7) {};
+\node[dot] (vb4dot) at (4,0.7) {};
+\node[dot] (vp5dot) at (5,0.3) {}
+  edge[-] (vb3dot)
+  edge[-] (vb4dot);
+
+\foreach \x in {-0.5,0.5,1.5,2.5,3.5,4.5,5.5} {
+    \draw[dotted] (\x,-0.5) -- (\x,1.5);
+}
+\end{tikzpicture}

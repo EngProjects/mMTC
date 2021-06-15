@@ -1,0 +1,33 @@
+\begin{tikzpicture}
+[font=\footnotesize, draw=black, line width=0.75pt,>=stealth',
+sub0/.style={rectangle, draw, inner sep=0pt, minimum width=10mm, minimum height=2.5mm},
+parity/.style={rectangle, draw, fill=teal, inner sep=0pt, minimum size=2.5mm}]
+
+\node (cs1) at (0.00,6.125) {Bin~1};
+\node (cs2) at (2.00,6.125) {Bin~2};
+\node (cs3) at (4.00,6.125) {Bin~3};
+
+\foreach \v in {0.00,2.00,4.00} {
+  \draw[->, line width=1pt]  (\v,5.75) -- (\v,5.25);
+  \draw[dotted, line width=1pt, draw=gray]  (\v-0.25,5.65) -- (\v,5.25);
+  \draw[dotted, line width=1pt, draw=gray]  (\v-0.125,5.7) -- (\v,5.25);
+  \draw[dotted, line width=1pt, draw=gray]  (\v+0.125,5.7) -- (\v,5.25);
+  \draw[dotted, line width=1pt, draw=gray]  (\v+0.25,5.65) -- (\v,5.25);
+}
+
+\foreach \v in {0.00,2.00,4.00} {
+  \draw[line width=1pt] (\v-0.375,5) -- (\v-0.5,5) -- (\v-0.5,4.5) -- (\v-0.375,4.5);
+  \draw[line width=1pt] (\v+0.375,5) -- (\v+0.5,5) -- (\v+0.5,4.5) -- (\v+0.375,4.5);
+  \draw[line width=1pt] (\v+0.575,5) -- (\v+0.575,4) -- (\v+0.7,4) -- (\v+0.7,5) -- (\v+0.575,5);
+  \draw[line width=1pt] (\v+0.575,4.25) -- (\v+0.7,4.25);
+  \draw[line width=1pt] (\v+0.575,4.5) -- (\v+0.7,4.5);
+  \draw[line width=1pt] (\v+0.575,4.75) -- (\v+0.7,4.75);
+}
+
+\node at (0.00,4.75) {$\Am_1$};
+\node at (2.00,4.75) {$\Am_2$};
+\node at (4.00,4.75) {$\Am_{\Theta}$};
+
+\node at (1.1, 4.5) {$+$};
+\node at (3.1, 4.5) {$+$};
+\end{tikzpicture}

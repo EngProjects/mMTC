@@ -1,0 +1,717 @@
+\part{A Quest for Low-Complexity: \newline Coded Compressed Sensing}
+\frame{\partpage}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Abstract CS Challenge}
+% % % % %
+\begin{columns}
+\column{0.54\textwidth}
+\structure{\large Problem setting}
+  \begin{itemize}
+  \item Noisy compressed sensing
+  \begin{equation*}
+  \yv = \boldsymbol{\Phi} \sv + \zv
+  \end{equation*}
+  where $\sv$ is $K$ sparse
+  \item $\sv$ has non-negative integer entries
+  \item $\boldsymbol{\Phi}.\mathtt{shape} \approx 32,768 \times 2^{128}$
+  \item $\zv$ is additive Gaussian noise
+  \end{itemize}
+\column{0.44\textwidth}
+  \hspace{-1cm} \scalebox{0.75}{\input{Figures-URA/compressedura1}}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{exampleblock}{Practical issue and potential direction}
+  \begin{itemize}
+  \item Width of sensing matrix is huge
+  \item Undersampling fraction and sparsity are very small
+  \end{itemize}
+\end{exampleblock}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Index Representation}
+\begin{center} \input{Figures-URA/signaldictionary1j} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Data Fragmentation}
+% % % % %
+\begin{center}
+\input{Figures-URA/dividebits0}
+\end{center}
+% % % % %
+\begin{alertblock}{Drawbacks}
+  \begin{itemize}
+  \item Unordered lists of fragments
+  \item Need to perform disambiguation
+  \end{itemize}
+\end{alertblock}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Fragmentation with Disambiguation}
+% % % % %
+\begin{center}
+\input{Figures-CCS/dividebits2}
+\end{center}
+% % % % %
+\vfill
+% % % % %
+\begin{block}{Stitching through outer code}
+\begin{itemize}
+\item Split problem into sub-components suitable for CS framework
+\item Get lists of sub-packets, one list for every slot
+\item Stitch pieces of one packet together using error correction
+\end{itemize}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Device Perspective}
+% % % % %
+\begin{center}
+\input{Figures-CCS/dividebits3}
+\end{center}
+% % % % %
+\begin{itemize}
+\item Collection of $L$ CS matrices and 1-sparse vectors
+\item Each CS generated signal is sent in specific time slot
+\end{itemize}
+\myfootnote{\tiny
+V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan. \emph{A coded compressed sensing scheme for unsourced multiple access}. IEEE Transactions on Information Theory, 2020.}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Multiple Access}
+% % % % %
+\begin{center}
+\input{Figures-CCS/dividebits4}
+\end{center}
+% % % % %
+\begin{itemize}
+\item $L$ instances of CS problem, each solved with non-negative LS
+\item Produces $L$ lists of $K$ decoded sub-packets (with parity)
+\item Must piece sub-packets together using tree decoder
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Stitching Process}
+% % % % %
+\begin{center}
+\input{Figures-CCS/dividebits5}
+\end{center}
+% % % % %
+\begin{columns}
+\column{.45\textwidth}
+\begin{block}{Tree decoding principles}
+  \begin{itemize}
+  \item Every parity is linear combination of bits in preceding blocks
+  \item Late parity bits offer better performance
+  \item Early parity bits decrease decoding complexity
+  \item Correct fragment is on list
+  \end{itemize}
+\end{block}
+\column{.45\textwidth}
+  \centerline{\scalebox{0.5}{\input{Figures-CCS/treegrowth}}}
+\end{columns}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Understanding Parity Bits}
+% % % % %
+\begin{center}
+\input{Figures-CCS/subvector}
+\end{center}
+% % % % %
+\begin{itemize}
+\item Consider binary information vector $\wv$ of length $k$
+\item Systematically encoded using generator matrix $\Gm$, with
+$\pv = \wv \Gm$
+\item Suppose alternate vector $\wv_{\mathrm{r}}$ is selected at random from $\{ 0, 1 \}^k$
+\end{itemize}
+% % % % %
+\vfill
+% % % % %
+\begin{block}{Lemma}
+Probability that randomly selected information vector $\wv_{\mathrm{r}}$ produces same parity sub-component is given by
+\begin{equation*}
+\Pr (\pv = \pv_{\mathrm{r}}) = {2^{-\operatorname{rank}(\Gm)}}
+\end{equation*}
+\end{block}
+\structure{Proof:}
+%\begin{itemize}
+%\item Suppose $\wv_{\mathrm{r}}$ is drawn at random from $\{ 0, 1 \}^k$
+%\item Then event $\{ \pv = \pv_{\mathrm{r}} \}$ can equivalently be expressed as
+%\begin{equation*}
+%\begin{split}
+$\{ \pv = \pv_{\mathrm{r}} \}
+= \{ \wv \Gm = \wv_{\mathrm{r}} \Gm \}
+= \{ \wv + \wv_{\mathrm{r}} \in \operatorname{nullspace}(\Gm) \}$
+%\end{split}
+%\end{equation*}
+%\item Number of vectors in nullspace of $\Gm$ is $2^{\operatorname{nullity}(\Gm)} = 2^{k - \operatorname{rank} (\Gm)}$
+%\item Then $\Pr ( \pv = \pv_{\mathrm{r}} )
+%= \frac{2^{k - \operatorname{rank} (\Gm)}}{2^k}
+%= 2^{- \operatorname{rank} (\Gm)}$
+%\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- General Parity Bits}
+% % % % %
+\begin{center}
+\input{Figures-CCS/subvector1}
+\end{center}
+% % % % %
+\begin{itemize}
+\item True vector $(\wv_{i_1}(1), \wv_{i_1}(2), \wv_{i_1}(3), \wv_{i_1}(4))$
+\item Consider alternate vector with information sub-block $(\wv_{i_1}(1), \wv_{i_2}(2), \wv_{i_3}(3), \wv_{i_4}(4))$ pieced from lists
+\item To survive stage~4, candidate vector must fulfill parity equations
+\end{itemize}
+\begin{align*}
+\left( \wv_{i_1}(1) - \wv_{i_2}(1) \right) \begin{bmatrix} \Gm_{1,2} \end{bmatrix} &= \zerov \\
+\left( \wv_{i_1}(1) - \wv_{i_3}(1), \wv_{i_2}(2) - \wv_{i_3}(2) \right)
+\begin{bmatrix} \Gm_{1,3} \\ \Gm_{2,3} \end{bmatrix}
+&= \zerov \\
+\left( \wv_{i_1}(1) - \wv_{i_4}(1), \wv_{i_2}(2) - \wv_{i_4}(2), \wv_{i_3}(3) - \wv_{i_4}(3) \right)
+\begin{bmatrix} \Gm_{1,4} \\ \Gm_{2,4} \\ \Gm_{3,4} \end{bmatrix}
+&= \zerov
+\end{align*}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- General Parity Bits}
+% % % % %
+\begin{center}
+\input{Figures-CCS/subvector1}
+\end{center}
+% % % % %
+\begin{itemize}
+\item When indices are not repeated in $(\wv_{i_1}(1), \wv_{i_2}(2), \wv_{i_3}(3), \wv_{i_4}(4))$, probability is governed by
+\begin{equation*}
+\operatorname{rank}
+\left(
+\begin{bmatrix}
+\Gm_{1,2} & \Gm_{1,3} & \Gm_{1,4} \\
+\mathbf{0} & \Gm_{2,3} & \Gm_{2,4} \\
+\mathbf{0} & \mathbf{0}& \Gm_{3,4}
+\end{bmatrix}
+\right)
+\end{equation*}
+\item But, when indices are repeated, sub-blocks may disappear
+\begin{equation*}
+\operatorname{rank}
+\left(
+\begin{bmatrix}
+\Gm_{1,2} \mathbf{1}_{\{ i_2 \neq i_1 \}} & \Gm_{1,3} \mathbf{1}_{\{ i_3 \neq i_1 \}} & \Gm_{1,4} \mathbf{1}_{\{ i_4 \neq i_1 \}} \\
+\mathbf{0} & \Gm_{2,3} \mathbf{1}_{\{ i_3 \neq i_2 \}} & \Gm_{2,4} \mathbf{1}_{\{ i_4 \neq i_2 \}} \\
+\mathbf{0} & \mathbf{0}& \Gm_{3,4} \mathbf{1}_{\{ i_4 \neq i_3 \}}
+\end{bmatrix}
+\right)
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Candidate Paths and Bell Numbers}
+% % % % %
+\begin{columns}
+\column{0.55\textwidth}
+  \input{Figures-CCS/bellpaths1}
+\column{0.43\textwidth}
+  Probability that wrong path is consistent with parities is
+  \begin{equation*}
+  \Pr (\pv = \pv_{\mathrm{r}}) = {2^{-\operatorname{rank}(\Gm)}}
+  \end{equation*}
+  where
+  \begin{equation*}
+  \Gm = \begin{bmatrix}
+  \Gm_{1,2} & \Gm_{1,3} & \Gm_{1,4} \\
+  \mathbf{0} & \Gm_{2,3} & \Gm_{2,4} \\
+  \mathbf{0} & \mathbf{0}& \Gm_{3,4}
+  \end{bmatrix}
+  \end{equation*}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{center}
+\input{Figures-CCS/subvector3} \\[2mm]
+\structure{When Levels Do NOT Repeat}
+\end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Candidate Paths and Bell Numbers}
+% % % % %
+\begin{columns}
+\column{0.55\textwidth}
+  \input{Figures-CCS/bellpaths2}
+\column{0.43\textwidth}
+  Probability that wrong path is consistent with parities is
+  \begin{equation*}
+  \Pr (\pv = \pv_{\mathrm{r}}) = {2^{-\operatorname{rank}(\Gm)}}
+  \end{equation*}
+  where
+  \begin{equation*}
+  \Gm = \begin{bmatrix}
+  \mathbf{0} & \Gm_{1,3} & \mathbf{0} \\
+  \mathbf{0} & \Gm_{2,3} & \mathbf{0} \\
+  \mathbf{0} & \mathbf{0}& \Gm_{3,4}
+  \end{bmatrix}
+  \end{equation*}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{center}
+\input{Figures-CCS/subvector4} \\[2mm]
+\structure{When Levels Repeat}
+\end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}{Bell Numbers and $j$-patterns}
+\begin{columns}
+% % % % %
+\column{0.42\textwidth}
+  \begin{block}{Integer Sequences}
+  \begin{itemize}
+  \item $K^L$ paths
+  \item Reduce complexity through equivalence
+  \item Online Encyclopedia of Integer Sequences (OEIS) A000110
+  \item Bell numbers grow rapidly
+  \item Hard to compute expected number of surviving paths
+  \end{itemize}
+  \end{block}
+\column{0.55\textwidth}
+  \scalebox{0.75}{\input{Figures-CCS/BellDiagram}}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{center}
+\begin{tikzpicture}
+\shade[draw=none,
+left color={rgb:red,1;green,2;blue,3},
+right color=frametitle.fg,
+shading angle=60,
+rounded corners,
+blur shadow={shadow blur steps=5}] (-2.75,-0.625) rectangle (2.75,0.625);
+\shade[fill=white, fill opacity=0.1] (-2.75,-0.625) rectangle (2.75,0.625);
+\node at (0,0) {\textcolor{white}{\Large \textbf{
+Need Approximation}}};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Allocating Parity Bits (approximation)}
+% % % % %
+\begin{itemize}
+\item $p_{\ell}$: \# parity bits in sub-block $\ell \in 2, \ldots, L$,
+\item $P_{\ell}$: \# erroneous paths that survive stage $\ell \in 2, \ldots, L$,
+\item Complexity $C_{\mathrm{tree}}$: \# nodes on which parity check constraints verified
+\end{itemize}
+% % % % %
+\vfill
+% % % % %
+\begin{block}{Expressions for $\mathbb{E}[P_{\ell}]$ and $C_{\mathrm{tree}}$}
+\begin{itemize}
+\item $P_{\ell} \lvert P_{\ell-1} \sim B((P_{\ell-1}+1)K-1,\rho_{\ell})$, $\rho_{\ell}=2^{-p_{\ell}}$, $q_{\ell}=1-\rho_{\ell}$
+\begin{align*}
+\mathbb{E}[P_{\ell}] &= \mathbb{E}[ \mathbb{E}[P_{\ell} \lvert P_{\ell-1}]] \\
+&= \mathbb{E}[((P_{\ell-1}+1)K-1)\rho_{\ell}] \\
+&= \rho_{\ell} K\mathbb{E}[P_{\ell-1}] + \rho_{\ell}(K-1) \\
+&= \sum_{r=1}^{\ell} K^{\ell-r}(K-1) \prod_{j=r}^{\ell}\rho_j
+\end{align*}
+\item $C_{\mathrm{tree}} = K + \sum_{\ell=2}^{L-1}\left[(P_{\ell} + 1)K\right]$
+\item $\mathbb{E}[C_{\mathrm{tree}}]$ can be computed using the expression for $\mathbb{E}[P_{\ell}]$
+\end{itemize}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Optimization of Parity Lengths}
+% % % % %
+\begin{itemize}
+\item $p_{\ell}$: \# parity bits in sub-block $\ell \in 2, \ldots, L$,
+\item $P_{\ell}$: \# erroneous paths that survive stage $\ell \in 2, \ldots, L$,
+\end{itemize}
+% % % % %
+\vfill
+% % % % %
+\begin{block}{Relaxed geometric programming optimization}
+\blockmathspace
+\begin{equation*}
+\begin{aligned}
+& \underset{(p_2, \dots, p_{L})}{\text{minimize}}
+& &\mathbb{E}[C_{\mathrm{tree}}] \\
+& \text{subject to}
+& & \Pr(P_{L} \ge 1) \le \varepsilon_{\mathrm{tree}}
+& \text{\textcolor{frametitle.fg}{Erroneous paths}} \\
+&&& \sum_{\ell=2}^{L} p_{\ell} = M-B & \text{\textcolor{frametitle.fg}{Total \# parity bits}} \\
+&&& p_{\ell} \in \{ 0, \ldots, N/L \} \quad \forall~\ell \in 2, \ldots, L
+& \text{\textcolor{frametitle.fg}{Integer constraints}}
+\end{aligned}
+\end{equation*}
+\end{block}
+% % % % %
+\vfill
+% % % % %
+\begin{itemize}
+\item Solved using standard convex solver, e.g., CVX
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Choice of Parity Lengths}
+% % % % %
+\begin{itemize}
+\item $K=200$, $L=11$, $N/L=15$
+\end{itemize}
+% % % % %
+\vfill
+% % % % %
+\begin{center}
+\begin{tabular}{||l|l|l||}
+\hline
+ $\varepsilon_{\mathrm{tree}}$ & $\mathbb{E}[C_{\mathrm{tree}}]$ & Parity Lengths $p_2, \ldots, p_L$ \\[0.5ex]
+\hline \hline
+$0.006$ & Infeasible & Infeasible \tabularnewline
+\hline
+$0.0061930$ & $3.2357\times10^{11}$ & $ 0 ,0, 0, 0, 15, 15, 15, 15, 15, 15$ \tabularnewline
+\hline
+$0.0061931$ & $3357300$ & $ 0, 3, 8, 8, 8, 8, 10, 15, 15, 15$ \tabularnewline
+\hline
+$0.0061932$ & $1737000$ & $ 0, 4, 8, 8, 8, 8, 9, 15, 15, 15$ \tabularnewline
+\hline
+$0.0061933$ & $926990$ & $ 0, 5, 8, 8, 8, 8, 8, 15, 15, 15$ \tabularnewline
+\hline
+$0.0061935$ & $467060$ & $ 1, 8, 8, 8, 8, 8, 8, 11, 15, 15$ \tabularnewline
+\hline
+$0.0062$ & $79634$ & $ 1, 8, 8, 8, 8, 8, 8, 11, 15, 15$ \tabularnewline
+\hline
+$0.007$ & $7357.8$ & $ 6, 8, 8, 8, 8, 8, 8, 8, 13, 15$ \tabularnewline
+\hline
+$0.008$ & $6152.7$ & $ 7, 8, 8, 8, 8, 8, 8, 8, 12, 15$ \tabularnewline
+\hline
+$0.02$ & $5022.9$ & $ 6, 8, 8, 9, 9, 9, 9, 9, 9, 14$ \tabularnewline
+\hline
+$0.04$ & $4158$ & $ 7, 8, 8, 9, 9, 9, 9, 9, 9, 13$ \tabularnewline
+\hline
+$0.6378$ & $3066.3$ & $ 9, 9, 9, 9, 9, 9, 9, 9, 9, 9$ \tabularnewline
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Choice of Parity Lengths}
+% % % % %
+\begin{itemize}
+\item $K=200$, $L=11$, $N/L=15$
+\end{itemize}
+\vfill
+\begin{columns}
+\column{0.45\textwidth}
+\centerline{\input{Figures-CCS/Paths-CCS}}
+\column{0.5\textwidth}
+\begin{tabular}{|l||}
+\hline
+Parity Lengths $p_2, \ldots, p_L$ \\[0.5ex]
+\hline \hline
+$ 0 ,0, 0, 0, 15, 15, 15, 15, 15, 15$ \tabularnewline
+\hline
+$ 0, 3, 8, 8, 8, 8, 10, 15, 15, 15$ \tabularnewline
+\hline
+$ 0, 4, 8, 8, 8, 8, 9, 15, 15, 15$ \tabularnewline
+\hline
+$ 0, 5, 8, 8, 8, 8, 8, 15, 15, 15$ \tabularnewline
+\hline
+$ 1, 8, 8, 8, 8, 8, 8, 11, 15, 15$ \tabularnewline
+\hline
+$ 1, 8, 8, 8, 8, 8, 8, 11, 15, 15$ \tabularnewline
+\hline
+$ 6, 8, 8, 8, 8, 8, 8, 8, 13, 15$ \tabularnewline
+\hline
+$ 7, 8, 8, 8, 8, 8, 8, 8, 12, 15$ \tabularnewline
+\hline
+$ 6, 8, 8, 9, 9, 9, 9, 9, 9, 14$ \tabularnewline
+\hline
+$ 7, 8, 8, 9, 9, 9, 9, 9, 9, 13$ \tabularnewline
+\hline
+$ 9, 9, 9, 9, 9, 9, 9, 9, 9, 9$ \tabularnewline
+\hline
+\end{tabular}
+\end{columns}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Performance of CCS and Previous Schemes}
+% % % % %
+\begin{center}
+\input{Figures-CCS/CCSprior-Performance}
+\end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Leveraging CCS Framework}
+% % % % %
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=4in]{Figures-CCS/CHIRRUP.png}};
+\end{tikzpicture}
+\end{center}
+  \begin{itemize}
+  \item Hadamard matrix based compressing scheme $+$  CSS
+  \item Ultra-low complexity decoding algorithm
+  \end{itemize}
+\myfootnote{\tiny
+S. D. Howard, A. R. Calderbank, S. J. Searle.
+\emph{A Fast Reconstruction Algorithm for Deterministic Compressive Sensing using Second Order Reed-Muller Codes}. CISS 2008}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Example: CHIRRUP}
+% % % % %
+\begin{itemize}
+\item Sensing matrix based on 2nd-order Reed-Muller functions,
+\begin{equation*}
+\phi_{R,b} (a) = \frac{(-1)^{\operatorname{wt}(b)}}{\sqrt{2^m}}
+i^{(2b + Ra)^T a}
+\end{equation*}
+$R$ is binary symmetric matrix with zeros on diagonal, $\operatorname{wt}$ represent weight, and $i = \sqrt{-1}$
+\item Every column of form
+\begin{equation*}
+\begin{matrix} | \\ \xv_{R,b} \\ | \end{matrix}
+  = \begin{bmatrix}
+  \phi_{R,b} ([0]_2) \\
+  \phi_{R,b} ([1]_2) \\ \vdots \\
+  \phi_{R,b} ([2^m-1]_2)
+  \end{bmatrix}
+\end{equation*}
+$[ \cdot ]_2$ is integer expressed in radix of 2
+\item Information encoded into $R$ and $b$
+\item \textbf{Fast recovery:} Inner-products, Hardmard project onto Walsh basis, get $R$ row column at a time, dechirp, Hadamard project to $b$
+\end{itemize}
+\end{frame}
+ 
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Enhanced Coded Compressed Sensing}
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=4in]{Figures-CCS/ICASSP2020.png}};
+\end{tikzpicture}
+\end{center}
+\vfill
+\begin{block}{Leverage algorithmic opportunity}
+  \begin{itemize}
+  \item Extending CCS framework by integrating tree code
+  \item Decisions at early stages inform later parts 
+  \item Algorithmic performance improvements
+  \end{itemize}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing with Column Pruning}
+\begin{center}
+\input{Figures-CCS/eCCS1}
+\end{center}
+\vfill
+\begin{itemize}
+\item Active partial paths determine possible parity patterns
+\item Admissible indices for next slot determined by possible parities
+\item Inadmissible columns can be pruned before CS algorithm
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+%\begin{frame}
+%\frametitle{Coded Compressive Sensing -- Dimensionality Reduction}
+%\centerline{\input{Figures-CCS/eCCS2}}
+%\begin{itemize}
+%\item Every surviving path produces parity pattern
+%\item Only fragments with these pattern can appear in subsequent slot
+%\item On average, there are $K (1 + \mathrm{E}[P_{\ell}])$ possibilities parity patterns
+%\end{itemize}
+%\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing with Column Pruning}
+\begin{center}
+\input{Figures-CCS/eCCS3}
+\end{center}
+\vfill
+\begin{itemize}
+\item For $K$ small, width of sensing matrix is greatly reduced
+\item Actual sensing matrix is determined dynamically at run time
+\item Complexity of CS algorithm becomes much smaller
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Expected Column Reduction Ratio}
+\begin{columns}
+\column{0.6\textwidth}
+  \centerline{\scalebox{0.9}{\input{Figures-CCS/ColumnReduction}}}
+\column{0.2\textwidth}
+  \centerline{\input{Figures-CCS/eCCS2b}}
+\end{columns}
+\begin{itemize}
+\item Parity allocation parameters, with $w_{\ell} + p_{\ell} = 15$,
+\begin{equation*}
+(p_1, p_2, \ldots, p_{10}) = (6, 8, 8, 8, 8, 8, 8, 8, 13, 15)
+\end{equation*}
+\item Pruning is more pronounced at later stages
+\item Effective width of sensing matrix is greatly reduced
+\end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Leveraging CCS Framework}
+% % % % %
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=4in]{Figures-CCS/CCS-MIMO.png}};
+\end{tikzpicture}
+\end{center}
+  \begin{itemize}
+  \item Activity detection in random access
+  \item Massive MIMO Receiver
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Massive MIMO-URA}
+\begin{center}
+\scalebox{0.75}{\input{Figures-CCS/unsourcedMIMO}}
+%\scalebox{0.75}{\input{Figures-MAC/uncoordinated}}
+\end{center}
+\vfill
+\begin{block}{Signal model}
+\begin{itemize}
+\item Signal received at time instant~$t$ with slot~$\ell$
+\begin{equation*}
+\yv(t,\ell) =
+\textstyle \sum_{k=1}^K \xv_k(t,\ell) \mathbf{h}_k(\ell) + \zv(t,\ell)
+%,~\xv_k = f(\wv_k) 
+\end{equation*}
+\item Number of receive antennas $M \gg 1$
+\item Block fading -- channel does not change within CCS slot
+\item Spatial correlation negligible -- $\mathbf{h}_k(\ell) \sim \mathcal{CN}(0,\mathbf{I}_M)$
+\end{itemize}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Multiple Measurement Vector -- CS Interpretation}
+% % % % %
+\centerline{\input{Figures-CCS/modelMIMO}}
+\vfill
+\begin{itemize}
+\item Received signal during slot $\ell$: $\mathbf{Y}(\ell) = \mathbf{A}(\ell)\mathbf{\Gamma}(\ell)\mathbf{H}(\ell) + \mathbf{Z}(\ell)$ 
+\item Column $\mathbf{y}_i(\ell)$ of $\mathbf{Y}(\ell)$ is the signal received at antenna $i$ during slot $\ell$
+\item $\mathbf{H}(\ell)$ has entries drawn i.i.d.\ from $\mathcal{CN}(0,1)$
+\end{itemize}
+% % % % %
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Coded Compressed Sensing -- Summary}
+% % % % %
+\begin{center}
+\input{Figures-CCS/dividebits6}
+\end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Pertinent References}
+\begin{scriptsize}
+\begin{itemize}
+\item
+V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
+A coded compressed sensing scheme for unsourced multiple access.
+\emph{IEEE Trans.\ on Information Theory}, 2020.
+
+\item
+R.~Calderbank and A.~Thompson.
+CHIRRUP: A practical algorithm for unsourced multiple access.
+\emph{Information and Inference: A Journal of the IMA}, 2018.
+
+\item
+V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
+An enhanced decoding algorithm for coded compressed sensing.
+In \emph{International Conference on Acoustics, Speech, and Signal Processing (ICASSP)}, May 2020.
+
+\item
+A.~Fengler, S.~Haghighatshoar, P.~Jung, and G.~Caire.
+Non-Bayesian activity detection, large-scale fading coefficient estimation, and unsourced random access with a massive MIMO receiver.
+\emph{IEEE Trans.\ on Information Theory}, 2021.
+\end{itemize}
+\end{scriptsize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %

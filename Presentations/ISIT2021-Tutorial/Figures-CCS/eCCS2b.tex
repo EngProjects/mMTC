@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+[font=\footnotesize, draw=black, line width=0.75pt,>=stealth']
+
+\foreach \v in {1.00} {
+  \draw[line width=1pt] (\v-0.5,5) -- (\v-0.625,5) -- (\v-0.625,4.5) -- (\v-0.5,4.5);
+  \draw[line width=1pt] (\v+0.375,5) -- (\v+0.5,5) -- (\v+0.5,4.5) -- (\v+0.375,4.5);
+  \draw[line width=1pt] (\v+0.575,5) -- (\v+0.575,3.875) -- (\v+0.695,3.875) -- (\v+0.695,5) -- (\v+0.575,5);
+}
+
+\draw [line width=1.5pt,color=purple,->] (1.035,3.75) -- (1.035,2.5);
+
+\foreach \v in {1} {
+  \draw[line width=1pt] (\v-0.275,2) -- (\v-0.4,2) -- (\v-0.4,1.5) -- (\v-0.275,1.5);
+  \draw[line width=1pt] (\v+0.15,2) -- (\v+0.275,2) -- (\v+0.275,1.5) -- (\v+0.15,1.5);
+  \draw[line width=1pt] (\v+0.35,2) -- (\v+0.35,1.325) -- (\v+0.47,1.325) -- (\v+0.47,2) -- (\v+0.35,2);
+}
+
+\end{tikzpicture}

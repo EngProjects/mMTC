@@ -1,0 +1,15 @@
+\begin{tikzpicture}[
+  font=\footnotesize, >=stealth',
+  infobits0/.style={rectangle, minimum height=6mm, minimum width=24mm, draw=black, fill=gray!10, rounded corners},
+  infobits/.style={rectangle, minimum height=6mm, minimum width=14mm, draw=black, fill=gray!10, rounded corners},
+  paritybits/.style={rectangle, minimum height=6mm, minimum width=10mm, draw=black, fill=gray!40, rounded corners}
+]
+
+\node[infobits0] (vb0) at (1.2,0) {$\wv_2(1)$};
+\node[infobits] (vb1) at (3.1,0) {$\wv_1(2)$};
+\node[paritybits] (vp1) at (4.3,0) {$\pv_1(2)$};
+\node[infobits] (vb2) at (5.5,0) {$\wv_3(3)$};
+\node[paritybits] (vp2) at (6.7,0) {$\pv_3(3)$};
+\node[infobits] (vb3) at (7.9,0) {$\wv_4(4)$};
+\node[paritybits] (vp3) at (9.1,0) {$\pv_4(4)$};
+\end{tikzpicture}

@@ -1,0 +1,84 @@
+\begin{tikzpicture}
+\definecolor{mycolor1}{rgb}{0.63529,0.07843,0.18431}%
+\definecolor{mycolor2}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor3}{rgb}{0.00000,0.49804,0.00000}%
+\definecolor{mycolor4}{rgb}{0.87059,0.49020,0.00000}%
+\definecolor{mycolor5}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor6}{rgb}{0.74902,0.00000,0.74902}%
+
+\begin{axis}[%
+font=\small,
+width=7cm,
+height=5.5cm,
+scale only axis,
+xmin=0,
+xmax=300,
+xtick = {0,50,100,...,300},
+xlabel={Number of active devices $K$},
+xmajorgrids,
+ymin=1,
+ymax=6,
+ytick = {1,...,6},
+ylabel={Required $E_b/N_0$ (dB)},
+ymajorgrids,
+legend style={at={(0,1)},anchor=north west, draw=black,fill=white,legend cell align=left}
+]
+
+
+
+\addplot [color=mycolor2,densely dotted,line width=2.0pt,mark size=1.4pt,mark=o, mark options={solid}]
+  table[row sep=crcr]{10 3.7\\
+25	3.8\\
+50	3.8\\
+75	3.8\\
+100	3.8\\
+125	3.9\\
+150	4.2\\
+175 4.5\\
+200 4.6\\
+225 4.7\\
+250 5.2\\
+275 5.39\\
+300 5.75\\
+};
+\addlegendentry{Original AMP+Tree};
+
+\addplot [color=mycolor3,solid,line width=2.0pt,mark size=1.4pt,mark=o,mark options={solid}]
+  table[row sep=crcr]{10 1.75\\
+  25  2.05\\
+50	2.15\\
+75	2.37\\
+100	2.47\\
+125	2.75\\
+150	3.25\\
+175 3.6\\
+200 3.8\\
+225 3.95\\
+250 4.4\\
+275 4.65\\
+300 5.1\\
+};
+\addlegendentry{Enhanced AMP+Tree};
+
+%\addplot [color=mycolor1,densely dashdotted,line width=2.0pt,mark size=1.4pt,mark=square,mark options={solid}]
+%  table[row sep=crcr]{
+%  25  2\\
+%50	2.1\\
+%75	2.2\\
+%100	2.41\\
+%125	2.57\\
+%150	2.81\\
+%175	3\\
+%200 3.4\\
+%225 3.88\\
+%250 4.36\\
+%275 4.87\\
+%300 5.35\\
+%};
+%\addlegendentry{Sparse IDMA};
+
+
+\end{axis}
+
+
+\end{tikzpicture}

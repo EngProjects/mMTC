@@ -1,0 +1,101 @@
+%\RequirePackage{atbegshi}
+\documentclass[10pt]{beamer}
+
+\usetheme{default}
+\usecolortheme{rose}
+
+\usepackage{amssymb}
+%\usepackage{biblatex}
+%\usepackage{stmaryrd,epsfig}
+\usepackage{tikz,pgf,pgfplots}
+\pgfplotsset{compat=newest}
+\usepgflibrary{shapes}
+\usetikzlibrary{%
+  arrows,%
+  decorations,%decorations
+  shapes.misc,% wg. rounded rectangle
+  shapes.arrows,%
+  shapes.callouts, %
+  shapes,%
+  shadows,%
+  shadows.blur,%
+  chains,%
+  matrix,%
+  positioning,% wg. " of "
+  patterns,% slanted lines fill
+  scopes,patterns,calc,
+decorations.markings,
+decorations.pathmorphing
+}
+
+
+\makeatletter
+\def\myfootnote{\xdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+\setbeamertemplate{blocks}[rounded][shadow=false]
+% \setbeamertemplate{footline}[page number]
+\beamertemplatenavigationsymbolsempty
+\newcommand{\blockmathspace}{\vspace*{-\baselineskip}\setlength\belowdisplayshortskip{0pt}}
+
+
+% Radius of regular polygons
+\newdimen\R
+\R=0.8cm
+
+\definecolor{tutorial}{RGB}{50,93,61}
+
+
+\title{T-8: Unsourced Multiple Access (UMAC): Information Theory and Coding}
+\author{J.-F.~Chamberland, K. Narayanan, and Y. Polyanskiy}
+\institute{International Symposium on Information Theory}
+\date{2021}
+
+
+\newcommand{\transpose}{\ensuremath{\mathsf{T}}}
+
+\newcommand{\gv}{\ensuremath{\mathbf{g}}}
+\newcommand{\kv}{\ensuremath{\mathbf{k}}}
+\newcommand{\pv}{\ensuremath{\mathbf{p}}}
+\newcommand{\rv}{\ensuremath{\mathbf{r}}}
+\newcommand{\sv}{\ensuremath{\mathbf{s}}}
+\newcommand{\vv}{\ensuremath{\mathbf{v}}}
+\newcommand{\wv}{\ensuremath{\mathbf{w}}}
+\newcommand{\xv}{\ensuremath{\mathbf{x}}}
+\newcommand{\yv}{\ensuremath{\mathbf{y}}}
+\newcommand{\zv}{\ensuremath{\mathbf{z}}}
+
+\newcommand{\etav}{\ensuremath{\boldsymbol{\eta}}}
+\newcommand{\lambdav}{\ensuremath{\boldsymbol{\lambda}}}
+\newcommand{\muv}{\ensuremath{\boldsymbol{\mu}}}
+\newcommand{\nuv}{\ensuremath{\boldsymbol{\nu}}}
+\newcommand{\zerov}{\ensuremath{\mathbf{0}}}
+
+\newcommand{\Am}{\ensuremath{\mathbf{A}}}
+\newcommand{\Dm}{\ensuremath{\mathbf{D}}}
+\newcommand{\Gm}{\ensuremath{\mathbf{G}}}
+
+
+\setbeamertemplate{part page}{
+        \begin{beamercolorbox}[sep=8pt,center,wd=\textwidth]{part title}
+            \usebeamerfont{part title}\insertpart\par
+        \end{beamercolorbox}
+}
+
+\begin{document}
+
+\begin{frame}
+   \titlepage
+\setbeamercolor*{background canvas}{fg=oxfordblue,bg=oxfordblue}
+
+ \myfootnote{\scriptsize This material is based upon work supported, in part, by NSF under Grant No.~1619085}
+ \myfootnote{\scriptsize This material is also based upon work support, in part, by Qualcomm Technologies, Inc., through their University Relations Program}
+\end{frame}
+
+\input{./isit-cs-background}
+\input{./isit-ura}
+\input{./isit-ccs}
+\input{./isit-ccs-amp}
+
+\end{document}
+

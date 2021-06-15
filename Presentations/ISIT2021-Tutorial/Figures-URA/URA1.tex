@@ -1,0 +1,44 @@
+\begin{tikzpicture}
+  [
+  font=\footnotesize, draw=black, >=stealth', line width=1.25pt,
+  channel/.style={rectangle, minimum height=20mm, minimum width=15mm, draw=black, rounded corners},
+  encoder/.style={rectangle, minimum height=6mm, minimum width=15mm, draw=black, rounded corners},
+  decoder/.style={rectangle, minimum height=20mm, minimum width=15mm, draw=black, rounded corners},
+  message/.style={rectangle, minimum height=6mm, minimum width=15mm, draw=black, rounded corners}
+  ]
+
+\node[encoder, fill=blue!25] (e1) at (2.25,2) {Encoder};
+\foreach \e in {2,3,5} {
+  \node[encoder] (e\e) at (2.25,3-\e) {Encoder};
+}
+
+\node[message, fill=blue!25] (m1) at (0.0,2) {Message~$1$}
+edge[->] (e1);
+\draw[<-] (m1) -- (-1.25,2);
+\foreach \m in {2,3} {
+  \node[message] (m\m) at (0.0,3-\m) {Message~${\m}$}
+  edge[->] (e\m);
+  \draw[<-] (m\m) -- (-1.25,3-\m);
+}
+
+\foreach \m in {5} {
+  \node[message] (m\m) at (0.0,3-\m) {Message~$K$}
+  edge[->] (e\m);
+  \draw[<-] (m\m) -- (-1.25,3-\m);
+}
+
+\node at (0,-0.9) {$\vdots$};
+\node at (2.25,-0.9) {$\vdots$};
+
+\node[channel,align=center,fill=blue!25] (channel) at (5,0) {Multiple\\Access\\Channel};
+\node[decoder,align=center] (decoder) at (7.25,0) {Joint\\Decoder};
+\draw[->] (channel) -- (decoder);
+
+\draw[->] (decoder.east) -- (8.5,0);
+
+\draw[->] (e1.east) -- (channel);
+\draw[->] (e2.east) -- (channel);
+\draw[->] (e3.east) -- (channel);
+\draw[->] (e5.east) -- (channel);
+
+\end{tikzpicture}

@@ -1,0 +1,371 @@
+\part{Unsourced Random Access \newline as Compressed Sensing}
+\frame{\partpage}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access}
+% % % % %
+\hfill
+\scalebox{0.5}{\input{Figures-URA/compressedura}}
+\vspace{-1cm}
+
+\begin{columns}
+\column{.75\textwidth}
+\structure{\Large Section objectives}
+\begin{enumerate}
+  \item Review connection between unsourced random access and compressed sensing
+  \item Understand challenges associated with unsourced random access and other sparse recovery problems in exceedingly large dimensional spaces
+  \item Introduce potential design strategies to address these challenges
+\end{enumerate}
+\column{.2\textwidth}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Encoding Function}
+\begin{center} \input{Figures-URA/URA0} \end{center}
+% % % % %
+\vfill
+% % % % %
+\begin{block}{Characteristics of URA framework}
+\begin{itemize}
+  \item $K$ active devices, each with a $B$-bit message
+  \item Multiple access channel
+\end{itemize}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Encoding Function}
+\begin{center} \input{Figures-URA/URA1} \end{center}
+% % % % %
+\vfill
+% % % % %
+\begin{block}{Characteristics of URA framework}
+\begin{itemize}
+  \item Every device employs the same encoder $f: \{ 0, 1 \}^B \rightarrow \mathbb{R}^n$
+  \item Decoder must produce an unordered list of messages
+\end{itemize}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Encoding Function}
+\begin{center} \input{Figures-URA/signaldictionary1a} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Encoding Function}
+\begin{center} \input{Figures-URA/signaldictionary1b} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Encoding Function}
+\begin{center} \input{Figures-URA/signaldictionary1c} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Encoding Function}
+\begin{center} \input{Figures-URA/signaldictionary1d} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Encoding Function}
+\begin{center} \input{Figures-URA/signaldictionary1e} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Encoding Function}
+\begin{center} \input{Figures-URA/signaldictionary1} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Index Representation}
+\begin{center} \input{Figures-URA/signaldictionary1i} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Unsourced Random Access -- Index Representation}
+\begin{center} \input{Figures-URA/signaldictionary1j} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Unsourced Random Access -- CS Analogy}
+% % % % %
+\hfill
+\scalebox{0.75}{\input{Figures-URA/compressedura}}
+\vspace{-2cm}
+% % % % %
+\begin{columns}
+\column{.80\textwidth}
+\scalebox{0.8}{\input{Figures-URA/URA2}}
+\column{.15\textwidth}
+\end{columns}
+% % % % %
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Abstract CS Challenge}
+% % % % %
+\begin{columns}
+\column{0.54\textwidth}
+\structure{\large Problem setting}
+  \begin{itemize}
+  \item Noisy compressed sensing
+  \begin{equation*}
+  \yv = \boldsymbol{\Phi} \sv + \zv
+  \end{equation*}
+  where $\sv$ is $K$ sparse
+  \item $\sv$ has non-negative integer entries
+  \item $\boldsymbol{\Phi}.\mathtt{shape} \approx 32,768 \times 2^{128}$
+  \item $\zv$ is additive Gaussian noise
+  \end{itemize}
+\column{0.44\textwidth}
+  \hspace{-1cm} \scalebox{0.75}{\input{Figures-URA/compressedura1}}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{block}{Performance evaluation}
+  \begin{itemize}
+  \item Number of mistakes in support recovery normalized by $K$
+  \item Related to the per user probability of error in MAC setting
+  \end{itemize}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Abstract CS Challenge}
+% % % % %
+\begin{columns}
+\column{0.54\textwidth}
+\structure{\large Problem setting}
+  \begin{itemize}
+  \item Noisy compressed sensing
+  \begin{equation*}
+  \yv = \boldsymbol{\Phi} \sv + \zv
+  \end{equation*}
+  where $\sv$ is $K$ sparse
+  \item $\sv$ has non-negative integer entries
+  \item $\boldsymbol{\Phi}.\mathtt{shape} \approx 32,768 \times 2^{128}$
+  \item $\zv$ is additive Gaussian noise
+  \end{itemize}
+\column{0.44\textwidth}
+  \hspace{-1cm} \scalebox{0.75}{\input{Figures-URA/compressedura1}}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{alertblock}{Practical issue}
+  \begin{itemize}
+  \item Width of sensing matrix is huge
+  \item Existing CS solvers will not execute at that scale
+  \end{itemize}
+\end{alertblock}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Matrix Width \& Sparsity Undersampling Tradeoff}
+\begin{center} \input{Figures-URA/pnas1} \end{center}
+% % % % %
+\begin{columns}
+\column{0.48\textwidth}
+\begin{itemize}
+\item Undersampling fraction \[ \delta = \frac{32,768}{2^{128}} = 2^{-113} \]
+\end{itemize}
+\column{0.48\textwidth}
+\begin{itemize}
+\item Measure of sparsity \[ \rho = \frac{256}{32,768} = 2^{-7} \]
+\end{itemize}
+\end{columns}
+% % % % %
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Time-Division Unsourced Random Access}
+% % % % %
+\begin{columns}
+\column{0.54\textwidth}
+\structure{\large Slot partitioning}
+  \begin{itemize}
+  \item Observations become
+  \begin{equation*}
+  \yv_{\ell} = \boldsymbol{\Phi}_{\ell} \sv_{\ell} + \zv_{\ell}
+  \end{equation*}
+  where $\ell$ is slot label
+  \item Device gets slot based on message
+  \item Channel uses divided among slots
+  \end{itemize}
+\column{0.44\textwidth}
+  \hspace{-1cm} \scalebox{0.75}{\input{Figures-URA/compressedura1a}}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{alertblock}{Drawbacks}
+  \begin{itemize}
+  \item Matrices remain wide $2^{128}/L$
+  \item Devices assigned randomly within slots
+  \end{itemize}
+\end{alertblock}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Classical Coding Techniques}
+% % % % %
+\begin{columns}
+\column{0.54\textwidth}
+\structure{\large Multi-User Coding}
+  \begin{itemize}
+  \item Matrix becomes codebooks
+  \begin{equation*}
+  \yv = \boldsymbol{\Phi}_1 \sv_1 + \boldsymbol{\Phi}_2 \sv_2 + \zv
+  \end{equation*}
+  \item Device picks code based on bits
+  \item Well-studied for single user
+  \item Fast decoding for large dictionary
+  \end{itemize}
+\column{0.44\textwidth}
+  \hspace{-1cm} \scalebox{0.75}{\input{Figures-URA/compressedura1b}}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{alertblock}{Drawbacks}
+  \begin{itemize}
+  \item Low complexity joint multi-user decoders are not available
+  \item Devices may collide within codebook selection
+  \end{itemize}
+\end{alertblock}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Data Fragmentation}
+% % % % %
+\begin{center}
+\input{Figures-URA/dividebits0}
+\end{center}
+% % % % %
+\begin{alertblock}{Drawbacks}
+  \begin{itemize}
+  \item Unordered lists of fragments
+  \item Need to perform disambiguation
+  \end{itemize}
+\end{alertblock}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Drastic Reduction in Matrix Width}
+\begin{center} \input{Figures-URA/pnas1a} \end{center}
+% % % % %
+\begin{columns}
+\column{0.48\textwidth}
+\begin{itemize}
+\item Undersampling fraction \[ \delta = \frac{32,768}{L \cdot 2^{\lceil 128/L \rceil}} \]
+\end{itemize}
+\column{0.48\textwidth}
+\begin{itemize}
+\item Measure of sparsity \[ \rho = \frac{L \cdot 256}{32,768} = \frac{L}{2^7} \]
+\end{itemize}
+\end{columns}
+% % % % %
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Section Summary}
+% % % % %
+\begin{columns}
+\column{0.54\textwidth}
+\structure{\large Problem formulation}
+  \begin{itemize}
+  \item Noisy compressed sensing
+  \begin{equation*}
+  \yv = \boldsymbol{\Phi} \sv + \zv
+  \end{equation*}
+  \item URA is noisy support recovery
+  \item Full control over $\boldsymbol{\Phi}$
+  \item Width of sensing matrix is huge
+  \item Uncoordinated access produces stochastic binning
+  \end{itemize}
+\column{0.44\textwidth}
+  \hspace{-1cm} \scalebox{0.75}{\input{Figures-URA/compressedura1}}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{block}{Possible URA design strategies}
+  \begin{itemize}
+  \item Sparsifying collisions
+  \item Advanced coding and spreading
+  \item Data fragmentation
+  \end{itemize}
+\end{block}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+
+\begin{frame}
+\frametitle{Pertinent References}
+\begin{footnotesize}
+\begin{itemize}
+
+\item
+Y.~Polyanskiy.
+A perspective on massive random-access.
+\emph{Proc.~Int.\ Symp.\ on Information Theory (ISIT)}, 2017.
+
+\item
+O.~Ordentlich and Y.~Polyanskiy.
+Low complexity schemes for the random access Gaussian channel.
+\emph{Proc.~Int.\ Symp.\ on Information Theory (ISIT)}, 2017.
+
+\item
+A.~Vem, K.~R. Narayanan, J.-F. Chamberland, and J.~Cheng.
+A user-independent successive interference cancellation based coding scheme for the unsourced random access Gaussian channel.
+\emph{IEEE Trans.\ on~Communications}, 2019.
+
+\item
+V.~K. Amalladinne, J.-F. Chamberland, and K.~R. Narayanan.
+A coded compressed sensing scheme for unsourced multiple access.
+\emph{IEEE Trans.\ on Information Theory}, 2020.
+
+\item
+R.~Calderbank and A.~Thompson.
+CHIRRUP: A practical algorithm for unsourced multiple access.
+\emph{Information and Inference}, December 2019.
+
+\end{itemize}
+\end{footnotesize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %

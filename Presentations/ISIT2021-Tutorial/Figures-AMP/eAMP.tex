@@ -1,0 +1,61 @@
+\begin{tikzpicture}
+[font=\footnotesize, draw=black, line width=0.75pt,>=stealth',
+sub0/.style={rectangle, draw, inner sep=0pt, minimum width=10mm, minimum height=2.5mm},
+parity/.style={rectangle, draw, fill=teal!75, inner sep=0pt, minimum size=2.5mm}]
+
+%\node (cs1) at (0.00,6.125) {Slot~1};
+%\node (cs2) at (2.50,6.125) {Slot~2};
+%\node (cs3) at (5.00,6.125) {Slot~3};
+
+\foreach \v in {0.00,2.50,5.00} {
+  \draw[->, line width=1pt]  (\v,3.875) -- (\v,3.375);
+  \draw[->, line width=1pt]  (\v,5.75) -- (\v,5.25);
+  \draw[dotted, line width=1pt, draw=gray]  (\v-0.25,5.65) -- (\v,5.25);
+  \draw[dotted, line width=1pt, draw=gray]  (\v-0.125,5.7) -- (\v,5.25);
+  \draw[dotted, line width=1pt, draw=gray]  (\v+0.125,5.7) -- (\v,5.25);
+  \draw[dotted, line width=1pt, draw=gray]  (\v+0.25,5.65) -- (\v,5.25);
+}
+
+\foreach \v in {0.00} {
+  \draw[line width=1pt] (\v-0.5,5) -- (\v-0.625,5) -- (\v-0.625,4.5) -- (\v-0.5,4.5);
+  \draw[line width=1pt] (\v+0.375,5) -- (\v+0.5,5) -- (\v+0.5,4.5) -- (\v+0.375,4.5);
+  \draw[line width=1pt] (\v+0.575,5) -- (\v+0.575,3.875) -- (\v+0.695,3.875) -- (\v+0.695,5) -- (\v+0.575,5);
+}
+
+\foreach \v in {2.50,5.00} {
+  \draw[line width=1pt] (\v-0.275,5) -- (\v-0.4,5) -- (\v-0.4,4.5) -- (\v-0.275,4.5);
+  \draw[line width=1pt] (\v+0.15,5) -- (\v+0.275,5) -- (\v+0.275,4.5) -- (\v+0.15,4.5);
+  \draw[line width=1pt] (\v+0.35,5) -- (\v+0.35,4.325) -- (\v+0.47,4.325) -- (\v+0.47,5) -- (\v+0.35,5);
+}
+
+\foreach \p/\c in {3.00/1, 2.625/2, 2.25/3, 1.875/4} {
+  \node[parity] (subcs00c\c) at (-0.375,\p) {};
+  \node[parity] (subcs01c\c) at (-0.125,\p) {};
+  \node[parity] (subcs02c\c) at (0.125,\p) {};
+  \node[parity] (subcs02c\c) at (0.375,\p) {};
+
+  \node[parity] (subcs03c\c) at (2.125,\p) {};
+  \node[parity] (subcs04c\c) at (2.375,\p) {};
+  \node[parity] (subcs05c\c) at (2.625,\p) {};
+  \node[parity] (subcs05c\c) at (2.875,\p) {};
+
+  \node[parity] (subcs06c\c) at (4.625,\p) {};
+  \node[parity] (subcs07c\c) at (4.875,\p) {};
+  \node[parity] (subcs08c\c) at (5.125,\p) {};
+  \node[parity] (subcs08c\c) at (5.375,\p) {};
+}
+
+
+
+\node (list1) at (0.00,1.25) {List~1};
+\node (list2) at (2.50,1.25) {List~2};
+\node (list3) at (5.00,1.25) {List~3};
+
+\draw [line width=1.5pt,color=purple,->] plot[smooth, tension=.5] coordinates {(0.5,1.25) (1.25,1.75) (1.375,4) (1.875,4.75)};
+\draw [line width=1.5pt,color=purple,->] plot[smooth, tension=.5] coordinates {(3.0,1.25) (3.75,1.75) (3.875,4) (4.375,4.75)};
+\draw [line width=1.5pt,color=purple,dashed] plot[smooth, tension=.5] coordinates {(5.5,1.25) (6.25,1.75) (6.375,4.25)};
+
+\node[rotate=90] (prune1) at (1.0625,3) {column pruning};
+\node[rotate=90] (prune2) at (3.5625,3) {column pruning};
+\node[rotate=90] (prune3) at (6.0625,3) {column pruning};
+\end{tikzpicture}

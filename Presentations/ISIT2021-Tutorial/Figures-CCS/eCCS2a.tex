@@ -1,0 +1,54 @@
+\begin{tikzpicture}
+[font=\footnotesize, draw=black, line width=0.75pt,>=stealth',
+sub0/.style={rectangle, draw, inner sep=0pt, minimum width=10mm, minimum height=2.5mm},
+parity/.style={rectangle, draw, fill=teal, inner sep=0pt, minimum size=2.5mm},
+star/.style={rectangle, draw, inner sep=0pt, minimum size=2.5mm},
+symbol0/.style={rectangle, draw, fill=white, inner sep=0pt, minimum size=2.5mm},
+symbol1/.style={rectangle, draw, fill=green!50!black, inner sep=0pt, minimum size=2.5mm}]
+
+
+\foreach \p/\c in {3.00/1, 2.625/2, 2.25/3, 1.875/4, 1.5/5, 1.125/6, 0.75/7} {
+  \node (parity4\c) at (5,\p) {};
+}
+
+\node[symbol0] (s01) at (7,-0.75) {};
+\node[symbol1] (s02) at (7,-0.50) {};
+\node[symbol0] (s03) at (7,-0.25) {};
+\node[symbol1] (s04) at (7,0.00) {};
+\node[symbol0] (s05) at (7,0.25) {};
+\node[symbol0] (s06) at (7,0.50) {};
+\node[symbol0] (s07) at (7,0.75) {};
+\node[symbol1] (s08) at (7,1.00) {};
+\node[symbol1] (s09) at (7,1.25) {};
+\node[symbol1] (s10) at (7,1.50) {};
+\node[symbol0] (s11) at (7,1.75) {};
+\node[symbol1] (s12) at (7,2.00) {};
+\node[symbol0] (s13) at (7,2.25) {};
+\node[symbol1] (s14) at (7,2.50) {};
+\node[symbol0] (s15) at (7,2.75) {};
+\node[symbol1] (s16) at (7,3.00) {};
+\node[symbol1] (s17) at (7,3.25) {};
+\node[symbol0] (s18) at (7,3.50) {};
+\node[symbol0] (s19) at (7,3.75) {};
+\node[symbol1] (s20) at (7,4.00) {};
+\node[symbol0] (s21) at (7,4.25) {};
+\node[symbol1] (s22) at (7,4.50) {};
+\node[symbol0] (s23) at (7,4.75) {};
+\node[symbol1] (s24) at (7,5.00) {};
+
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity42.east) -- (s02.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity45.east) -- (s04.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity44.east) -- (s08.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity41.east) -- (s09.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity41.east) -- (s10.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity46.east) -- (s12.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity45.east) -- (s14.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity42.east) -- (s16.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity43.east) -- (s17.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity43.east) -- (s20.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity46.east) -- (s22.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity44.east) -- (s24.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity47.east) -- (s17.west);
+\draw[->,shorten <=1mm,shorten >=1mm]  (parity47.east) -- (s20.west);
+
+\end{tikzpicture}

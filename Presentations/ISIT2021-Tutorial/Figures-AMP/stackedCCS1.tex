@@ -1,0 +1,138 @@
+\begin{tikzpicture}
+[font=\small, draw=black, line width=0.75pt, >=stealth',
+ebit0/.style={rectangle, draw, inner sep=0pt, minimum size=2.5mm},
+ebit1/.style={rectangle, draw, fill=magenta, inner sep=0pt, minimum size=2.5mm},
+entry0/.style={rectangle, draw, opacity=0.3, fill=white, inner sep=0pt, minimum size=2.5mm},
+entry1/.style={rectangle, draw, opacity=0.3, fill=blue!50, inner sep=0pt, minimum size=2.5mm},
+entry00/.style={rectangle, draw, fill=white, inner sep=0pt, minimum size=2.5mm},
+entry11/.style={rectangle, draw, fill=blue!50, inner sep=0pt, minimum size=2.5mm},
+symbol0/.style={rectangle, draw, fill=white, inner sep=0pt, minimum size=2.5mm},
+symbol1/.style={rectangle, draw, fill=gray, inner sep=0pt, minimum size=2.5mm}]
+
+\node[entry11] (m2400) at (6.00,0) {};
+\node[entry0] (m2500) at (6.25,0) {};
+\node[entry0] (m2600) at (6.50,0) {};
+\node[entry1] (m2700) at (6.75,0) {};
+\node[entry1] (m2800) at (7.00,0) {};
+\node[entry1] (m2900) at (7.25,0) {};
+
+\node[entry11] (m2401) at (6.00,0.25) {};
+\node[entry0] (m2501) at (6.25,0.25) {};
+\node[entry0] (m2601) at (6.50,0.25) {};
+\node[entry0] (m2701) at (6.75,0.25) {};
+\node[entry0] (m2801) at (7.00,0.25) {};
+\node[entry0] (m2901) at (7.25,0.25) {};
+
+\node[entry00] (m2402) at (6.00,0.50) {};
+\node[entry1] (m2502) at (6.25,0.50) {};
+\node[entry1] (m2602) at (6.50,0.50) {};
+\node[entry0] (m2702) at (6.75,0.50) {};
+\node[entry0] (m2802) at (7.00,0.50) {};
+\node[entry0] (m2902) at (7.25,0.50) {};
+
+\node[entry00] (m2403) at (6.00,0.75) {};
+\node[entry1] (m2503) at (6.25,0.75) {};
+\node[entry0] (m2603) at (6.50,0.75) {};
+\node[entry0] (m2703) at (6.75,0.75) {};
+\node[entry0] (m2803) at (7.00,0.75) {};
+\node[entry1] (m2903) at (7.25,0.75) {};
+
+\node[entry1] (m1204) at (3.00,1.00) {};
+\node[entry1] (m1304) at (3.25,1.00) {};
+\node[entry00] (m1404) at (3.50,1.00) {};
+\node[entry0] (m1504) at (3.75,1.00) {};
+\node[entry1] (m1604) at (4.00,1.00) {};
+\node[entry0] (m1704) at (4.25,1.00) {};
+
+\node[entry0] (m1205) at (3.00,1.25) {};
+\node[entry0] (m1305) at (3.25,1.25) {};
+\node[entry00] (m1405) at (3.50,1.25) {};
+\node[entry0] (m1505) at (3.75,1.25) {};
+\node[entry1] (m1605) at (4.00,1.25) {};
+\node[entry1] (m1705) at (4.25,1.25) {};
+
+\node[entry0] (m1206) at (3.00,1.50) {};
+\node[entry0] (m1306) at (3.25,1.50) {};
+\node[entry11] (m1406) at (3.50,1.50) {};
+\node[entry0] (m1506) at (3.75,1.50) {};
+\node[entry0] (m1606) at (4.00,1.50) {};
+\node[entry1] (m1706) at (4.25,1.50) {};
+
+\node[entry0] (m1207) at (3.00,1.75) {};
+\node[entry1] (m1307) at (3.25,1.75) {};
+\node[entry00] (m1407) at (3.50,1.75) {};
+\node[entry0] (m1507) at (3.75,1.75) {};
+\node[entry0] (m1607) at (4.00,1.75) {};
+\node[entry1] (m1707) at (4.25,1.75) {};
+
+\node[entry0] (m0008) at (0.00,2.00) {};
+\node[entry1] (m0108) at (0.25,2.00) {};
+\node[entry0] (m0208) at (0.50,2.00) {};
+\node[entry0] (m0308) at (0.75,2.00) {};
+\node[entry0] (m0408) at (1.00,2.00) {};
+\node[entry11] (m0508) at (1.25,2.00) {};
+
+\node[entry0] (m0009) at (0.00,2.25) {};
+\node[entry0] (m0109) at (0.25,2.25) {};
+\node[entry1] (m0209) at (0.50,2.25) {};
+\node[entry0] (m0309) at (0.75,2.25) {};
+\node[entry1] (m0409) at (1.00,2.25) {};
+\node[entry00] (m0509) at (1.25,2.25) {};
+
+\node[entry1] (m0010) at (0.00,2.50) {};
+\node[entry0] (m0110) at (0.25,2.50) {};
+\node[entry0] (m0210) at (0.50,2.50) {};
+\node[entry0] (m0310) at (0.75,2.50) {};
+\node[entry0] (m0410) at (1.00,2.50) {};
+\node[entry11] (m0510) at (1.25,2.50) {};
+
+\node[entry0] (m0011) at (0.00,2.75) {};
+\node[entry0] (m0111) at (0.25,2.75) {};
+\node[entry0] (m0211) at (0.50,2.75) {};
+\node[entry0] (m0311) at (0.75,2.75) {};
+\node[entry0] (m0411) at (1.00,2.75) {};
+\node[entry00] (m0511) at (1.25,2.75) {};
+
+\draw[->, line width=1.25pt]  (0.625,3.50) -- (0.625,3.00);
+\draw[->, line width=1.25pt]  (3.625,3.50) -- (3.625,3.00);
+\draw[->, line width=1.25pt]  (6.625,3.50) -- (6.625,3.00);
+
+\node[symbol0] (s00) at (0.00,3.75) {};
+\node[symbol0] (s01) at (0.25,3.75) {};
+\node[symbol0] (s02) at (0.50,3.75) {};
+\node[symbol0] (s03) at (0.75,3.75) {};
+\node[symbol0] (s04) at (1.00,3.75) {};
+\node[symbol1] (s05) at (1.25,3.75) {};
+
+\node[symbol0] (s12) at (3.00,3.75) {};
+\node[symbol0] (s13) at (3.25,3.75) {};
+\node[symbol1] (s14) at (3.50,3.75) {};
+\node[symbol0] (s15) at (3.75,3.75) {};
+\node[symbol0] (s16) at (4.00,3.75) {};
+\node[symbol0] (s17) at (4.25,3.75) {};
+
+\node[symbol1] (s24) at (6.00,3.75) {};
+\node[symbol0] (s25) at (6.25,3.75) {};
+\node[symbol0] (s26) at (6.50,3.75) {};
+\node[symbol0] (s27) at (6.75,3.75) {};
+\node[symbol0] (s28) at (7.00,3.75) {};
+\node[symbol0] (s29) at (7.25,3.75) {};
+
+\draw[->, line width=1.25pt]  (0.625,4.50) -- (0.625,4.00);
+\draw[->, line width=1.25pt]  (3.625,4.50) -- (3.625,4.00);
+\draw[->, line width=1.25pt]  (6.625,4.50) -- (6.625,4.00);
+
+\node[ebit1] (info0) at (0.375,4.75) {};
+\node[ebit0] (info1) at (0.625,4.75) {};
+\node[ebit1] (info2) at (0.875,4.75) {};
+\node[ebit0] (info3) at (3.375,4.75) {};
+\node[ebit1] (info4) at (3.625,4.75) {};
+\node[ebit1] (info5) at (3.875,4.75) {};
+\node[ebit1] (info6) at (6.375,4.75) {};
+\node[ebit0] (info7) at (6.625,4.75) {};
+\node[ebit0] (info8) at (6.875,4.75) {};
+
+
+\node [anchor = west] (signals) at (0.00,-0.50) {Columns are possible signals};
+\node[rotate=-90] (time) at (7.75,2) {Time $\rightarrow$};
+\end{tikzpicture}

@@ -1,0 +1,215 @@
+\part{A Brief Overview \newline of Compressed Sensing}
+\frame{\partpage}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+\begin{center} \input{Figures-CS/compressivesampling} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+\begin{center} \input{Figures-CS/compressivesampling0} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+\begin{center} \input{Figures-CS/compressivesampling0a} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+\begin{center} \input{Figures-CS/compressivesampling0b} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+\begin{center} \input{Figures-CS/compressivesampling0c} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+%\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+%\begin{center} \input{Figures-CS/compressivesampling0b} \end{center}
+%\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+\begin{center} \input{Figures-CS/compressivesampling1} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+\begin{center} \input{Figures-CS/compressivesampling1a} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+\begin{center} \input{Figures-CS/compressivesampling1b} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{Compressed Sensing -- Brief Overview}
+\begin{center} \input{Figures-CS/compressivesampling1c} \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Compressed Sensing -- Basis Pursuit -- LASSO}
+% % % % %
+\hfill
+\scalebox{0.5}{\input{Figures-CS/compressivesampling}}
+\vspace{-1cm}
+
+\begin{columns}
+\column{.80\textwidth}
+\begin{block}{Optimization objective with sparsity constraint}
+When $\boldsymbol{\Phi}$ satisfies certain conditions, e.g., RIP, can get good estimate for sparse $\sv_0$ by solving convex program
+\begin{equation*}
+\hat{\sv} = \operatorname*{arg \; min}_{\sv} 
+\| \yv - \boldsymbol{\Phi} \sv \|_2 + \lambda \| \sv \|_1
+\end{equation*}
+\end{block}
+\column{.15\textwidth}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{itemize}
+\item Extensive analysis and wide applications 
+\item LP, QP, ISTA w/o momentum, NNLS, etc.
+\end{itemize}
+% % % % %
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Compressed Sensing -- AMP}
+% % % % %
+\hfill
+\scalebox{0.5}{\input{Figures-CS/compressivesampling}}
+\vspace{-1cm}
+
+\begin{columns}
+\column{.80\textwidth}
+\begin{block}{Approximate message passing (AMP)}
+\blockmathspace
+\begin{align*}
+\zv^{(t)} &= \yv - \boldsymbol{\Phi} \sv^{(t)} + \textcolor{lightgray}{\overbrace{\frac{\zv^{(t-1)}}{n} \| \sv^{(t)} \|_0}^{\text{Onsager}}} \\
+\sv^{(t+1)} &= \etav \big( \boldsymbol{\Phi}^{\transpose} \zv^{(t)} + \sv^{(t)} \big)
+\end{align*}
+where $\etav (\sv)_k = (|\sv_k| - \alpha \lambda)_+ \operatorname{sgn}(\sv_k)$, \textcolor{lightgray}{$\sv^{(0)} = \zerov$, $\zv^{(0)} = \yv$}
+\end{block}
+\column{.15\textwidth}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{itemize}
+\item Application to high-dimensional spaces
+\item Low complexity, scalable framework
+\end{itemize}
+% % % % %
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+
+\begin{frame}
+\frametitle{Compressed Sensing -- AMP}
+% % % % %
+\hfill
+\scalebox{0.5}{\input{Figures-CS/compressivesampling}}
+\vspace{-1cm}
+
+\begin{columns}
+\column{.80\textwidth}
+\begin{block}{Approximate message passing (AMP)}
+\blockmathspace
+\begin{align*}
+\zv^{(t)} &= \yv - \boldsymbol{\Phi} \sv^{(t)} + \overbrace{\frac{\zv^{(t-1)}}{n} \| \sv^{(t)} \|_0}^{\text{Onsager}} \\
+\sv^{(t+1)} &= \etav \big( \boldsymbol{\Phi}^{\transpose} \zv^{(t)} + \sv^{(t)} \big)
+\end{align*}
+where $\etav (\sv)_k = (|\sv_k| - \alpha \lambda)_+ \operatorname{sgn}(\sv_k)$, \textcolor{lightgray}{$\sv^{(0)} = \zerov$, $\zv^{(0)} = \yv$}
+\end{block}
+\column{.15\textwidth}
+\end{columns}
+% % % % %
+\vfill
+% % % % %
+\begin{itemize}
+\item Application to high-dimensional spaces
+\item Low complexity, scalable framework
+\end{itemize}
+% % % % %
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame} \frametitle{CS -- Sparsity–Undersampling Tradeoff}
+\begin{center} \input{Figures-CS/pnas} \end{center}
+% % % % %
+\vfill
+% % % % %
+\begin{itemize}
+\item Asymptotic analysis $K, N, n \rightarrow \infty$
+\item Phase transition lines
+\end{itemize}
+% % % % %
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+\frametitle{Pertinent References}
+\begin{footnotesize}
+\begin{itemize}
+\item
+R. Tibshirani.
+Regression shrinkage and selection via the LASSO.
+\emph{Journal of the Royal Statistical Society}, 1996.
+
+\item
+S. S. Chen, D. L. Donoho, and M. A. Saunders.
+Atomic decomposition by basis pursuit.
+\emph{SIAM Review}, 2001.
+
+\item
+A. C. Gilbert, S. Guha, P. Indyk, S. Muthukrishnan, M. Strauss.
+Near-optimal sparse Fourier representations via sampling.
+\emph{ACM Symposium on Theory of Computing}, 2002.
+
+\item
+E. J. Cand\`{e}s, J. Romberg, and T. Tao.
+Robust uncertainty principles: Exact signal reconstruction from highly incomplete frequency information.
+\emph{IEEE Transactions on Information Theory}, 2006.
+
+\item
+D. L. Donoho.
+Compressed sensing. 
+\emph{IEEE Transactions on Information Theory}, 2006.
+
+\item
+E. J. Cand\`{e}s and T. Tao.
+Near optimal signal recovery from random projections: Universal encoding strategies?
+\emph{IEEE Transactions on Information Theory}, 2006.
+
+\item
+D. L. Donoho, A. Maleki, and A. Montanari.
+Message-passing algorithms for compressed sensing.
+\emph{Proceedings of the National Academy of Sciences}, 2009.
+\end{itemize}
+\end{footnotesize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % %

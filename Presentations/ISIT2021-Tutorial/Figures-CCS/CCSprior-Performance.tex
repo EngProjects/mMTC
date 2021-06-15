@@ -1,0 +1,195 @@
+\begin{tikzpicture}
+\definecolor{mycolor1}{rgb}{0.63529,0.07843,0.18431}%
+\definecolor{mycolor2}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor3}{rgb}{0.00000,0.49804,0.00000}%
+\definecolor{mycolor4}{rgb}{0.87059,0.49020,0.00000}%
+\definecolor{mycolor5}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor6}{rgb}{0.74902,0.00000,0.74902}%
+
+\begin{axis}[%
+font=\footnotesize,
+width=8cm,
+height=5.5cm,
+scale only axis,
+xmin=25,
+xmax=300,
+xtick = {25,50,100,...,300},
+xlabel={Number of active users $K$},
+xmajorgrids,
+ymin=0,
+ymax=12,
+ytick = {0,2,...,12},
+ylabel={Required $E_b/N_0$ (dB)},
+ylabel near ticks,
+ymajorgrids,
+legend style={font=\tiny, at={(1,0)},anchor=south east, draw=black,fill=white,legend cell align=left}
+]
+
+\addplot [color=black,dotted,line width=2.0pt]
+  table[row sep=crcr]{
+ 25	0.25\\
+50	0.3\\
+75	0.35\\
+100	0.4\\
+125	0.45\\
+150	0.5\\
+175	0.55\\
+200	0.6\\
+225	0.95\\
+250	1.25\\
+275	1.55\\
+300	1.8\\
+};
+\addlegendentry{Random Coding};
+
+\addplot [color=mycolor1,dashed,line width=2.0pt]
+  table[row sep=crcr]{25	2.26\\
+50	2.88\\
+75	3.9\\
+100	5.03\\
+125	5.8798\\
+150	7.3954\\
+175	8.6199\\
+200	9.7328\\
+225	11.1761\\
+250	12.6127\\
+275	13.3907\\
+300	14.9116\\
+};
+\addlegendentry{4-Fold ALOHA};
+
+\addplot [color=mycolor3,solid,line width=2.0pt]
+  table[row sep=crcr]{25	7.5\\
+35	7.3\\
+50	8.75\\
+%100	11.7\\
+150	14.5\\
+200	18\\
+250	21\\
+300	23\\
+};
+\addlegendentry{OP-Exact};
+
+\addplot [color=mycolor2,solid,line width=2.0pt,mark size=1.4pt,mark=square,mark options={solid}]
+  table[row sep=crcr]{25	3.18\\
+50	3.52\\
+75	4.64\\
+100	5.61\\
+125	5.85\\
+150	6.46\\
+175	6.72\\
+200	7.41\\
+225	7.6772\\
+250	8.3217\\
+275	8.8428\\
+300	9.352\\
+};
+\addlegendentry{SIC T=4};
+
+\addplot [color=mycolor4,solid,line width=2.0pt,mark size=1.3pt,mark=triangle,mark options={solid,rotate=90}]
+  table[row sep=crcr]{
+  25  3.15\\
+50	3.2\\
+75	3.3\\
+100	3.6\\
+125	4\\
+150	4.85\\
+175	5.23\\
+200	5.52\\
+225	6.05\\
+250	6.8\\
+275	7.4\\
+300	8.22\\
+};
+\addlegendentry{CCS};
+
+%\addplot [color=black,solid,line width=2.0pt]
+%  table[row sep=crcr]{
+%25	3\\
+%50	3.5\\
+%75  3.5\\
+%100	4\\
+%125	4\\
+%150 4.5\\
+%175 5\\
+%200	5\\
+%225 5.5
+%250	5.8\\
+%275 5.8\\
+%300	6\\
+%};
+%\addlegendentry{AMP+Tree Code};
+
+%\addplot [color=mycolor3,solid,line width=2.0pt,mark size=1.4pt,mark=square,mark options={solid}]
+%  table[row sep=crcr]{
+%  25  2\\
+%50	2.1\\
+%75	2.2\\
+%100	2.41\\
+%125	2.57\\
+%150	2.81\\
+%175	3\\
+%200 3.4\\
+%225 3.88\\
+%250 4.36\\
+%275 4.87\\
+%300 5.35\\
+%};
+%\addlegendentry{Sparse IDMA};
+%\node[] at (axis cs: 300,5.15) {\scriptsize \textcolor{red}{O}};
+%\node[] at (axis cs: 275,4.69) {\scriptsize \textcolor{red}{O}};
+%\node[] at (axis cs: 225,3.7) {\scriptsize \textcolor{red}{O}};
+
+%\addplot [color=violet,solid,line width=2.0pt]
+%  table[row sep=crcr]{
+%10 0.3801\\
+%20 0.5939\\
+%30 0.8524\\
+%40 0.9949\\
+%50 1.1553\\
+%60 1.3246\\
+%70 1.5474\\
+%80 1.7167\\
+%90 1.8682\\
+%100 2.0554\\
+%110 2.2247\\
+%120 2.3762\\
+%130 2.5811\\
+%140 2.7950\\
+%150 2.9999\\
+%160 3.1425\\
+%170 3.3475\\
+%180 3.5168\\
+%190 3.7128\\
+%200 3.8911\\
+%210 4.0425\\
+%220 4.2742\\
+%230 4.5505\\
+%240 4.7554\\
+%250 4.9158\\
+%260 5.0762\\
+%270 5.2010\\
+%280 5.3168\\
+%290 5.4059\\
+%300 5.4951\\
+%310 5.5663\\
+%320 5.6376\\
+%330 5.6911\\
+%340 5.7357\\
+%350 5.7624\\
+%360 5.7802\\
+%370 5.8069\\
+%380 5.8248\\
+%390 5.8515\\
+%400 5.9050\\
+%410 6.0119\\
+%420 6.1634\\
+%430 6.6000\\
+%};
+%\addlegendentry{Polar Codes};
+
+\end{axis}
+
+
+\end{tikzpicture}%
+

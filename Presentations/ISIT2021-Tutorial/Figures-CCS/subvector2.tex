@@ -1,0 +1,38 @@
+\begin{tikzpicture}[
+  font=\footnotesize, >=stealth',
+  infobits0/.style={rectangle, minimum height=6mm, minimum width=20mm, draw=black, fill=gray!10, rounded corners},
+  infobits/.style={rectangle, minimum height=6mm, minimum width=12mm, draw=black, fill=gray!10, rounded corners},
+  paritybits/.style={rectangle, minimum height=6mm, minimum width=8mm, draw=black, fill=gray!40, rounded corners}
+]
+
+
+\node[infobits0] (vb0) at (1,2) {$\wv(1)$};
+\node[infobits] (vb1) at (2.6,2) {$\wv(2)$};
+\node[paritybits] (vp1) at (3.6,2) {$\pv(2)$};
+\node[infobits] (vb2) at (4.6,2) {$\wv(3)$};
+\node[paritybits] (vp2) at (5.6,2) {$\pv(3)$};
+\node[infobits] (vb3) at (6.6,2) {$\wv(4)$};
+\node[paritybits] (vp3) at (7.6,2) {$\pv(4)$};
+\draw[|-|] (0.0,1.5) to node[midway,below] {$w_1$} (2.0,1.5);
+\draw[|-|] (2.0,1.5) to node[midway,below] {$w_2$} (3.2,1.5);
+\draw[-|]  (3.2,1.5) to node[midway,below] {$p_2$} (4.0,1.5);
+\draw[|-|] (4.0,1.5) to node[midway,below] {$w_3$} (5.2,1.5);
+\draw[-|]  (5.2,1.5) to node[midway,below] {$p_3$} (6.0,1.5);
+\draw[|-|] (6.0,1.5) to node[midway,below] {$w_4$} (7.2,1.5);
+\draw[-|]  (7.2,1.5) to node[midway,below] {$p_4$} (8.0,1.5);
+
+\draw [line width=1.0pt,color=purple,->] (4,1.125) -- (4,0.5);
+\node[purple] at (2,0.75) {Dynamic pruning};
+\node[purple] at (6,0.75) {More flexibility};
+
+\node[infobits0] (vb0plus) at (1,0) {$\wv(1)$};
+\node[infobits, minimum width=18mm] (vb1plus) at (2.9,0) {$\wv(2)$};
+\node[paritybits, minimum width=12mm] (vp1plus) at (4.4,0) {$\pv(2)$};
+\node[infobits, minimum width=18mm] (vb2plus) at (5.9,0) {$\wv(3)$};
+\node[paritybits, minimum width=12mm] (vp2plus) at (7.4,0) {$\pv(3)$};
+\draw[|-|] (0.0,-0.5) to node[midway,below] {$w_1$} (2.0,-0.5);
+\draw[|-|] (2.0,-0.5) to node[midway,below] {$w_2$} (3.8,-0.5);
+\draw[-|]  (3.8,-0.5) to node[midway,below] {$p_2$} (5.0,-0.5);
+\draw[|-|] (5.0,-0.5) to node[midway,below] {$w_3$} (6.8,-0.5);
+\draw[-|]  (6.8,-0.5) to node[midway,below] {$p_3$} (8.0,-0.5);
+\end{tikzpicture}
