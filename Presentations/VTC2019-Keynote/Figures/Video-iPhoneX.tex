@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+  [font=\small, line width=1pt, draw=black, >=stealth']
+
+\draw[draw=gray,fill=darkgray,rounded corners=0.5cm] (-2.825,-1.4) rectangle (2.825,1.4);
+\draw[draw={rgb:red,1;green,2;blue,3},fill={rgb:red,1;green,2;blue,3},rounded corners=0.4cm] (-2.675,-1.25) rectangle (2.675,1.25);
+\shade[fill=white, fill opacity=0.2,rounded corners=0.4cm] (-2.675,-1.25) rectangle (2.675,1.25);
+
+\draw[draw=darkgray,fill=darkgray,rounded corners] (2.5,-0.5) rectangle (2.75,0.5);
+\draw[draw=darkgray,fill=darkgray] (2.625,-0.5) rectangle (2.75,0.5);
+
+\draw[draw=black,line width=1.25pt,line cap=round] (2.625,-0.15) -- (2.625,0.15);
+\draw[draw=black,fill=black] (2.625,0.3) circle (0.75pt);
+
+\draw[draw=white,line width=4pt] (0,0) circle (0.75);
+\draw[draw=white,fill=white] (0.5,0) -- (-0.25,0.433) -- (-0.25,-0.433) -- (0.5,0);
+\end{tikzpicture}

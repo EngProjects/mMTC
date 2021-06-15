@@ -1,0 +1,26 @@
+\begin{tikzpicture}
+[draw=black, line width=1.5pt, >=stealth',
+entry2/.style={rectangle, rounded corners, draw, fill=blue!20, inner sep=0pt, minimum size=20mm},
+entry/.style={rectangle, rounded corners, draw, fill=gray!20, inner sep=0pt, minimum size=5mm}]
+
+\node[entry] (r10) at (0.5,0) {};
+\node[entry] (r20) at (1,0) {};
+\node[entry] (r30) at (1.5,0) {};
+\node[entry] (r40) at (2,0) {};
+\node[entry] (r50) at (2.5,0) {};
+\node[entry] (r60) at (3,0) {};
+
+\node[entry2] (m00) at (5.75,0.75) {};
+\node[entry2] (m01) at (5.75,2.75) {};
+\node[entry2] (m02) at (5.75,4.75) {};
+\node[entry2] (m00) at (7.75,0.75) {};
+\node[entry2] (m11) at (7.75,2.75) {};
+\node[entry2] (m12) at (7.75,4.75) {};
+
+\draw[line width=3pt] (-0.5,-0.375) -- (9,-0.375);
+\draw[line width=3pt] (3.5,-1.5) -- (4.25,-0.5) -- (5,-1.5) -- (3.5,-1.5) -- (4.25,-0.5);
+
+\node (reward) at (1.75,-1) {\LARGE Cost};
+\node (cost) at (6.75,-1) {\LARGE Reward};
+\node[rotate=60] (info) at (1.75,3.25) {\LARGE \textcolor{lightgray}{Side Information}};
+\end{tikzpicture}

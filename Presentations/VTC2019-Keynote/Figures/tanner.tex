@@ -1,0 +1,30 @@
+\begin{tikzpicture}
+  [
+  font=\small, line width=1pt, draw=black, >=stealth',
+  bitnode/.style={circle, inner sep = 0pt, minimum size = 6mm, draw=black},
+  checknode/.style={rectangle, inner sep = 0pt, minimum size = 6mm, draw=black},
+  ]
+
+  \foreach \y in {1,2,3,4} {
+    \node[bitnode] (b\y) at (0,0.5-\y) [label=left:$v_\y$]{};
+  }
+  
+  \foreach \y in {1,2,3,4,5} {
+    \node[checknode] (c\y) at (4,1-\y) [label=right:$c_\y$]{\footnotesize{$+$}};
+  }
+
+  \draw (b1) -- (c2);
+  \draw (b2) -- (c1);
+  \draw (b2) -- (c3);
+  \draw (b2) -- (c4);
+  \draw (b3) -- (c1);
+  \draw (b3) -- (c3);
+  \draw (b3) -- (c5);
+  \draw (b4) -- (c2);
+  \draw (b4) -- (c3);
+  \draw (b4) -- (c5);
+
+  \draw[->] (0.8,-1) -- node[above] {$x$} (3.2,-0.1);
+  \draw[<-] (0.8,-3.8) -- node[below] {$y$} (3.2,-4.1);
+
+\end{tikzpicture}

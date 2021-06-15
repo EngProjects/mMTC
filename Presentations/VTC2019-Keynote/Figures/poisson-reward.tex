@@ -1,0 +1,37 @@
+\begin{tikzpicture}[
+  font=\tiny, >=stealth', line width=1pt
+]
+
+\draw [<->] (-0.25,3) -- (-0.25,0) -- (3.375,0);
+\foreach \x in {0,...,6} {
+  \draw (0.5*\x,-0.175) -- (0.5*\x,0.075);
+}
+\foreach \x in {0,1,...,5} {
+  \node (tx\x) at (0.5*\x+0.25,-0.3) {\x};
+}
+\foreach \y in {1,...,5} {
+  \draw (-0.425,0.5*\y) -- (-0.175,0.5*\y);
+}
+\foreach \y in {1,...,5} {
+  \node (ty\y) at (-0.6,0.5*\y) {\y};
+}
+
+\draw[dotted] (0.05,0) rectangle (0.45,1.5);
+\draw[fill=gray!30,line width=0.5pt] (0.55,0) rectangle (0.95,0.5);
+\draw[dotted] (0.55,0.55) rectangle (0.95,1.5);
+\draw[fill=gray!30,line width=0.5pt] (1.05,0) rectangle (1.45,1);
+\draw[dotted] (1.05,1.05) rectangle (1.45,1.5);
+\draw[fill=gray!30,line width=0.5pt] (1.55,0) rectangle (1.95,1.5);
+\draw[fill=red!40,line width=0.5pt] (2.05,0) rectangle (2.45,2);
+\draw[fill=red!40,line width=0.5pt] (2.55,0) rectangle (2.95,2.5);
+
+\node (under0) at (0.75,2.6) {Missed};
+\node (under1) at (0.75,2.25) {Opportunities};
+\draw[->] (under1) -- (0.25,1.55);
+\draw[->] (under1) -- (0.75,1.55);
+\draw[->] (under1) -- (1.25,1.55);
+
+\node (over) at (2.5,3.05) {Lost};
+\draw[->] (over) -- (2.25,2.05);
+\draw[->] (over) -- (2.75,2.55);
+\end{tikzpicture}

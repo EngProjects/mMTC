@@ -1,0 +1,35 @@
+\begin{tikzpicture}
+  [
+  font=\small, draw=black, >=stealth', line width=1pt,
+  channel/.style={rectangle, minimum height=20mm, minimum width=15mm, draw=black, fill=gray!30, rounded corners},
+  encoder/.style={rectangle, minimum height=5.5mm, minimum width=15mm, draw=black, fill=gray!10, rounded corners},
+  decoder/.style={rectangle, minimum height=20mm, minimum width=15mm, draw=black, rounded corners},
+  message/.style={rectangle, minimum height=5.5mm, minimum width=15mm, draw=black, rounded corners}
+  ]
+
+\foreach \e in {1,2,3,4,5,6} {
+  \node[encoder] (e\e) at (2.5,0.5-\e) {Encoder};
+}
+
+\draw[draw = red, dashed, line width=1.5pt,rounded corners] (1.5, 0) rectangle (3.5, -6);
+
+\foreach \m in {1,2,3,4,5,6} {
+  \node[message] (m\m) at (0.0,0.5-\m) {Message~${\m}$}
+  edge[->] (e\m);
+  \draw[<-] (m\m) -- (-1.5,0.5-\m);
+}
+  
+\node[channel,align=center] (channel) at (5.5,-3) {MAC\\Channel};
+\node[decoder,align=center] (decoder) at (8,-3) {Joint\\Decoder};
+\draw[->] (channel) -- (decoder);
+
+\draw[->] (decoder.east) -- (9.5,-3);
+
+\draw[->] (e1.east) -- (channel);
+\draw[->] (e2.east) -- (channel);
+\draw[->] (e3.east) -- (channel);
+\draw[->] (e4.east) -- (channel);
+\draw[->] (e5.east) -- (channel);
+\draw[->] (e6.east) -- (channel);
+
+\end{tikzpicture}

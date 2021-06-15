@@ -1,0 +1,42 @@
+\begin{tikzpicture}
+  [
+  font=\small, line width=1pt, draw=black, >=stealth',
+  bitnode/.style={circle, inner sep = 0pt, minimum size = 6mm, draw=black},
+  checknode/.style={rectangle, inner sep = 0pt, minimum size = 6mm, draw=black},
+  ]
+
+  \node[bitnode] (L) at (0,3) {};
+  \node[rotate around={-40:(L)}] (L0) at (1.5,3) {} edge (L);
+  \node[rotate around={-20:(L)}] (L1) at (1.5,3) {} edge (L);
+  \node[rotate around={0:(L)}] (L2) at (1.5,3) {} edge (L);
+  \node[rotate around={20:(L)}] (L3) at (1.5,3) {} edge (L);
+  \node[rotate around={40:(L)}] (L4) at (1.5,3) {} edge (L);
+  \draw (L) ++(60:1) arc (60:-60:1);
+  \node (Li) at (0.75,4.25) {$i$ w.p.\ $L_i$};
+
+  \node[bitnode] (lambda) at (4,3) {};
+  \node (lambda0) at (5.5,3) {} edge[<-] (lambda);
+  \node[rotate around={-45:(lambda)}] (lambda1) at (2.5,3) {} edge[->] (lambda);
+  \node[rotate around={-15:(lambda)}] (lambda2) at (2.5,3) {} edge[->] (lambda);
+  \node[rotate around={15:(lambda)}] (lambda3) at (2.5,3) {} edge[->] (lambda);
+  \node[rotate around={45:(lambda)}] (lambda4) at (2.5,3) {} edge[->] (lambda);
+  \draw (lambda) ++(120:1) arc (120:240:1);
+  \node (lambdai) at (4,4.25) {$(i-1)$ w.p.\ $\lambda_i$};
+  
+  \node[checknode] (R) at (1,0) {\footnotesize{$+$}};
+  \node[rotate around={-30:(R)}] (R0) at (-0.5,0) {} edge (R);
+  \node[rotate around={-10:(R)}] (R1) at (-0.5,0) {} edge (R);
+  \node[rotate around={10:(R)}] (R2) at (-0.5,0) {} edge (R);
+  \node[rotate around={30:(R)}] (R3) at (-0.5,0) {} edge (R);
+  \draw (R) ++(135:1) arc (135:225:1);
+  \node (Ri) at (0.75,1.125) {$j$ w.p.\ $R_j$};
+
+  \node[checknode] (rho) at (4,0) {\footnotesize{$+$}};
+  \node (R0) at (2.5,0) {} edge[<-] (rho);
+  \node[rotate around={-20:(rho)}] (rho1) at (5.5,0) {} edge[->] (rho);
+  \node (rho2) at (5.5,0) {} edge[->] (rho);
+  \node[rotate around={20:(rho)}] (rho3) at (5.5,0) {} edge[->] (rho);
+  \draw (rho) ++(45:1) arc (45:-45:1);
+  \node (rhoi) at (4,1.125) {$(j-1)$ w.p.\ $\rho_j$};
+
+\end{tikzpicture}

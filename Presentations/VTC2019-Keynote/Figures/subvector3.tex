@@ -1,0 +1,22 @@
+\begin{tikzpicture}[
+  font=\small, >=stealth',
+  infobits0/.style={rectangle, minimum height=6mm, minimum width=20mm, draw=black, fill=gray!10, rounded corners},
+  infobits/.style={rectangle, minimum height=6mm, minimum width=12mm, draw=black, fill=gray!10, rounded corners},
+  paritybits/.style={rectangle, minimum height=6mm, minimum width=8mm, draw=black, fill=gray!40, rounded corners}
+]
+
+\node[infobits0] (vb0) at (1,0) {$\vec{w}(0)$};
+\node[infobits] (vb1) at (2.6,0) {$\vec{w}(1)$};
+\node[paritybits] (vp1) at (3.6,0) {$\vec{p}(1)$};
+\node[infobits] (vb2) at (4.6,0) {$\vec{w}(2)$};
+\node[paritybits] (vp2) at (5.6,0) {$\vec{p}(2)$};
+\node[infobits] (vb3) at (6.6,0) {$\vec{w}(3)$};
+\node[paritybits] (vp3) at (7.6,0) {$\vec{p}(3)$};
+\draw[|-|] (0,-0.5) to node[midway,below] {$m_0$} (2,-0.5);
+\draw[|-|] (2,-0.5) to node[midway,below] {$m_1$} (3.2,-0.5);
+\draw[-|] (3.2,-0.5) to node[midway,below] {$l_1$} (4,-0.5);
+\draw[|-|] (4,-0.5) to node[midway,below] {$m_2$} (5.2,-0.5);
+\draw[-|] (5.2,-0.5) to node[midway,below] {$l_2$} (6,-0.5);
+\draw[|-|] (6,-0.5) to node[midway,below] {$m_3$} (7.2,-0.5);
+\draw[-|] (7.2,-0.5) to node[midway,below] {$l_3$} (8,-0.5);
+\end{tikzpicture}

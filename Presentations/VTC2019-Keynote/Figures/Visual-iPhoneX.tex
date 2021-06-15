@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+  [
+  font=\small,
+  line width=1pt,
+  draw=black, >=stealth',
+  bitnode/.style={circle, inner sep = 0pt, minimum size = 6mm, draw=black},
+  checknode/.style={rectangle, inner sep = 0pt, minimum size = 6mm, draw=black},
+  ]
+
+\draw[draw=gray,fill=darkgray,rounded corners=0.5cm] (-1.4,-2.825) rectangle (1.4,2.825);
+\draw[draw=black,fill=black,rounded corners=0.4cm] (-1.25,-2.675) rectangle (1.25,2.675);
+\draw[draw=darkgray,fill=darkgray,rounded corners] (-0.5,2.5) rectangle (0.5,2.75);
+\draw[draw=darkgray,fill=darkgray] (-0.5,2.625) rectangle (0.5,2.75);
+\draw[draw=black,line width=1.25pt,line cap=round] (-0.15,2.625) -- (0.15,2.625);
+\draw[draw=black,fill=black] (0.3,2.625) circle (0.75pt);
+
+\node[text=white] at (0,0.5) {$5.8$~inch};
+\node[text=white] at (0,0) {$2436 \times 1125$};
+\node[text=white] at (0,-0.5) {$458$~ppi};
+
+\draw[draw=gray,fill=gray] (-1.425,2) rectangle (-1.4,1.75);
+\draw[draw=gray,fill=gray] (-1.425,1.5) rectangle (-1.4,1.125);
+\draw[draw=gray,fill=gray] (-1.425,1.0) rectangle (-1.4,0.625);
+\draw[draw=gray,fill=gray] (1.425,1.375) rectangle (1.4,0.75);
+\end{tikzpicture}

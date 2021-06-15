@@ -1,0 +1,77 @@
+\begin{tikzpicture}[
+  font=\small, >=stealth',line width=1pt,
+  slot/.style={circle, minimum height = 2mm, fill=black, inner sep=0pt},
+  scheduler/.style={rectangle, minimum height=5.5mm, minimum width=12mm, draw=black, fill=gray!20, rounded corners},
+  packet/.style={rectangle, minimum height=5.5mm, minimum width=14mm, draw=black, fill=gray!10, rounded corners}
+]
+
+\draw [|-|] (0,8.6) to node[midway,above] {$N$ symbols} (9,8.6);
+
+\draw [-] (-0.25,5.375) -- (9.25,5.375);
+\foreach \t in {0,...,6} {
+  \draw (1.5*\t,5.25) -- (1.5*\t,5.5);
+  \draw[dotted] (1.5*\t,5.5) -- (1.5*\t,8.25);
+}
+
+\draw [-] (0,6.625) -- (9,6.625);
+\foreach \l in {1,...,4} {
+  \draw[loosely dotted] (0,5.375+0.625*\l) -- (9,5.375+0.625*\l);
+}
+
+\foreach \s in {0,...,5} {
+  \node[slot] (s\s) at (0.75+1.5*\s,5.125) {};
+}
+
+\foreach \s in {0,...,5} {
+  \node (t\s) at (0.75+1.5*\s,8.25) {Slot~\s};
+}
+
+\node (schedulers1) at (-0.125,4.375) {Schedule};
+\node[scheduler] (d5) at (7.5,3.5) {$r_5$};
+\node[scheduler] (d4) at (6.0,3.5) {$r_4$};
+\node[scheduler] (d3) at (4.5,3.5) {$r_3$};
+\node[scheduler] (d2) at (3.0,3.5) {$r_2$};
+\node[scheduler] (d1) at (1.5,3.5) {$r_1$};
+\node (codewords1) at (9,4.5) {Random};
+\node (codewords2) at (9,4.125) {Selection};
+
+\node (codewords1) at (9,2.5) {Codewords};
+\node (c5) at (7.5,2.5) {$\vec{x}(w_5)$};
+\node (c4) at (6.0,2.5) {$\vec{x}(w_4)$};
+\node (c3) at (4.5,2.5) {$\vec{x}(w_3)$};
+\node (c2) at (3.0,2.5) {$\vec{x}(w_2)$};
+\node (c1) at (1.5,2.5) {$\vec{x}(w_1)$};
+
+\node (messages) at (9,1.5) {Messages};
+\node (m5) at (7.5,1.5) {$w_5$};
+\node (m4) at (6.0,1.5) {$w_4$};
+\node (m3) at (4.5,1.5) {$w_3$};
+\node (m2) at (3.0,1.5) {$w_2$};
+\node (m1) at (1.5,1.5) {$w_1$};
+
+\draw[->] (m1) -- (c1);
+\draw[->] (m2) -- (c2);
+\draw[->] (m3) -- (c3);
+\draw[->] (m4) -- (c4);
+\draw[->] (m5) -- (c5);
+
+\draw[->] (c1) -- (d1.south);
+\draw[->] (c2) -- (d2.south);
+\draw[->] (c3) -- (d3.south);
+\draw[->] (c4) -- (d4.south);
+\draw[->] (c5) -- (d5.south);
+
+\draw (d5.north) -- (s2);
+\draw (d4.north) -- (s4);
+\draw (d3.north) -- (s2);
+\draw (d2.north) -- (s2);
+\draw (d1.north) -- (s0);
+
+\node[packet] (p10) at (0.75,5.6875) {$\vec{x}(w_1)$};
+
+\node[packet] (p42) at (3.75,6.9375) {$\vec{x}(w_5)$};
+\node[packet] (p32) at (3.75,6.3125) {$\vec{x}(w_3)$};
+\node[packet] (p22) at (3.75,5.6875) {$\vec{x}(w_2)$};
+
+\node[packet] (p44) at (6.75,5.6875) {$\vec{x}(w_4)$};
+\end{tikzpicture}

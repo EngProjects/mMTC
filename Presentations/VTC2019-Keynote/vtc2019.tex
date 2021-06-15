@@ -1,0 +1,1596 @@
+%\RequirePackage{atbegshi}
+\documentclass[10pt]{beamer}
+
+\usetheme{default}
+\usepackage{amssymb}
+\usepackage{biblatex}
+%\usepackage[cmex10]{amsmath}
+\usepackage{stmaryrd,epsfig}
+\usepackage[english]{babel}
+\usepackage{tikz,pgf,pgfplots}
+\pgfplotsset{compat=newest}
+\usepgflibrary{shapes}
+\usetikzlibrary{%
+  arrows,%
+  decorations,%decorations
+  shapes.misc,% wg. rounded rectangle
+  shapes.arrows,%
+  shapes.callouts, %
+  shapes,%
+  shadows,%
+  shadows.blur,%
+  chains,%
+  matrix,%
+  positioning,% wg. " of "
+  patterns,% slanted lines fill
+  scopes,patterns,calc,
+decorations.markings,
+decorations.pathmorphing
+}
+
+
+\makeatletter
+\def\myfootnote{\xdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+%\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% Radius of regular polygons
+\newdimen\R
+\R=0.8cm
+
+\definecolor{tutorial}{RGB}{50,93,61}
+
+
+\title{Coding and Compressed Sensing\\for Unsourced Multiple Access}
+\author{J.-F.~Chamberland \newline
+\textcolor{gray}{Krishna Narayanan, Vamsi Amalladinne, Avinash Vem}}
+\institute{Electrical and Computer Engineering \\ Texas A\&M University}
+\date{Vehicular Technology Conference, Hawaii \\ September 22, 2019}
+
+%\setbeamertemplate{footline}[page number]
+\setbeamertemplate{navigation symbols}{\textcolor{black}{\insertframenumber / \inserttotalframenumber}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+
+\myfootnote{\scriptsize This material is based upon work supported, in part, by NSF under Grant No.~1619085}
+\myfootnote{\scriptsize This material is also based upon work support, in part, by Qualcomm Technologies, Inc., through their University Relations Program}
+\end{frame}
+
+
+
+\part{Motivation behind Research Agenda: \newline
+Can One Discern the Future of Wireless?}
+\frame{\partpage}
+
+
+\begin{frame}
+\frametitle{Mobile Device Market Penetration}
+\begin{columns}
+\column{.73\textwidth}
+  There are now more subscribed wireless devices than humans on Earth
+  \begin{center}
+  \input{Figures/World-Phone} \\
+  {\tiny \textcolor{gray}{Sources: United Nations, GSMA}}
+  \end{center}
+\column{.22\textwidth}
+  \includegraphics[height=7.2cm]{Figures/Visual-Earth.jpg} \\
+  {\tiny \textcolor{gray}{\textcopyright Google Earth}}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Clarity of Vision -- Reaching the Limit}
+\begin{columns}
+\column{.45\textwidth}
+  \begin{center}
+  \includegraphics[width=1.5in]{Figures/Visual-Acuity.png}
+  \newline
+  {\tiny \textcolor{gray}{\textcopyright Vanessa Ezekowitz}}
+  \vspace{5mm}
+  \includegraphics[width=1.5in, height=1.25in]{Figures/Visual-Accommodation.png}
+  \newline
+  {\tiny \textcolor{gray}{\textcopyright Hans Strasburge}}
+  \end{center}
+\column{.5\textwidth}
+  \includegraphics[width=0.75in]{Figures/Visual-HumanEye.png}
+  {\tiny \textcolor{gray}{\textcopyright Samarskaya}}
+\begin{block}{Visual Resolution}
+  Peak visual resolution of $20/20$ human is
+  \begin{footnotesize}
+  \begin{equation*}
+  \begin{split}
+  &\frac{1}{\text{Visual Acuity}}
+  = \frac{1}{20/20}~\text{min. of arc} \\
+  %&= \frac{1}{60}~\text{degrees}
+  &\approx 0.0167~\text{degrees}
+  \end{split}
+  \end{equation*}
+  \end{footnotesize}
+  Sharp drops limit viewing angle to $\pm 20$~degrees
+\end{block}
+\begin{block}{Amplitude of Accommodation}
+  Diopters capture eye adaptability in reciprocal of focal length,
+  Crystalline limits minimum range
+\end{block}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Visual Acuity and Display Technology}
+\begin{columns}
+\column{.30\textwidth}
+  \begin{center}
+  \input{Figures/Visual-iPhoneX}
+  \newline
+  {\tiny \textcolor{gray}{Apple Super Retina HD}}
+  \end{center}
+\column{.65\textwidth}
+\begin{block}{Screen Distance}
+  The distance at which the super retina HD display matches this resolution is
+  \begin{small}
+  \begin{equation*}
+  \begin{split}
+  \text{Distance} &= \frac{1}{2} \cdot \frac{1}{458} \cdot \cot \frac{1}{120} \\
+  &= 1.876~\text{in} .
+  \end{split}
+  \end{equation*}
+  \end{small}
+\end{block}
+\begin{block}{Mobile VR Headsets}
+  \begin{center}
+  \includegraphics[width=2in]{Figures/Visual-Oculus.jpg}
+  \newline
+  {\tiny \textcolor{gray}{\textcopyright Oculus Rift}}
+  \end{center}
+  \end{block}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Content-Rich Applications}
+\begin{center}
+\input{Figures/Video-iPhoneX}
+\end{center}
+\begin{columns}
+\column{.65\textwidth}
+\begin{block}{Video and Mobile Statistics}
+  \begin{itemize}
+  \item 63\% of all US online traffic comes from smartphones and tablets
+    {\tiny \textcolor{gray}{--~Stone Temple}}
+  \item More than 70\% of YouTube viewing happens on mobile devices
+    {\tiny \textcolor{gray}{--~Comscore}}
+  \item 65\% of all digital media time is spent on mobile devices
+    {\tiny \textcolor{gray}{--~Business2Community}}
+  \end{itemize}
+\end{block}
+\column{.30\textwidth}
+  \begin{center}
+  \includegraphics[width=0.96\textwidth]{Figures/Video-Real.jpg}
+  \newline
+  {\tiny \textcolor{gray}{\textcopyright Real}}
+  \end{center}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Options to Stay the Course}
+  \textbf{Spend More Time on Mobile Devices}\newline
+  Average time spent on mobile phone in US is 3h45m per day \\
+  {\tiny \textcolor{gray}{-- eMarketer}}
+\begin{columns}
+\column{.30\textwidth}
+  \includegraphics[width=.96\textwidth]{Figures/Visual-magoo.png}
+  \newline
+  {\tiny \textcolor{gray}{\textcopyright Dreamworks}}
+\column{.65\textwidth}
+  \textbf{Wait for Eye Evolution}
+  \begin{center}
+  \includegraphics[width=2in]{Figures/Visual-Evolution.png}
+  {\tiny \textcolor{gray}{\textcopyright Ravishly}}
+  \end{center}
+  \textbf{Diversify User Population}
+  \begin{center}
+  \includegraphics[width=2in]{Figures/Visual-Animals.jpg}
+  {\tiny \textcolor{gray}{\textcopyright Asurobson}}
+  \end{center}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Summary of Quality of Experience}
+\begin{block}{Current Wireless Landscape}
+  \begin{itemize}
+  \item \textbf{Growth and Market Penetration}: Near saturation
+    \begin{itemize}
+    \item Number of connected wireless devices exceeds world population
+    \item Almost every human who wants mobile phone has one (or more)
+    \end{itemize}
+  \item \textbf{Screen Quality}: At limit of eye acuity
+    \begin{itemize}
+    \item Screens are near boundary of visual resolution
+    \item Viewing distance is constrained by amplitude of accommodation
+    \end{itemize}
+  \item \textbf{Content-Rich Apps}: Video watching \& gaming are prevalent
+    \begin{itemize}
+    \item On average, a person spends 4 hours on mobile device per day
+    \item More videos are watch on phones than elsewhere
+    \end{itemize}
+  \end{itemize}
+\end{block}
+\begin{block}{Wireless Research and the Future}
+  \begin{center}
+  \begin{tikzpicture}
+  \shade[draw=none,
+  left color={rgb:red,1;green,2;blue,3},
+  right color=frametitle.fg,
+  shading angle=60,
+  rounded corners,
+  blur shadow={shadow blur steps=5}] (-2.25,-0.625) rectangle (2.25,0.625);
+  \shade[fill=white, fill opacity=0.1] (-2.25,-0.625) rectangle (2.25,0.625);
+  \node at (0,0) {\textcolor{white}{\Large \textbf{What's Next?}}};
+  \end{tikzpicture}
+  \end{center}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The Rise of the Machine}
+\begin{columns}
+\column{.55\textwidth}
+  \centering{\includegraphics[width=.90\textwidth]{Figures/Machine-Rise.jpg}\newline
+  {\tiny \textcolor{gray}{\textcopyright Warner Bros.}}
+  \vfill
+  \onslide<2->\includegraphics[width=.75\textwidth]{Figures/Wordle.png}}
+\column{.5\textwidth}
+\onslide<2->\begin{block}{Internet of Things}
+  \begin{center}
+  \includegraphics[width=1.5in]{Figures/Machine-Micro.jpg}
+  \end{center}
+\end{block}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Contrasting Machines and Human Behaviors}
+\begin{columns}
+\column{.48\textwidth}
+\begin{block}{Typical Human Calendar}
+  \begin{itemize}
+  \item YouTube video earns 1 view when watched for $\geq 30$~sec
+  \item 47\% of visitors expect website to load in $\leq 2$~sec
+  \item Callers notice roundtrip voice delays of $\geq 250$~ms
+  \end{itemize}
+\end{block}
+
+
+\begin{block}{Machine Scheduler}
+  \begin{itemize}
+  \item OS timeslice $\approx 10$~ms
+  \item LTE schedule $\approx 1$~ms (transmission time interval)
+  \item Microcontroller interrupt latency is $\leq 10~\mu$s
+  \end{itemize}
+\end{block}
+\column{.48\textwidth}
+  \begin{center}
+  \includegraphics[width=0.95\textwidth]{Figures/Scheduler-Human.png} \\
+  \end{center}
+  \vfill
+  \begin{center}
+  \includegraphics[width=0.95\textwidth]{Figures/Scheduler-Machine.png} \\
+  {\tiny \textcolor{gray}{\textcopyright ScotXW}}
+  \end{center}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Information and Inference}
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=3.5in]{Figures/TSP2002.png}};
+\end{tikzpicture}
+\end{center}
+\vfill
+\begin{block}{Payload Design Guideline}
+  \begin{itemize}
+  \item Most of information for inference is contained in first few bits!
+  \end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Information and Inference}
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=4in]{Figures/SigmaDelta1962.png}};
+\end{tikzpicture}
+\end{center}
+\vfill
+\begin{block}{Payload Design Guideline}
+  \begin{itemize}
+  \item Signals are tracked well using small, yet frequent updates
+  \item $\Delta$-$\Sigma$ modulation
+  \end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Losing the Connection}
+\begin{block}{Emerging M2M Traffic Characteristics}
+  \begin{itemize}
+  \item Device density -- Massive versus small
+  \item Connectivity profile -- Sporadic versus sustained
+  \item Packet payloads -- Minuscule versus moderate-to-long
+  \end{itemize}
+\end{block}
+\begin{center}
+\textbf{Anticipated traffic characteristics invalidate the \emph{acquisition-estimation-scheduling} paradigm!}
+\end{center}
+\begin{columns}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.4}{\input{Figures/Balance1}}
+  \end{center}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.4}{\input{Figures/Balance2}}
+  \end{center}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Revival of Uncoordinated Access}
+\begin{block}{A New Reality}
+  \begin{itemize}
+  \item Must address sporadic nature of machine-driven communications
+  \item Transfer of small payloads without ability to amortize cost of acquiring channel and buffer states over long connections
+  \item Preclude use of opportunistic scheduling
+  \item Evinced by departure from scheduling-based solutions
+% and quest for alternate paradigms
+  \end{itemize}
+\end{block}
+\begin{block}{Communication and Identity}
+  When number of devices is massive, with only subset of them active, problem of allocating resources (e.g., codebook, subcarriers, signature sequences) to every user as to manage interference becomes very complex
+\end{block}
+\begin{center}
+\begin{tikzpicture}
+\shade[draw=none,
+left color={rgb:red,1;green,2;blue,3},
+right color=frametitle.fg,
+shading angle=60,
+rounded corners,
+blur shadow={shadow blur steps=5}] (-4.25,-0.625) rectangle (4.25,0.625);
+\shade[fill=white, fill opacity=0.1] (-4.25,-0.625) rectangle (4.25,0.625);
+\node at (0,0) {\textcolor{white}{\Large \textbf{Uncoordinated, Unsourced MAC}}};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Uncoordinated Multiple Access Channel (MAC)}
+\begin{center}
+\scalebox{0.75}{\input{Figures/uncoordinated}}
+\end{center}
+\begin{block}{LoRa-Inspired Parameters}
+  \begin{itemize}
+  \item $K$ active users out of $K_{\mathrm{tot}}$ total users, $K\in[25:300]$
+  \item Each user has $B$-bit message, $B$ is small $\approx 100$
+  \item $N$ channel uses available, $N \approx 30,000$
+  \end{itemize}
+\end{block}
+\myfootnote{\tiny
+M. Berioli, G. Cocco, G. Liva and A. Munari, \emph{Modern Random Access Protocols}. Foundations and Trends in Networking, 2016}
+\myfootnote{\tiny
+F. Clazzer, A. Munari, G. Liva, F. Lazaro, C. Stefanovic, P. Popovski, \emph{From 5G to 6G: Has the Time for Modern Random Access Come?}, arXiv 2019}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Uncoordinated MAC Frame Structure}
+\begin{itemize}
+\item $K$ active devices out of many, many devices
+\item Framework of gathering channel and queue states does not apply
+\end{itemize}
+\begin{center}
+  \scalebox{0.8}{\input{Figures/frame1}}
+\end{center}
+\begin{itemize}
+\item Beacon employed for coarse synchronization
+\item Same devices transmit within frame
+\item Each device may or may not use slot
+\end{itemize}
+\myfootnote{\tiny
+X. Chen and D. Guo. \emph{Many-access channels: The Gaussian case with random user activities}. ISIT, 2014}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Uncoordinated and Unsourced MAC}
+\begin{center}
+\scalebox{0.75}{\input{Figures/unsourced}}
+\end{center}
+\begin{columns}
+\column{.53\textwidth}
+\begin{block}{Without Personalized Feedback}
+  \begin{itemize}
+  \item All devices employ same encoder
+  \item No explicit knowledge of identities
+  \item Need only return unordered list
+  \end{itemize}
+\end{block}
+\column{.45\textwidth}
+\begin{block}{Math Model}
+  \begin{equation*}
+  \textstyle \vec{y}
+  = \sum_{i \in \mathbf{S}_{\mathrm{a}}} \vec{x}_i + \vec{n}
+  \end{equation*}
+  where $\mathbf{x}_i = f(w_i)$ is codeword, only depends on message
+\end{block}
+\end{columns}
+\myfootnote{\tiny
+Y. Polyanskiy. \emph{A Perspective on Massive Random-Access}. ISIT, 2017}
+\end{frame}
+
+\begin{frame}
+\frametitle{Gaussian Random Codes \& Performance Bounds}
+
+\begin{center}
+\begin{tikzpicture}
+\node[scope fading=south] (image) at (0,0) {\includegraphics[width=3.5in]{Figures/ISIT2017Polyanskiy.png}};
+\end{tikzpicture}
+\end{center}
+
+\textbf{Theorem}:
+Fix $P' < P$.
+There exists an $(M, n, \epsilon)$ random-access code for the $K$-user GMAC satisfying power-constraint $P$ and
+\begin{equation*}
+\textstyle \epsilon \leq \sum_{t=1}^{K} \frac{t}{K} \min (p_t, q_t) + p_0 ,
+\end{equation*}
+where constants $p_0$, $p_t$, and $q_t$ are complicated
+\myfootnote{\tiny
+Y. Polyanskiy. \emph{A Perspective on Massive Random-Access}. ISIT, 2017}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{UMAC -- Compressed Sensing Interpretation}
+\centerline{\centerline{\input{Figures/stackedsignals1}}}
+\vfill
+\begin{itemize}
+\item Bit sequence $\underbar{w}_i \in \{ 0,1 \}^B$ converted to index in $[1,2^B]$
+\item Stack codewords into $N \times 2^B$ \emph{sensing} matrix
+\item Message index determines transmitted codeword
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{UMAC -- Compressed Sensing with Multiple Messages}
+\centerline{\input{Figures/stackedsignals2}}
+\begin{block}{Conceptual MAC Framework}
+\begin{itemize}
+\item Devices share same codebook (sensing matrix)
+\item Received signal is sum of $K$ columns plus noise
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{UMAC -- Exact CS Analogy}
+\centerline{\input{Figures/compressivesampling1}}
+\begin{itemize}
+\item $\vec{y} = A \vec{x} + \vec{z} \quad \text{with} \quad \|\vec{x}\|_0 = K$
+\item Dimensionality of CS problem is \textbf{huge}
+\item Computational complexity of conventional CS solvers: $\mathcal{O}(\mathrm{poly}(2^B))$
+\end{itemize}
+\end{frame}
+
+
+
+\part{A Quest for Low-Complexity: \newline Sparsifying Collision}
+\frame{\partpage}
+
+
+\begin{frame}
+\frametitle{Quest for Low-Complexity Unsourced MAC}
+
+\begin{block}{Idea~1: Stochastic Binning}
+\begin{center}
+  \scalebox{0.8}{\input{Figures/architecture0}}
+\end{center}
+\end{block}
+\myfootnote{\tiny
+O. Ordentlich and Y. Polyanskiy. \emph{Low Complexity Schemes for the Random Access Gaussian Channel}. ISIT, 2017}
+\end{frame}
+
+\begin{frame}
+\frametitle{Caveat -- The Poisson Wall}
+
+\begin{columns}
+\column{.48\textwidth}
+  \begin{center}
+  \scalebox{1.0}{\input{Figures/poisson-reward}} \\
+  \textcolor{gray}{\scriptsize Sum Reward}
+  \end{center}
+\column{.48\textwidth}
+  \begin{center}
+  \scalebox{1.0}{\input{Figures/poisson}} \\
+  \textcolor{gray}{\scriptsize Count Distribution}
+\end{center}
+\end{columns}
+\vfill
+\begin{columns}
+\column{.53\textwidth}
+\begin{block}{Effects of Decoding Threshold}
+  \begin{itemize}
+  \item More slots reduces parameter of Poisson/binomial distribution
+  \item More slots reduces bit count per decoded slot
+  \end{itemize}
+  \begin{footnotesize}
+  \begin{equation*}
+  \textstyle \sum_{k=0}^T
+  \frac{N}{J} \frac{k}{T} \log_2 \left( 1 + J T \cdot \mathrm{SNR} \right)
+  \mathrm{pmf}(k)
+  \end{equation*}
+  \end{footnotesize}
+\end{block}
+\column{.45\textwidth}
+  \centerline{\input{Figures/PW-Performance}}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Quest for Low-Complexity Unsourced MAC}
+
+\begin{block}{Idea~1$++$: Slotted with Successive Interference Cancellation}
+\centerline{\input{Figures/slots}}
+\end{block}
+
+\begin{block}{Leveraging Prior Work on Uncoordinated Access}
+  \begin{itemize}
+  \item $K$ \textbf{uncoordinated} devices, each with one packet to send
+  \item Time is \textbf{slotted}; transmissions occur within slots
+  \item Successive interference cancellation
+  \end{itemize}
+\end{block}
+
+\myfootnote{\tiny
+E. Casini, R. De Gaudenzi, and O. Del Rio Herrero. \emph{Contention resolution diversity slotted ALOHA (CRDSA): An enhanced random access scheme for satellite access packet networks}. IEEE Trans on Wireless Comm, 2007}
+\myfootnote{\tiny
+E Paolini, G Liva, M Chiani. \emph{Coded slotted ALOHA: A graph-based method for uncoordinated multiple access}.  IEEE Trans on Info Theory, 2015}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Amenable to Graphical Representation}
+\begin{itemize}
+\item Tanner graph representation for transmission scheme
+\item Variable nodes $\leftrightarrow$ packets;
+check nodes $\leftrightarrow$ received signals
+\item Message-passing decoder $\leftrightarrow$ peeling decoder for erasure channel
+\end{itemize}
+\begin{columns}
+\column{.48\textwidth}
+  \begin{center}
+  \scalebox{0.8}{\input{Figures/graph1}}
+  \end{center}
+\column{.48\textwidth}
+  \begin{center}
+  \scalebox{0.8}{\input{Figures/graph2}}
+  \end{center}
+\end{columns}
+\myfootnote{\tiny
+G. Liva. \emph{Graph-based analysis and optimization of contention resolution diversity slotted ALOHA}. IEEE Trans on Comm, 2011}
+\myfootnote{\tiny
+E. Paolini, G. Liva, and M. Chiani. \emph{Coded slotted ALOHA: A graph-based method for uncoordinated multiple access}. IEEE Trans on Info Theory, 2015}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Decoder -- Peeling Algorithm}
+\begin{block}{Joint decoding via successive interference cancellation}
+  \begin{center}
+  \input{Figures/framework}
+  \end{center}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Graphical Methods: Tools from Iterative Decoding}
+\begin{itemize}
+\item $L(z) = \sum_i L_i z^i$ variable dist.\ from node
+\item $\lambda(z) = \sum_i \lambda_i x^{i-1} = {L'(z)}/{L'(1)}$ variable dist.\ from edge
+\item $R(z) = \sum_j R_j z^i$ check dist.\ from node
+\item $\rho(z) = \sum_j \rho_j x^{j-1} = {R'(z)}/{R'(1)}$ check dist.\ from edge
+\end{itemize}
+\begin{columns}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.8}{\input{Figures/tanner}}
+  \end{center}
+\column{.5\textwidth}
+  \begin{center}
+  \scalebox{0.7}{\input{Figures/tanner2}}
+  \end{center}
+\end{columns}
+\myfootnote{\tiny
+V. Zyablov, and M. Pinsker. \emph{Decoding complexity of low-density codes for transmission in a channel with erasures.} Problemy Peredachi Informatsii, 1974}
+\myfootnote{\tiny
+M. Luby, M. Mitzenmacher, A. Shokrollahi, and D. Spielman. \emph{Efficient erasure correcting codes}. IEEE Trans on Info Theory, 2001}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Graphical Methods: Tools from Iterative Decoding}
+
+\begin{itemize}
+\item $x$: Prob.\ outgoing message from variable node erased
+\item $y$: Prob.\ outgoing message from check node erased
+\end{itemize}
+\begin{center}
+\scalebox{0.7}{\input{Figures/tanner3}}
+\end{center}
+\begin{itemize}
+\item Outgoing variable message is erased when all incoming check messages are erased
+\begin{equation*}
+x = \mathrm{E} \left[ y^{i-1} \right] = \lambda (y)
+\end{equation*}
+\item Outgoing check message is erased when one incoming variable message is erased
+\begin{equation*}
+y = \mathrm{E} \left[ 1 - (1 - x)^{j-1} \right] = 1 - \rho(1-x)
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Extrinsic Information Transfer (EXIT) Chart}
+\begin{columns}
+\column{.65\textwidth}
+  \scalebox{0.85}{\input{Figures/exitchart}}
+\column{.3\textwidth}
+  \scalebox{0.85}{\input{Figures/tanner4}}
+\end{columns}
+\vfill
+\textbf{Step-by-Step Progression}
+\begin{xalignat*}{2}
+y &= 1 - \rho(1-x) &
+x &= \lambda(y) \quad \text{ \textcolor{gray}{(flipped)}}
+\end{xalignat*}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Unsourced MAC -- SIC UGMAC Scheme}
+\begin{center}
+\scalebox{0.75}{\input{Figures/lcscheme2}}
+\end{center}
+\begin{block}{Key Features}
+\begin{itemize}
+\item Schedule selected based on \textbf{message bits}
+\item Devices can transmit in multiple sub-blocks
+\item Scheme facilitates peeling decoder
+\end{itemize}
+\end{block}
+\myfootnote{\tiny
+A. Vem, K. Narayanan, J. Cheng, JFC.
+\emph{A User-Independent Successive Interference Cancellation Based Coding Scheme for the Unsourced Random Access Gaussian Channel}.
+IEEE Trans on Comm, 2019}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{What Really Happens within Slot?}
+\begin{center}
+\input{Figures/UnsMAC_encoder}
+\end{center}
+\begin{block}{Implementation Notes}
+  \begin{itemize}
+\item Message is partitioned into two parts $w = (w_1, w_2)$
+  \item Every device uses identical codebook built from spatially-coupled LDPC-type codes tailored to $T$-user real-adder channel
+  \item $w_2$ dictate permutation on encoder and recovered through CS
+  \item Non-negative $\ell_1$-regularized LASSO
+  %\item MMSE estimator on list
+  \end{itemize}
+\end{block}
+\myfootnote{\tiny
+A. Vem, K. Narayanan, J. Cheng, JFC.
+\emph{A User-Independent Successive Interference Cancellation Based Coding Scheme for the Unsourced Random Access Gaussian Channel}.
+IEEE Trans on Comm, 2019}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Limitations of Sparsifying Collisions}
+\begin{columns}
+\column{.5\textwidth}
+\begin{block}{Drawbacks of Slots}
+  \begin{itemize}
+  \item Stochastic binning and expectation of concave rewards
+  \item Second order dispersion effects comes into play in FBL
+  \item Energy expended solely to resolving collisions
+  \item Gray slots are discarded during decoding process (60\%)
+  \end{itemize}
+\end{block}
+\column{.45\textwidth}
+  \centerline{\scalebox{0.42}{\input{Figures/restrictedmatrix2}}}
+\end{columns}
+\vfill
+  \centerline{\scalebox{1.0}{\input{Figures/DrawbackSIC}}}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PART CCS
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Quest for Low-Complexity: \newline Coded Compressed Sensing}
+\frame{\partpage}
+
+
+\begin{frame}
+\frametitle{Quest for Low-Complexity Unsourced MAC}
+\begin{block}{Idea~2: Divide and Conquer Information Bits}
+\begin{center}
+\input{Figures/dividebits2}
+\end{center}
+\begin{itemize}
+\item Split problem into sub-components suitable for CS framework
+\item Get lists of sub-packets, one list for every slot
+\item Stitch pieces of one packet together using error correction
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Device Perspective}
+\centerline{\input{Figures/dividebits3}}
+\vfill
+\begin{itemize}
+\item Collection of $J$ CS matrices and 1-sparse vectors
+\item Each CS generated signal is sent in specific time slot
+\end{itemize}
+\myfootnote{\tiny
+V. Amalladinne, A. Vem, D. Soma, K. R. Narayanan, JFC. \emph{Coupled Compressive Sensing Scheme for Unsourced Multiple Access}. ICASSP 2018}
+\end{frame}
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Multiple Access}
+\centerline{\input{Figures/dividebits4}}
+\vfill
+\begin{itemize}
+\item $J$ instances of CS problem, each solved with non-negative LS
+\item Produces $J$ lists of $K$ decoded sub-packets (with parity)
+\item Must piece sub-packets together using tree decoder
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Stitching Process}
+  \begin{center}
+  \input{Figures/dividebits5}
+  \end{center}
+\begin{columns}
+\column{.45\textwidth}
+\begin{block}{Tree Decoding Principles}
+  \begin{itemize}
+  \item Every parity is linear combination of bits in preceding blocks
+  \item Late parity bits offer better performance
+  \item Early parity bits decrease decoding complexity
+  \item Correct fragment is on list
+  \end{itemize}
+\end{block}
+\column{.45\textwidth}
+  \centerline{\scalebox{0.5}{\input{Figures/treegrowth}}}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- Understanding Parity Bits}
+\begin{center}
+{\input{Figures/subvector}}
+\end{center}
+\begin{itemize}
+\item Consider binary information vector $\vec{w}$ of length $k$
+\item Systematically encoded using generator matrix $G$, with
+$\vec{p} = \vec{w} G$
+\item Suppose alternate vector $\vec{w}_{\mathrm{r}}$ is selected at random from $\{ 0, 1 \}^k$
+\end{itemize}
+
+\begin{block}{Lemma}
+Probability that randomly selected information vector $\vec{w}_{\mathrm{r}}$ produces same parity sub-component is given by
+\begin{equation*}
+\Pr (\vec{p} = \vec{p}_{\mathrm{r}}) = {2^{-\operatorname{rank}(G)}}
+\end{equation*}
+\end{block}
+\textcolor{frametitle.fg}{Proof:}
+%\begin{itemize}
+%\item Suppose $\vec{w}_{\mathrm{r}}$ is drawn at random from $\{ 0, 1 \}^k$
+%\item Then event $\{ \vec{p} = \vec{p}_{\mathrm{r}} \}$ can equivalently be expressed as
+%\begin{equation*}
+%\begin{split}
+$\{ \vec{p} = \vec{p}_{\mathrm{r}} \}
+= \{ \vec{w} G = \vec{w}_{\mathrm{r}} G \}
+= \{ \vec{w} + \vec{w}_{\mathrm{r}} \in \operatorname{nullspace}(G) \}$
+%\end{split}
+%\end{equation*}
+%\item Number of vectors in nullspace of $G$ is $2^{\operatorname{nullity}(G)} = 2^{k - \operatorname{rank} (G)}$
+%\item Then $\Pr ( \vec{p} = \vec{p}_{\mathrm{r}} )
+%= \frac{2^{k - \operatorname{rank} (G)}}{2^k}
+%= 2^{- \operatorname{rank} (G)}$
+%\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- General Parity Bits}
+\begin{center}
+\input{Figures/subvector3}
+\end{center}
+\begin{itemize}
+\item True vector $(\vec{w}_{i_0}(0), \vec{w}_{i_0}(1), \vec{w}_{i_0}(2), \vec{w}_{i_0}(3))$
+\item Consider alternate vector with information sub-block $(\vec{w}_{i_0}(0), \vec{w}_{i_1}(1), \vec{w}_{i_2}(2), \vec{w}_{i_3}(3))$ pieced from lists
+\item To survive stage~3, candidate vector must fulfill parity equations
+\end{itemize}
+\begin{align*}
+\left( \vec{w}_{i_0}(0) - \vec{w}_{i_1}(0) \right) \begin{bmatrix} G_{0,0} \end{bmatrix} &= \vec{0}_{1 \times l_1} \\
+\left( \vec{w}_{i_0}(0) - \vec{w}_{i_2}(0), \vec{w}_{i_1}(1) - \vec{w}_{i_2}(1) \right)
+\begin{bmatrix} G_{0,1} \\ G_{1,1} \end{bmatrix}
+&= \vec{0}_{1 \times l_2} \\
+\left( \vec{w}_{i_0}(0) - \vec{w}_{i_3}(0), \vec{w}_{i_1}(1) - \vec{w}_{i_3}(1), \vec{w}_{i_2}(2) - \vec{w}_{i_3}(2) \right)
+\begin{bmatrix} G_{0,2} \\ G_{1,2} \\ G_{2,2} \end{bmatrix}
+&= \vec{0}_{1 \times l_3}
+\end{align*}
+\end{frame}
+
+\begin{frame}
+\frametitle{Coded Compressive Sensing -- General Parity Bits}
+\begin{center}
+\input{Figures/subvector3}
+\end{center}
+\begin{itemize}
+\item When indices are not repeated in $(\vec{w}_{i_0}(0), \vec{w}_{i_1}(1), \vec{w}_{i_2}(2), \vec{w}_{i_3}(3))$, probability is governed by
+\begin{equation*}
+\operatorname{rank}
+\left(
+\begin{bmatrix}
+G_{0,0} & G_{0,1} & G_{0,2} \\
+\mathbf{0} & G_{1,1} & G_{1,2} \\
+\mathbf{0} & \mathbf{0}& G_{2,2}
+\end{bmatrix}
+\right)
+\end{equation*}
+\item \textcolor{gray}{But, when indices are repeated, sub-blocks may disappear
+\begin{equation*}
+\operatorname{rank}
+\left(
+\begin{bmatrix}
+G_{0,0} \mathbf{1}_{\{ i_1 \neq i_0 \}} & G_{0,1} \mathbf{1}_{\{ i_2 \neq i_0 \}} & G_{0,2} \mathbf{1}_{\{ i_3 \neq i_0 \}} \\
+\mathbf{0} & G_{1,1} \mathbf{1}_{\{ i_2 \neq i_1 \}} & G_{1,2} \mathbf{1}_{\{ i_3 \neq i_1 \}} \\
+\mathbf{0} & \mathbf{0}& G_{2,2} \mathbf{1}_{\{ i_3 \neq i_2 \}}
+\end{bmatrix}
+\right)
+\end{equation*}}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Allocating Parity Bits (approximation)}
+\begin{itemize}
+\item $l_i$: \# parity bits in sub-block $i \in 2, \ldots, J$,
+\item $L_i$: \# erroneous paths that survive stage $i \in 2, \ldots, J$,
+\item Complexity $C_{\mathrm{tree}}$: \# nodes on which parity check constraints verified
+\end{itemize}
+\begin{block}{Expressions for $\mathbb{E}[L_i]$ and $C_{\mathrm{tree}}$}
+\begin{itemize}
+\item $L_i \lvert L_{i-1} \sim B((L_{i-1}+1)K-1,p_i)$, $p_i=2^{-l_i}$, $q_i=1-p_i$
+\begin{align*}
+\mathbb{E}[L_i] &= \mathbb{E}[ \mathbb{E}[L_i \lvert L_{i-1}]] \\
+&= \mathbb{E}[((L_{i-1}+1)K-1)p_i] \\
+&= p_iK\mathbb{E}[L_{i-1}] + p_i(K-1) \\
+&= \sum_{r=1}^{i} K^{i-r}(K-1) \prod_{j=r}^{i}p_j
+\end{align*}
+\item $C_{\mathrm{tree}} = K + \sum_{i=1}^{J-2}\left[(L_i + 1)K\right]$
+\item $\mathbb{E}[C_{\mathrm{tree}}]$ can be computed using the expression for $\mathbb{E}[L_i]$
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Optimization of Parity Lengths}
+\begin{itemize}
+\item $l_i$: \# parity bits in sub-block $i \in 2, \ldots, J$,
+\item $L_i$: \# erroneous paths that survive stage $i \in 2, \ldots, J$,
+\end{itemize}
+\begin{block}{(Relaxed) Geometric Programming Optimization}
+\begin{equation*}
+\begin{aligned}
+& \underset{(l_2, \dots, l_{J})}{\text{minimize}}
+& &\mathbb{E}[C_{\mathrm{tree}}] \\
+& \text{subject to}
+& & \Pr(L_{J} \ge 1) \le \varepsilon_{\mathrm{tree}}
+& \text{\textcolor{frametitle.fg}{Erroneous Paths}} \\
+&&& \sum_{i=2}^{J} l_i = M-B & \text{\textcolor{frametitle.fg}{Total \# Parity Bits}} \\
+&&& l_i \in \{ 0, \ldots, N/J \} \quad \forall~i \in 2, \ldots, J
+& \text{\textcolor{frametitle.fg}{Integer Constraints}}
+\end{aligned}
+\end{equation*}
+\begin{itemize}
+\item Can be solved using standard convex solver (e.g.~CVX)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Choice of Parity Lengths}
+\begin{itemize}
+\item $K=200$, $J=11$, $N/J=15$
+\end{itemize}
+\begin{center}
+\begin{tabular}{||l|l|l||}
+\hline
+ $\varepsilon_{\mathrm{tree}}$ & $\mathbb{E}[C_{\mathrm{tree}}]$ & Parity Lengths $l_2, \ldots, l_J$ \\ [0.5ex]
+\hline \hline
+$0.006$ & Infeasible & Infeasible \\
+\hline
+$0.0061930$ & $3.2357\times10^{11}$ & $ 0 ,0, 0, 0, 15, 15, 15, 15, 15, 15$ \\
+\hline
+$0.0061931$ & $3357300$ & $ 0, 3, 8, 8, 8, 8, 10, 15, 15, 15$ \\
+\hline
+$0.0061932$ & $1737000$ & $ 0, 4, 8, 8, 8, 8, 9, 15, 15, 15$ \\
+\hline
+$0.0061933$ & $926990$ & $ 0, 5, 8, 8, 8, 8, 8, 15, 15, 15$ \\
+\hline
+$0.0061935$ & $467060$ & $ 1, 8, 8, 8, 8, 8, 8, 11, 15, 15$ \\
+\hline
+$0.0062$ & $79634$ & $ 1, 8, 8, 8, 8, 8, 8, 11, 15, 15$ \\
+\hline
+$0.007$ & $7357.8$ & $ 6, 8, 8, 8, 8, 8, 8, 8, 13, 15$ \\
+\hline
+$0.008$ & $6152.7$ & $ 7, 8, 8, 8, 8, 8, 8, 8, 12, 15$ \\
+\hline
+$0.02$ & $5022.9$ & $ 6, 8, 8, 9, 9, 9, 9, 9, 9, 14$ \\
+\hline
+$0.04$ & $4158$ & $ 7, 8, 8, 9, 9, 9, 9, 9, 9, 13$ \\
+\hline
+$0.6378$ & $3066.3$ & $ 9, 9, 9, 9, 9, 9, 9, 9, 9, 9$ \\ [1ex]
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Leveraging CCS Framework}
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=4in]{Figures/CHIRRUP.png}};
+\end{tikzpicture}
+\end{center}
+  \begin{itemize}
+  \item Robert Calderbank, Andrew Thompson on arXiv
+  \item Hadamard matrix based compressing scheme $+$  CSS
+  \item Ultra-low complexity decoding algorithm
+  \end{itemize}
+\end{frame}
+
+
+\part{Quest for Low-Complexity: \newline Hybrid and Emerging Paradigms}
+\frame{\partpage}
+\begin{frame}
+\frametitle{Extending CCS Framework}
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=4in]{Figures/SparcsUMAC.png}};
+\end{tikzpicture}
+\end{center}
+  \begin{itemize}
+  \item Alexander Fengler, Peter Jung, Giuseppe Caire on arXiv
+  \item Connection between CCS indexing and sparse regression codes
+  \item Circumvent slotting under CCS and dispersion effects
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{UMAC -- CCS Revisited}
+\begin{center}
+\input{Figures/stackedCCS1}
+\end{center}
+\begin{itemize}
+\item Bit sequence split into $J$ fragments
+\item Each bit $+$ parity block converted to index in $[ 1, 2^{M/J} ]$
+\item Stack sub-codewords into $(N/J) \times 2^{M/J}$ sensing matrices
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{UMAC -- CCS Unified CS Analogy}
+\centerline{\input{Figures/stackedCCS2}}
+\begin{itemize}
+\item Initial non-linear indexing step
+\item Index vector is $J$-block sparse
+\item Connection to sparse regression codes
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{UMAC -- Exact CS Analogy}
+\centerline{\input{Figures/stackedCCS3}}
+\begin{itemize}
+\item Complexity management comes from dimensionality reduction
+\item Use full sensing matrix on sparse regression codes
+\item Decode using low-complexity AMP
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The Big MAC}
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=3.5in]{Figures/SparseIDMA.png}};
+\end{tikzpicture}
+\end{center}
+  \begin{itemize}
+  \item A. Pradhan, V. Amalladinne, A. Vem, K. Narayanan, JFC
+  \item IEEE Global Communications Conference, December 2019
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Sparse IDMA}
+\begin{center}
+\scalebox{0.9}{\input{Figures/SparseIDMA}}
+\end{center}
+  \begin{itemize}
+  \item Compressed sensing preamble with information bits
+  \item Sparse random multi-access graph conducive to joint decoding.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Performance of Unsourced GMAC Schemes}
+\begin{center}
+\input{Figures/UGMAC-Performance}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Discussion -- Unsourced Multiple Access Channel}
+
+\begin{block}{Summary}
+\begin{itemize}
+\item Reviewed several frameworks for unsourced multiple access
+\item There are close connections between graph-based codes, compressive sensing, and UMAC
+\item There remains a gap from information-theoretic results
+\item Many theoretical and practical challenges exist
+\end{itemize}
+\end{block}
+\begin{block}{Current Approach}
+When carefully designed, single sparse joint Tanner graph that spans across all transmissions offers state-of-the-art performance
+\end{block}
+\begin{center}
+  \begin{tikzpicture}
+  \shade[draw=none,
+  left color={rgb:red,1;green,2;blue,3},
+  right color=frametitle.fg,
+  shading angle=60,
+  rounded corners,
+  blur shadow={shadow blur steps=5}] (-2.25,-0.625) rectangle (2.25,0.625);
+  \shade[fill=white, fill opacity=0.1] (-2.25,-0.625) rectangle (2.25,0.625);
+  \node at (0,0) {\textcolor{white}{\Large \textbf{Questions?}}};
+  \end{tikzpicture}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{}
+\begin{center}
+\scalebox{0.75}{\input{Figures/BellDiagram}}
+\end{center}
+  \begin{center}
+  \begin{tikzpicture}
+  \shade[draw=none,
+  left color={rgb:red,1;green,2;blue,3},
+  right color=frametitle.fg,
+  shading angle=60,
+  rounded corners,
+  blur shadow={shadow blur steps=5}] (-2.25,-0.625) rectangle (2.25,0.625);
+  \shade[fill=white, fill opacity=0.1] (-2.25,-0.625) rectangle (2.25,0.625);
+  \node at (0,0) {\textcolor{white}{\Large \textbf{Thank You!}}};
+  \end{tikzpicture}
+  \end{center}
+\myfootnote{\scriptsize This material is based upon work supported, in part, by NSF under Grant No.~1619085}
+\myfootnote{\scriptsize This material is also based upon work support, in part, by Qualcomm Technologies, Inc., through their University Relations Program}
+\end{frame}
+
+\begin{frame}
+\frametitle{Asynchronous UMAC}
+\begin{center}
+\begin{tikzpicture}
+  \node[scope fading=south] (image) at (0,0) {\includegraphics[width=4in]{Figures/ICASSP2019.png}};
+\end{tikzpicture}
+\end{center}
+\vfill
+\begin{block}{Building Robust Sensing Matrices}
+  \begin{itemize}
+  \item Extending CCS framework with low sample complexity
+  \item Addressing issues pertaining to asynchrony
+  \item Context of neighbor discovery
+  \end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dealing with Jitter and Asynchrony}
+\begin{center}
+  \input{Figures/AsyncCCS1}
+\end{center}
+\begin{block}{Asynchronous Signals}
+  \begin{itemize}
+  \item $\vec{y} = \tilde{A} \tilde{\vec{x}} + \vec{z}$ with  $\|\vec{x}\|_0 = K$
+  \item $\tilde{A} \in \mathbb{C}^{(n+\mathcal{T}) \times 2^B}$ unknown due to unknown random delays
+  \item Max delay $\mathcal{T}$ known to the decoder
+  \end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Expanded Codebook through Sensing Matrix}
+\begin{center}
+  \input{Figures/AsyncCCS2}
+\end{center}
+  \begin{itemize}
+  \item Computational complexity of CS solvers: $\mathcal{O}(\mathrm{poly}(2^B(\mathcal{T}+1)))$
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Hybrid Methods and Alternatives}
+\begin{block}{Intermittent CCS}
+\begin{columns}
+\column{.48\textwidth}
+  \begin{center}
+  \scalebox{1.0}{\input{Figures/Paths-CCS}}
+  \end{center}
+\column{.48\textwidth}
+  \begin{center}
+  \scalebox{1.0}{\input{Figures/Paths-ICCS}}
+  \end{center}
+\end{columns}
+\end{block}
+\begin{itemize}
+\item Trading off flexibility and complexity
+\end{itemize}
+\end{frame}
+
+\end{document}
+
+
+%\begin{frame}
+%\frametitle{Example -- Traditional Fountain Codes}
+%\begin{columns}
+%\column{.48\textwidth}
+%\begin{center}
+%  \scalebox{0.55}{\input{Figures3/fountainmatrix1}}
+%\end{center}
+%\column{.5\textwidth}
+%\begin{itemize}
+%\item Select \# of bit nodes
+%\item Pick bits uniformly
+%\item Columns not selected independently
+%\item Cannot be employed in massive uncoordinated multiple access
+%\end{itemize}
+%\end{columns}
+%\begin{center}
+%  \scalebox{0.8}{\input{Figures3/fountain1}}
+%\end{center}
+%\footnotetext[1]{K. Narayanan and H. Pfister. ``Iterative collision resolution for slotted ALOHA: An optimal uncoordinated transmission policy.'' ISTC, 2012.}
+%\end{frame}
+
+
+%\begin{frame}
+%\frametitle{Example -- Transpose of LT Codes}
+%\begin{columns}
+%\column{.48\textwidth}
+%\begin{center}
+%  \scalebox{0.55}{\input{Figures3/fountainmatrix2}}
+%\end{center}
+%\column{.5\textwidth}
+%\begin{itemize}
+%\item Devices pick \# of transmissions
+%\item Selects slots uniformly
+%\item Columns are independently
+%\item Admissible massive uncoordinated multiple access
+%\end{itemize}
+%\end{columns}
+%\begin{center}
+%  \scalebox{0.8}{\input{Figures3/fountain2}}
+%\end{center}
+%\footnotetext[1]{K. Narayanan and H. Pfister. ``Iterative collision resolution for slotted ALOHA: An optimal uncoordinated transmission policy.'' ISTC, 2012.}
+%\end{frame}
+
+\begin{frame}
+\frametitle{Optimal Scheme when Number of Devices Known}
+\begin{center}
+\input{Figures3/sideinfo}
+\end{center}
+\begin{itemize}
+\item Every device picks random slot count according to Soliton
+  \begin{equation*}
+  p_{\mathrm{sol}(t)}(m)
+  = \begin{cases}
+  {1}/{t} & m = 1 \\
+  {1}/{((m-1)m)} & m = 2, \ldots t
+  \end{cases}
+  \end{equation*}
+\item Given count, select $m$ slots uniformly at random
+\item Induce Soliton on left and Poisson on right of Tanner graph
+\item Asymptotically \textbf{optimal} when number of devices is known
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Proof Sketch -- Access with Dual Fountain Codes}
+\begin{columns}
+\column{.40\textwidth}
+\begin{block}{LT Codes}
+\begin{itemize}
+\item Degree distributions
+\begin{gather*}
+L(\cdot) \text{ Poisson dist}\\
+R(\cdot) \text{ Soliton dist}
+\end{gather*}
+\item Fountain codes optimal (asymptotically)
+\begin{align*}
+\lambda(z) = e^{- r_{\mathrm{avg}}(1-z)} \\
+\rho(z) = - \ln (1-z)
+\end{align*}
+\item Density evolution
+\begin{align*}
+y &= 1 - \rho(1-x) \\
+x &= \lambda(y)
+\end{align*}
+%\item Original LT Recursions
+%\begin{align*}
+%y_{t+1} &= 1 - \rho(1 - \lambda(y_t)) \rightarrow 0 \\
+%x_{t+1} &= \lambda(1 - \rho(1 - x_t)) \rightarrow 0
+%\end{align*}
+\end{itemize}
+\end{block}
+\column{.55\textwidth}
+\begin{block}{Uncoordinated MAC}
+\begin{itemize}
+\item Degree distributions
+\begin{gather*}
+\tilde{L}(\cdot) = R(\cdot) \text{ Soliton dist}\\
+\tilde{R}(\cdot) = L(\cdot) \text{ Poisson dist}
+\end{gather*}
+\item Density evolution
+\begin{align*}
+y %&= 1 - \tilde{\rho}(1-x) \\
+%&= 1 - \lambda(1-x) \\
+&= 1 - e^{- r_{\mathrm{avg}}x} \\
+x %&= \tilde{\lambda}(y)
+%= \rho(y)
+&= - \ln (1-y)
+\end{align*}
+\item Recursions
+\begin{equation*}
+\begin{split}
+y_{t+1} %&= 1 - \lambda(1 - \rho(y_t)) \\
+&= 1 - e^{ r_{\mathrm{avg}} \ln (1-y)} \\
+&= 1 - (1-y)^{r_{\mathrm{avg}}}
+\end{split}
+\end{equation*}
+\end{itemize}
+\end{block}
+\end{columns}
+\centerline{Throughput $\rightarrow 1$ when $K$ known}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Potential Solution -- Time-Varying Markov Chain}
+\begin{center}
+\input{Figures3/statemachine}
+\end{center}
+\begin{itemize}
+\item Every device contains state machine initialized to 0 at onset of round
+\item Device transmits a copy of message whenever Markov chain jumps to right neighbor
+\item State denotes number of copies transmitted thus far
+\item Transition probabilities are time varying
+\item Progression of Markov chain independent from one device to another
+%\item Chain is semi-infinite to accommodate round of any size
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Computing Transition Probabilities}
+\begin{center}
+\scalebox{0.9}{\input{Figures3/distributions1}}
+\end{center}
+\begin{itemize}
+\item Must find transition probabilities to shift from $p_{\mathrm{sol}(3)}(\cdot)$ to $p_{\mathrm{sol}(4)}(\cdot)$
+\end{itemize}
+\begin{center}
+\scalebox{0.9}{\input{Figures3/distributions2}}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Shifting from One Distribution to Another}
+\begin{center}
+\scalebox{0.9}{\input{Figures3/distributions3}}
+\end{center}
+\begin{enumerate}
+\item Condition~1: Need enough probability mass to push over to neighbor
+\item Condition~2: Can't push probability mass past immediate neighbor
+\item Conditions can be expressed mathematically in terms of first-order stochastic dominance
+\begin{equation*}
+X \preceq Y \text{ whenever }
+\Pr (X > m) \leq \Pr (Y > m) \quad \forall m
+\end{equation*}
+or, equivalently, cumulative distribution function (CDF) of $X$ dominates CDF of $Y$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Markov Chains and Distribution Shaping}
+\begin{itemize}
+\item Let $p_0(\cdot), p_1(\cdot), p_2(\cdot), \ldots$ be a sequence of probability distributions
+\item Let $S$ denote standard right shift operator acting on one-sided infinite sequences
+\end{itemize}
+\begin{center}
+ \scalebox{0.9}{\input{Figures3/distributions4}}
+\end{center}
+\textbf{Theorem:}
+Sequence of distributions can be achieved through monotone increasing Markov chain with self-transitions and transitions to nearest neighbors on the right iff
+\begin{itemize}
+\item $p_t \preceq p_{t+1}$ for every $t$ \textcolor{gray}{-- enough probability mass to push to right}
+\item $p_{t+1} \preceq S p_t$ for every $t$ \textcolor{gray}{-- cannot push mass past the neighbor}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Applying Markov Shaping Strategy}
+\begin{center}
+\input{Figures3/statemachine2}
+\end{center}
+\begin{itemize}
+\item Suppose $p_0, p_1, \ldots$ is admissible sequence of distributions
+\item Let $\{ X_t \}$ be first-order, time-inhomogeneous Markov chain
+\item Denote transition probabilities by
+\begin{gather*}
+\Pr (X_{t+1} = m | X_t = m) = 1 - \gamma^{(t)}_m \\
+\Pr (X_{t+1} = m+1 | X_t = m) = \gamma^{(t)}_m
+\end{gather*}
+\item Desired transition probabilities are
+\begin{equation*}
+\gamma^{(t)}_m = \begin{cases}
+\frac{ \sum_{\ell=0}^m p_t(\ell)
+- \sum_{\ell=0}^m p_{t+1}(\ell) }{p_t(m)}
+& p_t(m) > 0 \\ 0 & p_t(m) = 0
+\end{cases}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example: Soliton Distributions}
+\begin{columns}
+\column{.45\textwidth}
+  Soliton Distribution
+  \begin{equation*}
+  p_{\mathrm{sol}(t)}(m)
+  = \begin{cases}
+  \frac{1}{t} & m = 1 \\
+  \frac{1}{(m-1)m} & m = 2, \ldots t
+  \end{cases}
+  \end{equation*}
+\column{.45\textwidth}
+  \begin{center}
+  \scalebox{0.9}{\input{Figures3/distributions}}
+  \end{center}
+\end{columns}
+\begin{block}{Checking Condition~1: $p_{\mathrm{sol}(t)} \preceq p_{\mathrm{sol}(t+1)}$}
+\begin{itemize}
+\item CDF comparison yields
+\begin{equation*}
+\sum_{\ell=0}^m p_t(\ell) - \sum_{\ell=0}^m p_{t+1}(\ell)
+= \frac{1}{t} - \frac{1}{t+1}
+= \frac{1}{t(t+1)}
+\end{equation*}
+\item Difference vanishes for $m \geq t+1$
+\item Hence $p_{\mathrm{sol}(t)} \preceq p_{\mathrm{sol}(t+1)}$
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example: Soliton Distributions}
+\begin{block}{Checking Condition~2: $p_{\mathrm{sol}(t+1)} \preceq S p_{\mathrm{sol}(t)}$}
+\begin{itemize}
+\item For $m=1$, we have
+\begin{equation*}
+\sum_{\ell=0}^m p_{t+1}(\ell)
+- \sum_{\ell=0}^{m-1} p_t(\ell)
+= \frac{1}{t+1} \geq 0
+\end{equation*}
+\item For $m = 2, \ldots, t$, we get
+\begin{equation*}
+\begin{split}
+\sum_{\ell=0}^m p_{t+1}(\ell)
+- \sum_{\ell=0}^{m-1} p_t(\ell)
+&= \frac{1}{(m-1)m} - \frac{1}{t(t+1)} \geq 0
+\end{split}
+\end{equation*}
+\item Difference vanishes for $m \geq t+1$
+\item Hence $p_{\mathrm{sol}(t+1)} \preceq S p_{\mathrm{sol}(t)}$
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example: Soliton Distributions}
+\begin{itemize}
+\item Conditions~1~\&~2 are \textbf{fulfilled}
+\item There exits \textbf{Markov chain} containing solely self-transitions and transitions to nearest neighbors on the right that possesses \textbf{Soliton distribution} at every time~$t$
+\end{itemize}
+\vfill
+\begin{columns}
+\column{.6\textwidth}
+  \begin{itemize}
+  \item Transition probabilities are
+  \begin{equation*}
+  \gamma^{(t)}_m = \begin{cases}
+  \frac{1}{t+1} & m = 1 \\
+  \frac{(m-1)m}{t(t+1)} & m = 2, \ldots, t \\
+  0 & \text{otherwise}
+  \end{cases}
+  \end{equation*}
+  \item Probability that device transmit during slot~$t$ is Wasserstein distance
+  \end{itemize}
+\column{.35\textwidth}
+  \begin{center}
+  \scalebox{0.9}{\input{Figures3/distributions5}}
+  \end{center}
+\end{columns}
+\vfill
+\begin{center}
+\textbf{Is this complete story?}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Realization of Standard Soliton Access Pattern (Goal)}
+\begin{center}
+  \scalebox{0.6}{\input{Figures3/ldgm1}}
+\end{center}
+\vfill
+\begin{center}
+  \scalebox{0.8}{\input{Figures3/empiricaldist1}}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Realization of Markov Soliton Access Pattern (Outcome)}
+\begin{center}
+  \scalebox{0.6}{\input{Figures3/ldgm2}}
+\end{center}
+\vfill
+\begin{center}
+  \scalebox{0.8}{\input{Figures3/empiricaldist2}}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Universal Framework with Markov Transmission Scheme}
+\begin{itemize}
+\item Access point solely broadcast start/end of round
+\item Devices employ Markov chain to elect when to transmit
+\item Mathematical framework provide methodology to shape marginal distributions at every time step
+\end{itemize}
+\begin{block}{Positive Aspects}
+\begin{itemize}
+\item Design space is large in terms of distribution shaping
+\item Slot count can differ from number of active devices
+\item Stopping condition can include state of peeling decoder
+\end{itemize}
+\end{block}
+\begin{block}{Limitations}
+\begin{itemize}
+\item Probability that device transmit packet is not uniform over time
+\item Tanner graph may be front-loaded
+\item Uniformly optimal universal scheme may not exist 
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Candidate Distributions Used in Numerical Results}
+\begin{block}{Stateless Distributions}
+\begin{itemize}
+\item Device use emission probabilities based on time elapsed
+\end{itemize}
+\begin{equation*}
+\gamma^{(t)}_m = \gamma^{(t)}
+= 1 - \exp \left( \frac{c \log(\epsilon)}{t} \right)
+\end{equation*}
+\end{block}
+\begin{block}{Skewed Distributions}
+\begin{itemize}
+\item Skewed family favors nodes that have transmitted several packets
+\end{itemize}
+\begin{equation*}
+\gamma_m^{(t)} = \begin{cases}
+0, & \sum_{i=0}^m p_t(i) < 1 - \overline{\gamma}^{(t)} \\
+1, & \sum_{i=m}^{t} p_t(i) \leq \overline{\gamma}^{(t)} \\
+\frac{\overline{\gamma}^{(t)} - \sum_{i=m+1}^{t} p_t(i)}{p_t(m)}
+& \text{otherwise}
+\end{cases}
+\end{equation*}
+\end{block}
+\begin{block}{Skewed Distributions}
+\begin{center}
+In numerical results, we use mixture of these two families
+\end{center}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Discussion -- Universal Framework}
+\begin{itemize}
+\item New framework for Universal Multiple Access
+\item Necessary and sufficient conditions for proposed approach
+\item Large design space need to be explored
+\item Efficiency shown up to 69 percent
+\item Substantially exceeds performance of traditional ALOHA
+\item Performance and complexity need to be compared with case where number of devices is estimated at onset of every round
+\end{itemize}
+\end{frame}
+
+\end{document}

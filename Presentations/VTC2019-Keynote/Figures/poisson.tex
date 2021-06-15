@@ -1,0 +1,29 @@
+\begin{tikzpicture}[
+  font=\tiny, >=stealth', line width=1pt
+]
+
+\draw [<->] (-0.25,3) -- (-0.25,0) -- (3.375,0);
+\foreach \x in {0,...,6} {
+  \draw (0.5*\x,-0.175) -- (0.5*\x,0.075);
+}
+\foreach \x in {0,1,...,5} {
+  \node (tx\x) at (0.5*\x+0.25,-0.3) {\x};
+}
+\foreach \y in {1,...,5} {
+  \draw (-0.425,0.5*\y) -- (-0.175,0.5*\y);
+}
+\foreach \y in {0.05,0.10,0.15,0.20,0.25} {
+  \node (ty\y) at (-0.7,10*\y) {\y};
+}
+
+\draw[dashed] (2,0) -- (2,2.825);
+\node at (2.25,2.75) {$T$};
+
+\draw[fill=blue!30,line width=0.5pt] (0.05,0) rectangle (0.45,1.353);
+\draw[fill=blue!30,line width=0.5pt] (0.55,0) rectangle (0.95,2.707);
+\draw[fill=blue!30,line width=0.5pt] (1.05,0) rectangle (1.45,2.707);
+\draw[fill=blue!30,line width=0.5pt] (1.55,0) rectangle (1.95,0.902);
+\draw[fill=red!40,line width=0.5pt] (2.05,0) rectangle (2.45,0.361);
+\draw[fill=red!40,line width=0.5pt] (2.55,0) rectangle (2.95,0.120);
+
+\end{tikzpicture}

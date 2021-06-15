@@ -1,0 +1,11 @@
+\begin{tikzpicture}[
+  font=\small, >=stealth',
+  infobits/.style={rectangle, minimum height=6mm, minimum width=40mm, draw=black, fill=gray!10, rounded corners},
+  paritybits/.style={rectangle, minimum height=6mm, minimum width=20mm, draw=black, fill=gray!20, rounded corners}
+]
+
+\node[infobits] (vb) at (2,0) {$\vec{w}$};
+\node[paritybits] (vp) at (5,0) {$\vec{p}$};
+\draw[|-|] (0,-0.5) to node[midway,below] {$k$ bits} (4,-0.5);
+\draw[-|] (4,-0.5) to node[midway,below] {$l$ bits} (6,-0.5);
+\end{tikzpicture}
