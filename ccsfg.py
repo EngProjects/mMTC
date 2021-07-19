@@ -8,7 +8,7 @@ import numpy as np
 # The fast Walsh–Hadamard transform (FWHT) is borrowed from FALCONN, a library for similarity search over
 # high-dimensional data.
 # https://github.com/FALCONN-LIB/FFHT
-import ffht
+# import ffht
 
 
 class GenericNode:
@@ -692,7 +692,7 @@ class BipartiteGraph:
         #     hardestimates[idx] = self.getestimate(idx+1)
 
         # Retain most likely values in every section.
-        idx: int
+        # idx: int
         for idx in range(self.varcount):
             # Function np.argpartition puts indices of top arguments at the end (unordered).
             # Variable @var trailingtopindices holds these arguments.
