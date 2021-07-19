@@ -11,7 +11,7 @@ This research initiative is conducted primarily at [Texas A&M University](https:
 * Asit Pradhan, [Google Scholar](https://scholar.google.com/citations?hl=en&user=EvluuLMAAAAJ)
 * [Vamsi Amalladinne](https://github.com/vamsi128), [Google Scholar](https://scholar.google.com/citations?hl=en&user=t8O1_oYAAAAJ)
 * [Michail Gkagkos](https://github.com/mgkagk01)
-* [Jamison Ebert](https://github.com/jrebert)
+* [Jamison Ebert](https://github.com/jrebert), [Google Scholar](https://scholar.google.com/citations?user=fcxlpRIAAAAJ&hl=en&oi=ao)
 
 ## Recent Collaborators
 
