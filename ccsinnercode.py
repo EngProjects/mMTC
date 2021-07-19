@@ -7,7 +7,6 @@ class GenericInnerCode:
     Class @class InnerCode creates an encoder/decoder for CCS using AMP with BP
     """
 
-    #def __init__(self, L, ml, N, P, std, Ka):
     def __init__(self, N, P, std, Ka, Graph):
         """
         Initialize encoder/decoder for CCS inner code
@@ -90,6 +89,33 @@ class GenericInnerCode:
                 (q*np.exp(-(s-np.sqrt(self.__Phat))**2/(2*tau**2)) +  \
                 (1-q)*np.exp(-s**2/(2*tau**2)))).astype(float).reshape(-1, 1)
 
+    def ApproximateVector(self, x):
+
+        # define k
+        K = self.__Ka
+
+        # normalize initial value of x
+        xOrig = x / np.linalg.norm(x, ord=1)
+        
+        # create vector to hold best approximation of x
+        xHt = xOrig.copy()
+        u = np.zeros(len(xHt))
+        
+        # run approximation algorithm
+        while np.amax(xHt) > (1/K):
+            minIndices = np.argmin([(1/K)*np.ones(xHt.shape), xHt], axis=0)
+            xHt = np.min([(1/K)*np.ones(xHt.shape), xHt], axis=0)
+            
+            deficit = 1 - np.linalg.norm(xHt, ord=1)
+            
+            if deficit > 0:
+                mIxHtNorm = np.linalg.norm((xHt*minIndices), ord=1)
+                scaleFactor = (deficit + mIxHtNorm) / mIxHtNorm
+                xHt = scaleFactor*(minIndices*xHt) + (1/K)*(np.ones(xHt.shape) - minIndices)
+
+        # return admissible approximation of x
+        return xHt
+
     def ComputePrior(self, s, BPonOuterGraph, graph, tau, numBPIter):
         """
         Compute vector of priors within the AMP iterate
@@ -115,23 +141,20 @@ class GenericInnerCode:
                 tau = tau * np.ones(self.getL())
 
             # Prep for PME computation 
-            pme = np.zeros(s.shape, dtype=float)    # data structure for PME 
-            m = self.getML()                        # use m as an alias for self.getML()
+            localEstimates = np.zeros((self.__L, self.__ml), dtype=float)    # data structure for PME 
+            m = self.getML()                                                 # use m as an alias for self.getML()
 
             # Translate the effective observation into a PME  
             for i in range(self.getL()): 
-                pme[i*m:(i+1)*m] = ((p1[i*m:(i+1)*m]*np.exp(-(s[i*m:(i+1)*m]-np.sqrt(self.__Phat))**2/(2*tau[i]**2)))/ \
-                                    (p1[i*m:(i+1)*m]*np.exp(-(s[i*m:(i+1)*m]-np.sqrt(self.__Phat))**2/(2*tau[i]**2)) + \
-                                    (1-p1[i*m:(i+1)*m])*np.exp(-s[i*m:(i+1)*m]**2/(2*tau[i]**2)))).astype(float).flatten()
-            pme = pme.reshape(self.getL(),-1)                          # Reshape PME into an LxM matrix
-            pme = pme/(np.sum(pme,axis=1).reshape(self.getL(),-1))     # normalize rows of PME
+                localEstimates[i, :] = self.AmpDenoiser(p1[i*m:(i+1)*m], s[i*m:(i+1)*m], tau[i]).flatten()
+                localEstimates[i, :] /= np.sum(localEstimates[i, :])
 
-            # reset graph so that each message becomes all 1s
+            # reset graph so that each message becomes uninformative
             graph.reset() 
 
             # set variable node observations - these are the lambdas
-            for i in range(self.getL()):
-                graph.setobservation(i+1, pme[i,:])
+            for varnodeid in graph.varlist:
+                graph.setobservation(varnodeid, localEstimates[varnodeid-1, :])
 
             # perform numBPIter of BP
             for idxit in range(numBPIter):
@@ -139,9 +162,10 @@ class GenericInnerCode:
                 graph.updatevars()
 
             # Obtain belief vectors from the graph
-            q = np.zeros(s.shape)
-            for i in range(self.getL()):
-                q[i*self.getML():(i+1)*self.getML()] = 1-(1-graph.getextrinsicestimate(i+1))**self.getKa()
+            q = np.zeros((self.__L, self.__ml))
+            for varnodeid in graph.varlist:
+                extrinsicprior = self.ApproximateVector(graph.getextrinsicestimate(varnodeid))
+                q[varnodeid-1,:] = 1 - (1 - extrinsicprior)**self.__Ka
 
             return np.minimum(q.flatten(), 1)
 
@@ -163,16 +187,14 @@ class GenericInnerCode:
         :param tau: noise standard deviation
         """
 
-        return y - np.sqrt(self.__Phat)*self.Ab(xHt) + (z/(self.__N*tau**2)) * \
+        return y - np.sqrt(self.__Phat)*self.Ab(xHt) + (z/(self.__numBlockRows*tau**2)) * \
                     (self.__Phat*np.sum(xHt) - self.__Phat*np.sum(xHt**2))             # compute residual
-
 
 class DenseInnerCode(GenericInnerCode):
     """
     Class @class DenseInnerCode creates a CS encoder/decoder using a dense sensing matrix
     """
 
-    # def __init__(self, L, ml, N, P, std, Ka):
     def __init__(self, N, P, std, Ka, Graph):
         """
         Initialize encoder/decoder for CCS inner code
@@ -213,13 +235,12 @@ class DenseInnerCode(GenericInnerCode):
 
             tau = self.NoiseStdDeviation(z)                  # compute std of noise using residual
             s = self.EffectiveObservation(xHt, z)            # effective observation
-            q = self.ComputePrior(s, BPonOuterGraph, graph, tau, numBPIter) 
+            q = self.ComputePrior(s, BPonOuterGraph, graph, tau, numBPIter).flatten()
             xHt = self.AmpDenoiser(q, s, tau)                # run estimate through denoiser
             z = self.Residual(xHt, y, z, tau)                # compute residual           
             tauEvolution[t] = tau                            # store tau
 
         return xHt, tauEvolution
-
 
 class BlockDiagonalInnerCode(GenericInnerCode):
     """
@@ -227,7 +248,6 @@ class BlockDiagonalInnerCode(GenericInnerCode):
     diagonal sensing matrix
     """
 
-    # def __init__(self, L, ml, N, P, std, Ka):
     def __init__(self, N, P, std, Ka, Graph):
         """
         Initialize encoder/decoder for CCS inner code

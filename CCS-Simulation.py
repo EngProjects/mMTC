@@ -37,7 +37,9 @@ for idxsim in range(maxSims):
     
     # Outer LDPC Encoder
     txMsg = Graph.encodemessages(txBits)
-    x = Graph.encodesignal(txBits)
+    for msg in txMsg: 
+        Graph.testvalid(msg)
+    x = np.sum(txMsg, axis=0)
     
     # Inner CS Encoder
     x = InnerCode.Encode(x)

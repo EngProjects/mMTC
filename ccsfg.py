@@ -171,7 +171,7 @@ class VariableNode(GenericNode):
         elif checkneighborid in dictionary:
             states = [dictionary[key] for key in dictionary if key is not checkneighborid]
         else:
-            print('Desination check node ID ' + str(checkneighborid) + ' is not a neighbor.')
+            print('Destination check node ID ' + str(checkneighborid) + ' is not a neighbor.')
             return None
 
         if np.isscalar(states):
@@ -209,15 +209,75 @@ class VariableNode(GenericNode):
                 return measure / np.linalg.norm(measure, ord=1)
 
 
+class CheckNodeBinary(GenericNode):
+    """
+    Class @class CheckNodeBinary creates a single check node within a bipartite factor graph.  This
+    class is specifically designed for binary LDPC codes in the probability domain. 
+    """
+
+    def __init__(self, checknodeid, messagelength, neighbors=None):
+        """
+        Initialize check node of type @class CheckNodeBinary.
+        :param checknodeid: Unique identifier for check node
+        :param messagelength: length of messages.  In the binary case, this always equals 2
+        :param neighbors: Neighbors of node @var checknodeid in bipartite graph
+        """
+
+        super().__init__(checknodeid, neighbors)
+        self.__MessageLength = messagelength
+
+    def reset(self):
+        """
+        Reset check nodes to uninformative measures
+        """
+        uninformative = np.ones(self.__MessageLength)
+        for neighborid in self.neighbors:
+            self.setstate(neighborid, uninformative)
+
+    def setmessagefromvar(self, varneighborid, message):
+        """
+        Incoming message from variable node neighbor @var varneighborid to check node self.
+        :param varneighborid: Variable node identifier of origin
+        :param message: incoming belief measure
+        """
+
+        self.setstate(varneighborid, message)
+
+    def getmessagetovar(self, varneighborid):
+        """
+        Outgoing message from check node self to variable node @var varneighbor
+        :param varneighborid: Variable node identifier of destination
+        :return: Outgoing belief measure
+        """
+
+        dictionary = self.getstates()
+        if varneighborid is None:
+            states = list(dictionary.values())
+        elif varneighborid in dictionary:
+            states = [dictionary[key] for key in dictionary if key is not varneighborid]
+        else:
+            print('Destination variable node ID ' + str(varneighborid) + ' is not a neighbor.')
+            return None
+
+        if np.isscalar(states):
+            return states
+        else:
+            states = np.array(states)
+            states = states / np.sum(states, axis=1).reshape((-1, 1))
+        
+        delta = np.product(states[:, 0] - states[:, 1])
+        return 0.5*np.array([1+delta, 1-delta])
+
+
 class CheckNodeFFT(GenericNode):
     """
-    Class @class CheckNode creates a single check node within bipartite factor graph.
+    Class @class CheckNodeFFT creates a single check node within bipartite factor graph.
     This class relies on fast Fourier transform.
     """
 
     def __init__(self, checknodeid, messagelength, neighbors=None):
         """
-        Initialize check node of type @class CheckNode.
+        Initialize check node of type @class CheckNodeFFT.
         :param checknodeid: Unique identifier for check node
         :param messagelength: Length of incoming and outgoing messages
         :param neighbors: Neighbors of node @var checknodeid in bipartite graph
@@ -282,13 +342,13 @@ class CheckNodeFFT(GenericNode):
 
 class CheckNodeFWHT(GenericNode):
     """
-    Class @class CheckNode creates a single check node within bipartite factor graph.
+    Class @class CheckNodeFWHT creates a single check node within bipartite factor graph.
     This class relies on fast Walsh-Hadamard transform.
     """
 
     def __init__(self, checknodeid, messagelength, neighbors=None):
         """
-        Initialize check node of type @class CheckNode.
+        Initialize check node of type @class CheckNodeFWHT.
         :param checknodeid: Unique identifier for check node
         :param messagelength: Length of incoming and outgoing messages
         :param neighbors: Neighbors of node @var checknodeid in bipartite graph
@@ -385,7 +445,7 @@ class BipartiteGraph:
             # Identifier @var checknodeid = 0 is reserved for the local observation at every variable node.
             checknodeid = idx + 1
             # Create check nodes and add them to dictionary @var self.__CheckNodes.
-            self.__CheckNodes.update({checknodeid: CheckNodeFWHT(checknodeid, messagelength=self.sparseseclength)})
+            self.__CheckNodes.update({checknodeid: CheckNodeFFT(checknodeid, messagelength=self.sparseseclength)})
             # Add edges from check nodes to variable nodes.
             self.__CheckNodes[checknodeid].addneighbors(check2varedges[idx])
             # Create variable nodes and add them to dictionary @var self.__VarNodes.
@@ -413,13 +473,6 @@ class BipartiteGraph:
     def checkcount(self):
         return len(self.checklist)
 
-    def getchecknode(self, checknodeid):
-        if checknodeid in self.checklist:
-            return self.__CheckNodes[checknodeid]
-        else:
-            print('The retrival did not succeed.')
-            print('Check node ID' + str(checknodeid))
-
     @property
     def varlist(self):
         return sorted(list(self.__VarNodes.keys()))
@@ -427,6 +480,13 @@ class BipartiteGraph:
     @property
     def varcount(self):
         return len(self.varlist)
+
+    def getchecknode(self, checknodeid):
+        if checknodeid in self.checklist:
+            return self.__CheckNodes[checknodeid]
+        else:
+            print('The retrival did not succeed.')
+            print('Check node ID' + str(checknodeid))
 
     def getvarnode(self, varnodeid):
         if varnodeid in self.varlist:
@@ -538,6 +598,7 @@ class BipartiteGraph:
                 # print('\t Others: ' + str([member for member in varnode.neighbors if member is not neighbor]))
                 checknode = self.getchecknode(checknodeid)
                 measure = checknode.getmessagetovar(varnode.id)
+
                 weight = np.linalg.norm(measure, ord=1)
                 if weight != 0:
                     measure = measure / weight
@@ -593,7 +654,7 @@ class BipartiteGraph:
             print('Check Node ID ' + str(checknodeid), end=": ")
             print(self.getchecknode(checknodeid).getstates())
 
-    def decoder(self, stateestimates, count):  # NEED ORDER OUTPUT IN LIKELIHOOD MAYBE
+    def decoder(self, stateestimates, count, includelikelihoods=False):  # NEED ORDER OUTPUT IN LIKELIHOOD MAYBE
         """
         This method seeks to disambiguate codewords from node states.
         Gather local state estimates from variables nodes and retain top values in place.
@@ -601,6 +662,7 @@ class BipartiteGraph:
         Perform belief propagation and return `count` likely codewords.
         :param stateestimates: Local estimates from variable nodes.
         :param count: Maximum number of codewords returned.
+        :param includelikelihoods: boolean flag of whether to return likelihoods of decoded words.
         :return: List of likely codewords.
         """
 
@@ -751,7 +813,12 @@ class BipartiteGraph:
             likelihoods.append(np.prod(np.amax(isolatedvalues, axis=1)))
         idxsorted = np.argsort(likelihoods)
         recoveredcodewords = [recoveredcodewords[idx] for idx in idxsorted[::-1]]
-        return recoveredcodewords
+
+        if includelikelihoods:
+            sortedlikelihoods = [likelihoods[idx] for idx in idxsorted[::-1]]
+            return recoveredcodewords, sortedlikelihoods
+        else:
+            return recoveredcodewords
 
 
 class Encoding(BipartiteGraph):
@@ -937,7 +1004,6 @@ class Encoding(BipartiteGraph):
                 self.setobservation(varnodeid, sparsefragment)
                 # print('Variable node ' + str(varnodeid), end=' ')
                 # print(' -- Observation changed to: ' + str(np.argmax(self.getobservation(varnodeid))))
-
             # Start with full list of check nodes to update.
             checknodes2update = set(self.checklist)
             self.updatechecks(checknodes2update)
@@ -988,7 +1054,7 @@ class Encoding(BipartiteGraph):
         """
         codewords = []
         for messageindex in range(len(infoarray)):
-            codewords.append(self.encodemessage(infoarray[messageindex]))
+            codewords.append(self.encodemessageBP(infoarray[messageindex]))
         return np.asarray(codewords)
 
     def encodesignal(self, infoarray):
@@ -998,7 +1064,7 @@ class Encoding(BipartiteGraph):
         """
         signal = np.zeros(self.sparseseclength * self.varcount, dtype=float)
         for messageindex in range(len(infoarray)):
-            signal = signal + self.encodemessage(infoarray[messageindex])
+            signal = signal + self.encodemessageBP(infoarray[messageindex])
         return signal
 
     def testvalid(self, codeword):  # ISSUE IN USING THIS FOR NOISY CODEWORDS, INPUT SHOULD BE MEASURE
