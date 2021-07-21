@@ -223,7 +223,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED, ENFORCE_CRC):
     
     # Assign power to occupancy estimation and data transmission tasks
     pM = 80
-    dcs = np.sqrt(n*P*n/(pM*NUM_BINS + n)/L)
+    dcs = np.sqrt(n*P*n/(pM*NUM_BINS + n)/L) if NUM_BINS > 1 else np.sqrt(n*P/L)
     dbid = np.sqrt(n*P*pM*NUM_BINS/(pM*NUM_BINS + n)/NUM_BINS)
     assert np.abs(L*dcs**2 + NUM_BINS*dbid**2 - n*P) <= 1e-3, "Total power constraint violated."
 
