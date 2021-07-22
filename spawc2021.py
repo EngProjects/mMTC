@@ -224,7 +224,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED, ENFORCE_CRC):
     # Assign power to occupancy estimation and data transmission tasks
     pM = 80
     dcs = np.sqrt(n*P*n/(pM*NUM_BINS + n)/L) if NUM_BINS > 1 else np.sqrt(n*P/L)
-    dbid = np.sqrt(n*P*pM*NUM_BINS/(pM*NUM_BINS + n)/NUM_BINS)
+    dbid = np.sqrt(n*P*pM*NUM_BINS/(pM*NUM_BINS + n)/NUM_BINS) if NUM_BINS > 1 else 0
     assert np.abs(L*dcs**2 + NUM_BINS*dbid**2 - n*P) <= 1e-3, "Total power constraint violated."
 
     # run simCount trials
@@ -240,7 +240,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED, ENFORCE_CRC):
 
         # Split users into bins based on the first couple of bits in their messages
         w0 = int(np.ceil(np.log2(NUM_BINS)))
-        binIds = np.matmul(usrmessages[:,0:w0], 2**np.arange(w0)[::-1])
+        binIds = np.matmul(usrmessages[:,0:w0], 2**np.arange(w0)[::-1]) if w0 > 0 else np.zeros(Ka)
         K = np.array([np.sum(binIds == i) for i in range(NUM_BINS)]).astype(int)
 
         # Group messages by bin
@@ -339,7 +339,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED, ENFORCE_CRC):
 
             # Add recovered codewords to data structure indexed by likelihood with optionally enforced CRC check
             for idxcdwd in range(len(likelihoods)):
-                if not ENFORCE_CRC:
+                if (not ENFORCE_CRC) or (NUM_BINS == 1):
                     recoveredcodewords[likelihoods[idxcdwd]] = recovered[idxcdwd]
                 else:
                     # Extract first part of message from codeword
