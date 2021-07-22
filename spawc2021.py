@@ -327,14 +327,15 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED, ENFORCE_CRC):
         recoveredcodewords = dict()     
 
         # Graph-based outer decoder
-        for i in range(NUM_BINS):
-            if Kht[i] == 0: continue
+        for idxbin in range(NUM_BINS):
+            if Kht[idxbin] == 0: continue
 
             # Produce list of recovered codewords with their associated likelihoods
-            recovered, likelihoods = OuterCodes[i].decoder(s[i], int(Kht[i]*2 + delta), includelikelihoods=True)
+            recovered, likelihoods = OuterCodes[idxbin].decoder(s[idxbin], int(Kht[idxbin] + delta), includelikelihoods=True)
 
             # Compute what the first w0 bits should be based on bin number
-            binIDBase2 = np.binary_repr(i)
+            binIDBase2 = np.binary_repr(idxbin)
+            binIDBase2 = binIDBase2 if len(binIDBase2) == w0 else (w0 - len(binIDBase2))*'0' + binIDBase2
             firstW0bits = np.array([binIDBase2[i] for i in range(len(binIDBase2))]).astype(int)
 
             # Add recovered codewords to data structure indexed by likelihood with optionally enforced CRC check
@@ -343,7 +344,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED, ENFORCE_CRC):
                     recoveredcodewords[likelihoods[idxcdwd]] = recovered[idxcdwd]
                 else:
                     # Extract first part of message from codeword
-                    firstinfosection = OuterCodes[i].infolist[0] - 1
+                    firstinfosection = OuterCodes[idxbin].infolist[0] - 1
                     sparsemsg = recovered[idxcdwd][firstinfosection*M:(firstinfosection+1)*M]
 
                     # Find index of nonzero entry and convert to binary representation
@@ -384,7 +385,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED, ENFORCE_CRC):
 Ka = 64                             # total number of users
 NUM_BINS = 2                        # number of bins employed in simulation
 GENIE_AIDED = False                 # flag of whether to produce genie-aided bin occupancy estimates
-ENFORCE_CRC = True                  # flag of whether to enforce CRC consistency condition during decoding
+ENFORCE_CRC = False                 # flag of whether to enforce CRC consistency condition during decoding
 SNRs = [1.6, 1.8, 2.0, 2.2, 2.4]    # EbNo values to simulate
 errorRates = []                     # data structure to store error results
 
