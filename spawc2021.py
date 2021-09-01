@@ -280,7 +280,10 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED, ENFORCE_CRC):
             for cdwd in cdwds:                              # ensure that each codeword is valid
                 OuterCodes[i].testvalid(cdwd)
             codewords.append(cdwds)                         # add encoded messages to list of codewords
-            txcodewords = np.vstack((txcodewords, cdwds)) if not np.isscalar(txcodewords) else cdwds.copy()
+
+            # Store codewords in 'txcodewords' for error computation
+            if K[i] > 0:
+                txcodewords = np.vstack((txcodewords, cdwds)) if not np.isscalar(txcodewords) else cdwds.copy()
 
             # Combine codewords to form signal to transmit
             if K[i] == 0:                                   # do nothing if there are no users in this bin
