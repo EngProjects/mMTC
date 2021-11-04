@@ -340,80 +340,80 @@ class CheckNodeFFT(GenericNode):
         return outgoing
 
 
-class CheckNodeFWHT(GenericNode):
-    """
-    Class @class CheckNodeFWHT creates a single check node within bipartite factor graph.
-    This class relies on fast Walsh-Hadamard transform.
-    """
+# class CheckNodeFWHT(GenericNode):
+#     """
+#     Class @class CheckNodeFWHT creates a single check node within bipartite factor graph.
+#     This class relies on fast Walsh-Hadamard transform.
+#     """
 
-    def __init__(self, checknodeid, messagelength, neighbors=None):
-        """
-        Initialize check node of type @class CheckNodeFWHT.
-        :param checknodeid: Unique identifier for check node
-        :param messagelength: Length of incoming and outgoing messages
-        :param neighbors: Neighbors of node @var checknodeid in bipartite graph
-        """
+#     def __init__(self, checknodeid, messagelength, neighbors=None):
+#         """
+#         Initialize check node of type @class CheckNodeFWHT.
+#         :param checknodeid: Unique identifier for check node
+#         :param messagelength: Length of incoming and outgoing messages
+#         :param neighbors: Neighbors of node @var checknodeid in bipartite graph
+#         """
 
-        super().__init__(checknodeid, neighbors)
-        # Length of messages
-        self.__MessageLength = messagelength
+#         super().__init__(checknodeid, neighbors)
+#         # Length of messages
+#         self.__MessageLength = messagelength
 
-    def reset(self):
-        """
-        Reset every states check node to uninformative measures (FWHT of all ones)
-        """
-        uninformative = np.ones(self.__MessageLength, dtype=float)
-        # @method fht acts in place on np.array of @type float
-        ffht.fht(uninformative)
-        for neighborid in self.neighbors:
-            self.setstate(neighborid, uninformative)
+#     def reset(self):
+#         """
+#         Reset every states check node to uninformative measures (FWHT of all ones)
+#         """
+#         uninformative = np.ones(self.__MessageLength, dtype=float)
+#         # @method fht acts in place on np.array of @type float
+#         ffht.fht(uninformative)
+#         for neighborid in self.neighbors:
+#             self.setstate(neighborid, uninformative)
 
-    def setmessagefromvar(self, varneighborid, message):
-        """
-        Incoming message from variable node neighbor @var vaneighborid to check node self.
-        :param varneighborid: Variable node identifier of origin
-        :param message: Incoming belief vector
-        """
-        message = message.astype(float)
-        # @method fht acts in place on np.array of @type float
-        ffht.fht(message)
-        self.setstate(varneighborid, message)
+#     def setmessagefromvar(self, varneighborid, message):
+#         """
+#         Incoming message from variable node neighbor @var vaneighborid to check node self.
+#         :param varneighborid: Variable node identifier of origin
+#         :param message: Incoming belief vector
+#         """
+#         message = message.astype(float)
+#         # @method fht acts in place on np.array of @type float
+#         ffht.fht(message)
+#         self.setstate(varneighborid, message)
 
-    def getmessagetovar(self, varneighborid):
-        """
-        Outgoing message from check node self to variable node @var varneighbor
-        :param varneighborid: Variable node identifier of destination
-        :return: Outgoing belief vector
-        """
-        dictionary = self.getstates()
-        if varneighborid is None:
-            states = list(dictionary.values())
-        elif varneighborid in dictionary:
-            states = [dictionary[key] for key in dictionary if key is not varneighborid]
-        else:
-            print('Destination variable node ID ' + str(varneighborid) + ' is not a neighbor.')
-            return None
-        if np.isscalar(states):
-            return states
-        else:
-            states = np.array(states)
-            if states.ndim == 1:
-                outgoing_fwht = states
-            elif states.ndim == 2:
-                try:
-                    outgoing_fwht = np.prod(states, axis=0)
-                except ValueError as e:
-                    print(e)
-                    return None
-            else:
-                raise RuntimeError('states.ndim = ' + str(np.array(states).ndim) + ' is not allowed.')
-            outgoing = outgoing_fwht.astype(float)
-            # Inversse of FWHT is, again, FWHT
-            # @method fht acts in place on np.array of @type float
-            ffht.fht(outgoing)
-        # The outgoing message values should be indexed using the minus operation.
-        # This is unnecessary over this particular field, since the minus is itself.
-        return outgoing
+#     def getmessagetovar(self, varneighborid):
+#         """
+#         Outgoing message from check node self to variable node @var varneighbor
+#         :param varneighborid: Variable node identifier of destination
+#         :return: Outgoing belief vector
+#         """
+#         dictionary = self.getstates()
+#         if varneighborid is None:
+#             states = list(dictionary.values())
+#         elif varneighborid in dictionary:
+#             states = [dictionary[key] for key in dictionary if key is not varneighborid]
+#         else:
+#             print('Destination variable node ID ' + str(varneighborid) + ' is not a neighbor.')
+#             return None
+#         if np.isscalar(states):
+#             return states
+#         else:
+#             states = np.array(states)
+#             if states.ndim == 1:
+#                 outgoing_fwht = states
+#             elif states.ndim == 2:
+#                 try:
+#                     outgoing_fwht = np.prod(states, axis=0)
+#                 except ValueError as e:
+#                     print(e)
+#                     return None
+#             else:
+#                 raise RuntimeError('states.ndim = ' + str(np.array(states).ndim) + ' is not allowed.')
+#             outgoing = outgoing_fwht.astype(float)
+#             # Inversse of FWHT is, again, FWHT
+#             # @method fht acts in place on np.array of @type float
+#             ffht.fht(outgoing)
+#         # The outgoing message values should be indexed using the minus operation.
+#         # This is unnecessary over this particular field, since the minus is itself.
+#         return outgoing
 
 
 class BipartiteGraph:
@@ -670,29 +670,7 @@ class BipartiteGraph:
         stateestimates.resize(self.varcount, self.sparseseclength)
         thresholdedestimates = np.zeros(stateestimates.shape)
 
-        # NOTE: Pruning impossible paths prior to root decoding has minimal impact.
-        # CCS-AMP already encourages paths to be locally consistent.
-        # This step is extraneous and should probably be avoided.
-        # topindices = []
-        # hardestimates = np.zeros(stateestimates.shape)
-        # idx: int
-        # for idx in range(self.varcount):
-        #     trailingtopindices = np.argpartition(stateestimates[idx], -256)[-256:]
-        #     # Retain values corresponding to top indices and zero out other entries.
-        #     # Set most likely locations to one.
-        #     for topidx in trailingtopindices:
-        #         hardestimates[idx, topidx] = 1 if (stateestimates[idx, topidx] != 0) else 0
-        #     self.setobservation(idx+1,hardestimates[idx,:])
-        #
-        # for iteration in range(16):
-        #     self.updatechecks()
-        #     self.updatevars()
-        #
-        # for idx in range(self.varcount):
-        #     hardestimates[idx] = self.getestimate(idx+1)
-
         # Retain most likely values in every section.
-        # idx: int
         for idx in range(self.varcount):
             # Function np.argpartition puts indices of top arguments at the end (unordered).
             # Variable @var trailingtopindices holds these arguments.
@@ -726,8 +704,7 @@ class BipartiteGraph:
             self.updatechecks(checknodes2update)  # Update Check first
             varnodes2update = set(self.varlist)
             self.updatevars(varnodes2update)
-            # Initialize vector of section weights
-            newsectionweights0 = np.linalg.norm(self.getestimates(), ord=0, axis=1)
+
             for iteration in range(self.maxdepth):  # Max depth
                 sectionweights0 = np.linalg.norm(self.getestimates(), ord=0, axis=1)
                 checkneighbors = set()
@@ -768,42 +745,9 @@ class BipartiteGraph:
                 else:
                     pass
 
-                # # maxsectionlength = 1 + np.ceil(1024 * (self.maxdepth - iteration - 1)/self.maxdepth).astype(int)
-                # maxsectionlength = np.ceil(
-                #     2 ** ((np.log2(128) / self.maxdepth) * (self.maxdepth - iteration - 1))).astype(int)
-                # if np.amin(newsectionweights0) == 0 or len(varnodes2update) == 0:
-                #     break
-                # # elif np.array_equal(sectionweights0, newsectionweights0):
-                # elif np.amax(newsectionweights0) > maxsectionlength:
-                #     print('trimming')
-                #     for varnodeid in varnodes2update:
-                #         currentmeasure = self.getestimate(varnodeid)
-                #         currentweight0 = np.linalg.norm(currentmeasure, ord=0).astype(int)
-                #         if currentweight0 > maxsectionlength:
-                #             supportsize = maxsectionlength
-                #             # Function np.argpartition puts indices of top arguments at the end (unordered).
-                #             # Variable @var trailingtopindices holds these arguments.
-                #             currentobservation = self.getobservation(varnodeid)
-                #             trimmedtopindices = np.argpartition(currentmeasure, -supportsize)[-supportsize:]
-                #             # Retain values corresponding to top indices and zero out other entries.
-                #             trimmedobservation = np.zeros(self.sparseseclength)
-                #             for trimmedidx in trimmedtopindices:
-                #                 trimmedobservation[trimmedidx] = currentobservation[trimmedidx]
-                #                 self.setobservation(varnodeid, trimmedobservation)
-                #             self.updatechecks(self.getvarnode(varnodeid).neighbors)
-                #         else:
-                #             pass
-                # print('Weights ' + str(newsectionweights0))
-
             decoded = self.getcodeword().flatten()
-            decodedsum = np.sum(decoded.flatten())
-            if decodedsum == self.varcount:
+            if not np.isscalar(self.testvalid(decoded)):
                 recoveredcodewords.append(decoded)
-            elif decodedsum > self.varcount:  # CHECK: Can be improved later
-                print('Disambiguation failed.')
-                recoveredcodewords.append(decoded)
-            else:
-                pass
 
         # Order candidates
         likelihoods = []
@@ -937,7 +881,7 @@ class Encoding(BipartiteGraph):
         idx = 0
         for varnodeid in self.varlist:
             block = np.zeros(self.sparseseclength, dtype=int)
-            if np.max(self.getestimate(varnodeid)) > 0:
+            if not np.isclose(np.max(self.getestimate(varnodeid)), 0):
                 block[np.argmax(self.getestimate(varnodeid))] = 1
             codeword[idx] = block
             idx = idx + 1
@@ -1090,14 +1034,16 @@ class Encoding(BipartiteGraph):
                 # print('Codeword is consistent.')
                 return self.getcodeword()
             else:
-                print('Codeword has issues.')
-                print(np.sum(self.getobservations(), axis=1))
-                print(np.sum(self.getestimates(), axis=1))
-                print(np.sum(self.getobservations() - self.getestimates(), axis=1))
+                # print('Codeword has issues.')
+                # print(np.sum(self.getobservations(), axis=1))
+                # print(np.sum(self.getestimates(), axis=1))
+                # print(np.sum(self.getobservations() - self.getestimates(), axis=1))
+                return -1
         else:
-            print(np.linalg.norm(np.rint(self.getestimates()).flatten(), ord=0))
-            print(np.linalg.norm(self.getobservations().flatten(), ord=0))
-            print('Codeword has issues.')
+            # print(np.linalg.norm(np.rint(self.getestimates()).flatten(), ord=0))
+            # print(np.linalg.norm(self.getobservations().flatten(), ord=0))
+            # print('Codeword has issues.')
+            return -1
 
 
 def numbermatches(codewords, recoveredcodewords, maxcount=None):

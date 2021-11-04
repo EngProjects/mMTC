@@ -11,10 +11,9 @@ numAMPIter = 10                                     # number of AMP iterations t
 numBPIter = 1                                       # number of BP iterations to perform
 listSize = K + 10                                   # list size retained per section after AMP converges
 nstd = 1                                            # AWGN noise standard deviation
-numSims = 2                                       # number of trials to average over per point on the graph
+numSims = 100                                       # number of trials to average over per point on the graph
 OuterGraph = FG.Triadic8(16)                        # factor graph associated with outer LDPC code
 SNRs = np.arange(start=1.5, stop=4.6, step=0.5)     # SNRs in (dB) to test over
-SNRs = np.array([2.5])
 errorrates = np.zeros((4, len(SNRs)))               # data structure for storing PUPE results
 runtimes = np.zeros((4, len(SNRs)))                 # data structure for storing runtime results
 
