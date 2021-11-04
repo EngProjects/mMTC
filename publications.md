@@ -28,6 +28,7 @@ Signal Processing and Communications (SPCOM) 2020 Conference, Indian Institute o
 * J. R. Ebert, V. K. Amalladinne, S. Rini, J.-F. Chamberland, K. R. Narayanan
 Stochastic Binning and Coded Demixing for Unsourced Random Access
 [arXiv](https://arxiv.org/abs/2104.05686).
+[YouTube](https://www.youtube.com/watch?v=XsF1dVAo-jk).
 * M. Gkagkos, A. K. Pradhan, V. Amalladinne,  K. Narayanan, J.-F. Chamberland and C. N. Georghiades
 Approximate Support Recovery using Codes for Unsourced Multiple Access.
 In International Symposium on Information Theory (ISIT), Melbourne, Australia, July 2021. IEEE.
