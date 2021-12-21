@@ -21,6 +21,10 @@ IEEE Transactions on Communications, 67(12):8258–8272, December 2019.
 Sparse IDMA: A Joint Graph-Based Coding Scheme for Unsourced Random Access,
 Under review, IEEE Transactions on Communications
 [arxiv](https://arxiv.org/abs/1906.05410).
+* J. R. Ebert, V. K. Amalladinne, S. Rini, J.-F. Chamberland, K. R. Narayanan.
+Stochastic Binning and Coded Demixing for Unsourced Random Access
+Under review, IEEE Transactions on Signal Processing.
+[arxiv](https://arxiv.org/abs/2104.05686)
 
 
 ## Tutorial Presentations
