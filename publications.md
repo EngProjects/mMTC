@@ -28,6 +28,9 @@ Under review, IEEE Transactions on Signal Processing.
 
 
 ## Tutorial Presentations
+* J.-F. Chamberland, K.R. Narayanan, Y. Polyanskiy.
+Unsourced Multiple Access (UMAC): Information Theory and Coding
+
 * J.-F. Chamberland, K.R. Narayanan.
 Algorithms for Coded Random Access and Inference in Large Dimensional Spaces.
 Signal Processing and Communications (SPCOM) 2020 Conference, Indian Institute of Science.
