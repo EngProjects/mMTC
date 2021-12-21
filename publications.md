@@ -18,9 +18,10 @@ IEEE Transactions on Information Theory, 66(10):6509–6533, October 2020.
 [A user-independent successive interference cancellation based coding scheme for the unsourced random access Gaussian channel](https://dx.doi.org/10.1109/TCOMM.2019.2940216).
 IEEE Transactions on Communications, 67(12):8258–8272, December 2019.
 * A. Pradhan, V. Amalladinne, K.R. Narayanan, and J.-F. Chamberland,
-[Sparse IDMA: A Joint Graph-Based Coding Scheme for Unsourced Random Access]
-(https://arxiv.org/abs/1906.05410).
+Sparse IDMA: A Joint Graph-Based Coding Scheme for Unsourced Random Access,
 Under review, IEEE Transactions on Communications
+[arxiv](https://arxiv.org/abs/1906.05410).
+
 
 ## Tutorial Presentations
 * J.-F. Chamberland, K.R. Narayanan.
