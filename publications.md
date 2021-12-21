@@ -8,7 +8,7 @@ permalink: /Publications.html
 
 * V. K. Amalladinne, A. K. Pradhan, C. Rush, J.-F. Chamberland, K. R. Narayanan.
 Unsourced random access with coded compressed sensing: Integrating AMP and belief propagation
-Submitted to the IEEE Transactions on Information Theory.
+accepted to appear in the IEEE Transactions on Information Theory.
 [arXiv](https://arxiv.org/abs/2010.04364).
 * V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
 [A coded compressed sensing scheme for unsourced multiple access](https://dx.doi.org/10.1109/TIT.2020.3012948).
@@ -17,6 +17,10 @@ IEEE Transactions on Information Theory, 66(10):6509–6533, October 2020.
 * A. Vem, K. R. Narayanan, J.-F. Chamberland, and J. Cheng.
 [A user-independent successive interference cancellation based coding scheme for the unsourced random access Gaussian channel](https://dx.doi.org/10.1109/TCOMM.2019.2940216).
 IEEE Transactions on Communications, 67(12):8258–8272, December 2019.
+* A. Pradhan, V. Amalladinne, K.R. Narayanan, and J.-F. Chamberland,
+[Sparse IDMA: A Joint Graph-Based Coding Scheme for Unsourced Random Access]
+(https://arxiv.org/abs/1906.05410).
+Under review, IEEE Transactions on Communications
 
 ## Tutorial Presentations
 * J.-F. Chamberland, K.R. Narayanan.
