@@ -24,36 +24,38 @@ Under review, IEEE Transactions on Communications
 * J. R. Ebert, V. K. Amalladinne, S. Rini, J.-F. Chamberland, K. R. Narayanan.
 Stochastic Binning and Coded Demixing for Unsourced Random Access
 Under review, IEEE Transactions on Signal Processing.
-[arxiv](https://arxiv.org/abs/2104.05686)
+[arxiv](https://arxiv.org/abs/2104.05686).
 
 
 ## Tutorial Presentations
+
 * J.-F. Chamberland, K.R. Narayanan, Y. Polyanskiy.
 Unsourced Multiple Access (UMAC): Information Theory and Coding
-
 * J.-F. Chamberland, K.R. Narayanan.
 Algorithms for Coded Random Access and Inference in Large Dimensional Spaces.
 Signal Processing and Communications (SPCOM) 2020 Conference, Indian Institute of Science.
 [YouTube](https://youtube.com/playlist?list=PLUd5FtcfdZfkT9gUpYw7q97yHUABQzZbL).
+
 
 ## Conference Proceedings
 
 * V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
 Coded Compressed Sensing with Successive Cancellation List Decoding for Unsourced Random Access with Massive MIMO
 In Asilomar Conference on Signals, Systems, and Computers, Pacific Grove, CA, November 2021. IEEE.
-[arXiv](https://arxiv.org/abs/2105.02185)
+[arXiv](https://arxiv.org/abs/2105.02185).
 * J. R. Ebert, V. K. Amalladinne, S. Rini, J.-F. Chamberland, and K. R. Narayanan.
 [Stochastic Binning and Coded Demixing for Unsourced Random Access](https://dx.doi.org/10.1109/SPAWC51858.2021.9593113).
 In International Workshop on Signal Processing Advances in Wireless Communications (SPAWC), Lucca, Italy, 2021. IEEE.
-[arXiv](https://arxiv.org/abs/2104.05686)
+[arXiv](https://arxiv.org/abs/2104.05686).
 [YouTube](https://www.youtube.com/watch?v=XsF1dVAo-jk).
 * V. K. Amalladinne, A. Hao, S. Rini, and J.-F. Chamberland.
 [Multi-Class Unsourced Random Access via Coded Demixing](https://dx.doi.org/10.1109/ISIT45174.2021.9517816).
 In International Symposium on Information Theory (ISIT), Melbourne, Australia, July 2021. IEEE.
-[arXiv](https://arxiv.org/abs/2102.07704)
+[arXiv](https://arxiv.org/abs/2102.07704).
 * M. Gkagkos, A. K. Pradhan, V. Amalladinne, K. R. Narayanan, J.-F. Chamberland, and C. N. Georghiades.
-[Asymptotic Support Recovery Using Codes for Unsource Multiple Access](https://dx.doi.org/10.1109/ISIT45174.2021.9517995).
+[Asymptotic Support Recovery Using Codes for Unsourced Multiple Access](https://dx.doi.org/10.1109/ISIT45174.2021.9517995).
 In International Symposium on Information Theory (ISIT), Melbourne, Australia, July 2021. IEEE.
+[arXiv](https://arxiv.org/abs/2105.12840).
 * A. K. Pradhan, V. Amalladinne, K. R. Narayanan, and J.-F. Chamberland.
 [LDPC Codes with Soft Interference Cancellation for Uncoordinated Unsourced Multiple Access](https://dx.doi.org/10.1109/ICC42927.2021.9500486).
 In International Conference on Communications (ICC), Montreal, Canada, June 2021. IEEE.
