@@ -25,6 +25,10 @@ Under review, IEEE Transactions on Communications
 Stochastic Binning and Coded Demixing for Unsourced Random Access
 Under review, IEEE Transactions on Signal Processing.
 [arxiv](https://arxiv.org/abs/2104.05686).
+* V. K. Amalladinne, J. R. Ebert, J.-F. Chamberland, K. R. Narayanan.
+An Enhanced Decoding Algorithm for Coded Compressed Sensing with Applications to Unsourced Random Access
+Under review, MDPI Sensors, Massive Machine-Type Communications towards 6G.
+[arXiv](https://arxiv.org/abs/2112.00270).
 
 
 ## Tutorial Presentations
