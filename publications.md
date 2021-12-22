@@ -7,8 +7,8 @@ permalink: /Publications.html
 ## Journal Articles
 
 * V. K. Amalladinne, A. K. Pradhan, C. Rush, J.-F. Chamberland, K. R. Narayanan.
-Unsourced random access with coded compressed sensing: Integrating AMP and belief propagation
-accepted to appear in the IEEE Transactions on Information Theory.
+[Unsourced random access with coded compressed sensing: Integrating AMP and belief propagation](https://dx.doi.org/10.1109/TIT.2021.3136437).
+IEEE Transactions on Information Theory, Early Access.
 [arXiv](https://arxiv.org/abs/2010.04364).
 * V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
 [A coded compressed sensing scheme for unsourced multiple access](https://dx.doi.org/10.1109/TIT.2020.3012948).
@@ -37,26 +37,30 @@ Signal Processing and Communications (SPCOM) 2020 Conference, Indian Institute o
 [YouTube](https://youtube.com/playlist?list=PLUd5FtcfdZfkT9gUpYw7q97yHUABQzZbL).
 
 ## Conference Proceedings
-* J. R. Ebert, V. K. Amalladinne, S. Rini, J.-F. Chamberland, K. R. Narayanan
-Stochastic Binning and Coded Demixing for Unsourced Random Access
-[arXiv](https://arxiv.org/abs/2104.05686).
+
+* V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
+Coded Compressed Sensing with Successive Cancellation List Decoding for Unsourced Random Access with Massive MIMO
+In Asilomar Conference on Signals, Systems, and Computers, Pacific Grove, CA, November 2021. IEEE.
+[arXiv](https://arxiv.org/abs/2105.02185)
+* J. R. Ebert, V. K. Amalladinne, S. Rini, J.-F. Chamberland, and K. R. Narayanan.
+[Stochastic Binning and Coded Demixing for Unsourced Random Access](https://dx.doi.org/10.1109/SPAWC51858.2021.9593113).
+In International Workshop on Signal Processing Advances in Wireless Communications (SPAWC), Lucca, Italy, 2021. IEEE.
+[arXiv](https://arxiv.org/abs/2104.05686)
 [YouTube](https://www.youtube.com/watch?v=XsF1dVAo-jk).
-* M. Gkagkos, A. K. Pradhan, V. Amalladinne,  K. Narayanan, J.-F. Chamberland and C. N. Georghiades
-Approximate Support Recovery using Codes for Unsourced Multiple Access.
-In International Symposium on Information Theory (ISIT), Melbourne, Australia, July 2021. IEEE.
-[arXiv](https://arxiv.org/abs/2105.12840).
 * V. K. Amalladinne, A. Hao, S. Rini, and J.-F. Chamberland.
-Multi-Class Unsourced Random Access via Coded Demixing.
+[Multi-Class Unsourced Random Access via Coded Demixing](https://dx.doi.org/10.1109/ISIT45174.2021.9517816).
 In International Symposium on Information Theory (ISIT), Melbourne, Australia, July 2021. IEEE.
-[arXiv](https://arxiv.org/abs/2102.07704).
+[arXiv](https://arxiv.org/abs/2102.07704)
+* M. Gkagkos, A. K. Pradhan, V. Amalladinne, K. R. Narayanan, J.-F. Chamberland, and C. N. Georghiades.
+[Asymptotic Support Recovery Using Codes for Unsource Multiple Access](https://dx.doi.org/10.1109/ISIT45174.2021.9517995).
+In International Symposium on Information Theory (ISIT), Melbourne, Australia, July 2021. IEEE.
 * A. K. Pradhan, V. Amalladinne, K. R. Narayanan, and J.-F. Chamberland.
-LDPC Codes with Soft Interference Cancellation for Uncoordinated unsourced Multiple Access.
+[LDPC Codes with Soft Interference Cancellation for Uncoordinated Unsourced Multiple Access](https://dx.doi.org/10.1109/ICC42927.2021.9500486).
 In International Conference on Communications (ICC), Montreal, Canada, June 2021. IEEE.
 [arXiv](https://arxiv.org/abs/2105.13985).
 * J. R. Ebert, V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
 [A Hybrid Approach to Coded Compressed Sensing where Coupling Takes Place via the Outer Code](https://dx.doi.org/10.1109/ICASSP39728.2021.9414469).
-In International Conference on Acoustics, Speech, and Signal Processing (ICASSP), 
-Toronto, Canada, June 2021. IEEE.
+In International Conference on Acoustics, Speech, and Signal Processing (ICASSP), Toronto, Canada, June 2021. IEEE.
 [arXiv](https://arxiv.org/abs/2010.11380).
 [YouTube](https://youtu.be/E36JJxv-7bU).
 * V. K. Amalladinne, A. K. Pradhan, C. Rush, J.-F. Chamberland, and K. R. Narayanan.
