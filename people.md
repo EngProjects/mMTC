@@ -14,8 +14,8 @@ This research initiative is conducted primarily at [Texas A&M University](https:
 ### Team Alumni
 
 * [Vamsi Amalladinne](https://github.com/vamsi128), [Google Scholar](https://scholar.google.com/citations?hl=en&user=t8O1_oYAAAAJ)
+* [Avinash Vem](https://github.com/avinashvem), [Google Scholar](https://scholar.google.com/citations?user=aC37MfUAAAAJ)
 * Asit Pradhan, [Google Scholar](https://scholar.google.com/citations?hl=en&user=EvluuLMAAAAJ)
-* [Avinash Vem](https://github.com/avinashvem)
 
 
 ## Recent Collaborators
