@@ -6,10 +6,6 @@ permalink: /Publications.html
 
 ## Journal Articles
 
-* V. K. Amalladinne, J. R. Ebert, J.-F. Chamberland, and K. R. Narayanan.
-[An Enhanced Decoding Algorithm for Coded Compressed Sensing with Applications to Unsourced Random Access](https://doi.org/10.3390/s22020676).
-MDPI Sensors, 22(2):676, 2022, Early Access.
-[arXiv](https://arxiv.org/abs/2112.00270).
 * V. K. Amalladinne, A. K. Pradhan, C. Rush, J.-F. Chamberland, K. R. Narayanan.
 [Unsourced random access with coded compressed sensing: Integrating AMP and belief propagation](https://dx.doi.org/10.1109/TIT.2021.3136437).
 IEEE Transactions on Information Theory, Early Access.
@@ -21,6 +17,10 @@ IEEE Transactions on Information Theory, 66(10):6509–6533, October 2020.
 * A. Vem, K. R. Narayanan, J.-F. Chamberland, and J. Cheng.
 [A user-independent successive interference cancellation based coding scheme for the unsourced random access Gaussian channel](https://dx.doi.org/10.1109/TCOMM.2019.2940216).
 IEEE Transactions on Communications, 67(12):8258–8272, December 2019.
+* V. K. Amalladinne, J. R. Ebert, J.-F. Chamberland, and K. R. Narayanan.
+[An Enhanced Decoding Algorithm for Coded Compressed Sensing with Applications to Unsourced Random Access](https://doi.org/10.3390/s22020676).
+MDPI Sensors, Massive Machine-Type Communications Towards 6G, 22(2):676, 2022.
+[arXiv](https://arxiv.org/abs/2112.00270).
 * A. Pradhan, V. Amalladinne, K.R. Narayanan, and J.-F. Chamberland,
 Sparse IDMA: A Joint Graph-Based Coding Scheme for Unsourced Random Access.
 Under review, IEEE Transactions on Communications
@@ -29,10 +29,6 @@ Under review, IEEE Transactions on Communications
 Stochastic Binning and Coded Demixing for Unsourced Random Access.
 Under review, IEEE Transactions on Signal Processing.
 [arxiv](https://arxiv.org/abs/2104.05686).
-* V. K. Amalladinne, J. R. Ebert, J.-F. Chamberland, K. R. Narayanan.
-An Enhanced Decoding Algorithm for Coded Compressed Sensing with Applications to Unsourced Random Access.
-Under review, MDPI Sensors, Massive Machine-Type Communications towards 6G.
-[arXiv](https://arxiv.org/abs/2112.00270).
 
 
 ## Tutorial Presentations
