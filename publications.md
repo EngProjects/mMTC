@@ -6,6 +6,10 @@ permalink: /Publications.html
 
 ## Journal Articles
 
+* V. K. Amalladinne, J. R. Ebert, J.-F. Chamberland, and K. R. Narayanan.
+[An Enhanced Decoding Algorithm for Coded Compressed Sensing with Applications to Unsourced Random Access](https://doi.org/10.3390/s22020676).
+MDPI Sensors, 22(2):676, 2022, Early Access.
+[arXiv](https://arxiv.org/abs/2112.00270).
 * V. K. Amalladinne, A. K. Pradhan, C. Rush, J.-F. Chamberland, K. R. Narayanan.
 [Unsourced random access with coded compressed sensing: Integrating AMP and belief propagation](https://dx.doi.org/10.1109/TIT.2021.3136437).
 IEEE Transactions on Information Theory, Early Access.
