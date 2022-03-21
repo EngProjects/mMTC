@@ -8,7 +8,7 @@ permalink: /Publications.html
 
 * V. K. Amalladinne, A. K. Pradhan, C. Rush, J.-F. Chamberland, K. R. Narayanan.
 [Unsourced random access with coded compressed sensing: Integrating AMP and belief propagation](https://dx.doi.org/10.1109/TIT.2021.3136437).
-IEEE Transactions on Information Theory, Early Access.
+IEEE Transactions on Information Theory, 68(4):2384-2409, April, 2022.
 [arXiv](https://arxiv.org/abs/2010.04364).
 * V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
 [A coded compressed sensing scheme for unsourced multiple access](https://dx.doi.org/10.1109/TIT.2020.3012948).
