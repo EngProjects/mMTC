@@ -137,8 +137,9 @@ class PolarCode():
                     # --- Incoming belief length for left child
                     temp = int(temp / 2)
 
-                    # --- MinSum
-                    L[temp * node:temp * (node + 1), :, depth] = minSum(a, b).T
+                    # --- Sum - Product
+                    L[temp * node:temp * (node + 1), :, depth] = sumProd(a, b).T
+
 
                     stateVec[npos] = 1
 
@@ -199,14 +200,20 @@ class PolarCode():
     # ===================================== Functions for Decoders =========================== #
 
 
-def minSum(a, b):
-    # --- Sign
-    signA, signB = 1 - 2 * (1 * (a < 0)), 1 - 2 * (1 * (b < 0))
-    sign = np.multiply(signA, signB)
-    # --- Magnitude
-    magn = np.minimum(abs(a), abs(b))
 
-    return np.multiply(magn, sign)
+def sumProd(a, b):
+    max = np.maximum(abs(a),abs(b))
+
+    r,c = np.where(max < 38)
+
+    result = np.zeros((a.shape))
+    result[r,c] = 2*np.arctanh(np.multiply(np.tanh(a[r,c]/2.0), np.tanh(b[r,c]/2.0)))
+
+    r, c = np.where(max >= 38)
+    result[r,c] = minSum(a[r,c], b[r,c])
+
+    return result
+
 
 
 def g(a, b, c):
@@ -216,6 +223,17 @@ def g(a, b, c):
 def minK(a, k):
     idx = (a).argsort()[:k]
     return idx, a[idx]
+
+
+
+def minSum(a, b):
+    # --- Sign
+    signA, signB = 1 - 2 * (1 * (a < 0)), 1 - 2 * (1 * (b < 0))
+    sign = np.multiply(signA, signB)
+    # --- Magnitude
+    magn = np.minimum(abs(a), abs(b))
+
+    return np.multiply(magn, sign)
 
 
 
