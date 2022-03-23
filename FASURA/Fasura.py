@@ -4,10 +4,10 @@ import numpy as np
 from PolarCode import PolarCode
 from utility import bin2dec, dec2bin, crcEncoder, crcDecoder
 
-
+from  scipy import linalg
 
 class FASURA():
-    def __init__(self, K, nPilots, B, Bf, L, nc, nL, M, sigma2, H):
+    def __init__(self, K, nPilots, B, Bf, L, nc, nL, M, sigma2):
         self.K = K
         self.Bf = Bf  # number of bits of the first part of the message
         self.Bs = B - Bf  # number of bits of the second part of the message
@@ -21,17 +21,24 @@ class FASURA():
         self.nPilots = nPilots  # number of pilot symbols
 
 
-        self.S = (1 - 2 * np.round(np.random.randint(low=0, high=2, size=(self.nChanlUses, self.J)))) + 1j * (
-                1 - 2 * np.round(np.random.randint(low=0, high=2, size=(self.nChanlUses, self.J))))
+
 
         # Pilots
-        self.P = self.S[0:self.nPilots, :] / np.sqrt(2.0 * self.nChanlUses)
+        self.P = ((1 - 2 * np.round(np.random.randint(low=0, high=2, size=(self.nPilots, self.J)))) + 1j * (
+                1 - 2 * np.round(np.random.randint(low=0, high=2, size=(self.nPilots, self.J))))) / np.sqrt(2.0)
 
         # spreading sequence master set
-        self.A = self.S[self.nPilots::, :] / np.sqrt(4.0 * self.nChanlUses)
+        self.A = (np.random.normal(loc=0, scale=1, size=(self.nDataSlots * self.L, self.J)) + 1j * np.random.normal(
+            loc=0, scale=1, size=(self.nDataSlots * self.L, self.J)))
+
+        for j in range(self.nDataSlots):
+            temp = np.linalg.norm(self.A[j * self.L:(j + 1) * self.L, :], axis=0)
+            self.A[j * self.L:(j + 1) * self.L, :] = np.divide(self.A[j * self.L:(j + 1) * self.L, :], temp)
+
+        self.A = (np.sqrt(self.L) * self.A)
 
         # Polynomial for CRC coding
-        if K <= 300:
+        if K <= 100:
             self.divisor = np.array([1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1], dtype=int)
         else:
             self.divisor = np.array([1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1], dtype=int)
@@ -81,6 +88,7 @@ class FASURA():
             # --- Save the active message k
             self.msgs[k, :] = msgBin[k, :]
 
+
             # --- Break the message into to 2 parts
             # First part, Second part
             mf = msgBin[k, 0:self.Bf]
@@ -118,8 +126,10 @@ class FASURA():
             for m in range(self.M):
                 YTempSymbols[:, m] = A * H[k, m]
 
+
             # --- Add the new matrix to the output signal
             Y += np.vstack((YTempPilots, YTempSymbols))
+
 
         return Y
 
@@ -236,7 +246,8 @@ def QPSK(data):
     data = np.reshape(data, (2, -1))
     symbols = 1.0 - 2.0 * data
 
-    return (symbols[0, :] + 1j * symbols[1, :])
+    # return (symbols[0, :] + 1j * symbols[1, :])
+    return np.sqrt(0.5)*(symbols[0, :] + 1j * symbols[1, :])
 
 def LMMSE(y,A,Qx,Qn):
 
@@ -302,7 +313,7 @@ def isIncluded(self, second, idxSS):
         binSum = sum((msgHat + self.msgsHat[i, :]) % 2)
 
         if binSum == 0:
-            return  1
+            return 1
     return 0
 
 def subInter(self, symbols, idxSS, h):
@@ -478,7 +489,7 @@ def decoder(self, H, idxSSHat):
 
 
      # ==================================== Symbol Estimation Decoder ============================================== #
-    symbolsHat = symbolsEst(self.Y[self.nPilots::, :], H, self.A[:, idxSSHat], np.eye(K) * 2,
+    symbolsHat = symbolsEst(self.Y[self.nPilots::, :], H, self.A[:, idxSSHat], np.eye(K),
                             np.eye(self.L * self.M) * self.sigma2, self.nDataSlots, self.L)
 
     # ==================================== Channel Decoder ============================================== #
@@ -495,9 +506,9 @@ def decoder(self, H, idxSSHat):
         cwordHatSoftInt[self.interleaver[:, self.idxSSHat[s]]] = cwordHatSoft
 
         # Call polar decoder
-        cwordHatHard, isDecoded, msgHat = polarDecoder(self, cwordHatSoftInt, self.idxSSHat[s])
+        cwordHatHard, isDecoded, msgHat = polarDecoder(self, np.sqrt(2)*cwordHatSoftInt, self.idxSSHat[s])
 
-        if isDecoded == 1 and sum(abs(((cwordHatSoftInt < 0) * 1 - cwordHatHard)) % 2) > 256:
+        if isDecoded == 1 and sum(abs(((cwordHatSoftInt < 0) * 1 - cwordHatHard)) % 2) > self.nc/2:
             isDecoded = 0
 
         symbolsHatHard[s, :] = QPSK(cwordHatHard[self.interleaver[:, self.idxSSHat[s]]])
