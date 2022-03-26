@@ -49,7 +49,7 @@ print('Number of users: ' + str(K))
 print('Number of antennas: ' + str(M))
 print("Number of channel uses: " +str(nChanlUses))
 # --- Variance of Noise
-sigma2 = 1.0 / ((10 ** (EbN0dB / 10.0)) * B)
+sigma2 = nChanlUses / ((10 ** (EbN0dB / 10.0)) * B)
 print('Sigma^2: ' + str(sigma2))
 
 # --- Run the simulation nIter times
