@@ -155,20 +155,20 @@ def amp_residual(y, z, sList, d, AbList):
     
     return z_plus
 
-def estimate_bin_occupancy(Ka, dbid, rxK, K, s_n, GENIE_AIDED):
+def estimate_bin_occupancy(Ka, dbid, rxK, K, nvar, GENIE_AIDED):
     """
     Estimate the number of users present in each bin. 
     :param Ka: total number of active users
     :param dbid: power allocated to bin occupancy estimation
     :param rxK: received vector indicating how many users are present in each bin
     :param K: true vector of # users/bin
-    :param s_n: noise standard deviation
+    :param nvar: noise standard deviation
     :param GENIE_AIDED: boolean flag whether to return genie-aided estimates
     """
 
     # Set up MMSE Estimator
     pi = 1 / NUM_BINS                      # probability of selecting bin i (all bins are equally likely)
-    Rzz = s_n**2 * np.eye(NUM_BINS)        # noise autocorrelation matrix
+    Rzz = nvar**2 * np.eye(NUM_BINS)        # noise autocorrelation matrix
     Rbb = np.zeros((NUM_BINS, NUM_BINS))   # construct autocorrelation matrix for bin identification sequence
     for i in range(NUM_BINS):
         for j in range(NUM_BINS):
@@ -196,33 +196,44 @@ def estimate_bin_occupancy(Ka, dbid, rxK, K, s_n, GENIE_AIDED):
 
     return Kht
 
-def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED):
+def estimate_bin_occupancy_blindly(dbid, rxK):
+    """
+    Estimate the number of users present in each bin without knowledge of the total number of users present in the network. 
+    :param dbid: power allocated to bin occupancy estimation
+    :param rxK: received vector indicating how many users are present in each bin
+    """
+
+    return np.ceil(rxK / dbid).astype(int) + 1
+
+def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED, simCount):
     """
     Run coded demixing simulation
     :param Ka: total number of users
     :param NUM_BINS: total number of bins
     :param EbNodB: Eb/No in dB
     :param GENIE_AIDED: flag of whether to use genie-aided estimate of K
+    :param simCount: number of trials to average over
     """
 
-    B = 128                                 # length of each user's message in bits
-    L = 16                                  # number of sections 
-    M = 2**L                                # length of each section
-    n = 38400                               # number of channel uses (real dof)
-    numBPiter = 1                           # Number of BP iterations on outer code
-    numSICIter = 2                          # Number of SIC iterations - WARNING: code must be modified if numSICIter != 2
-    gamma = 0.7 if numSICIter == 2 else 1   # Percentage of codewords to recover on the first round of SIC
-    simCount = 100                          # number of trials to average over
-    errorRate = 0                           # store error rate
-    delta = 5                               # constant number of extra codewords to retain
-
-    # Compute number of AMP iterations
-    numAMPIter = min(max(10, 10 + 3*int((Ka - 50) / 25)), 24)
+    # Define simulation parameters
+    B = 128                             # length of each user's message in bits
+    L = 16                              # number of sections 
+    M = 2**L                            # length of each section
+    n = 38400                           # number of channel uses (real dof)
+    numBPiter = 1                       # Number of BP iterations on outer code
+    numSICIter = 2                      # Number of SIC iterations - WARNING: code must be modified if numSICIter != 2
+    gamma = 0.7                         # Percentage of codewords to recover on the first round of SIC
+    errorRate = 0                       # store error rate
+    delta = 5                           # constant number of extra codewords to retain
+    
+    # Ensure simCount is defined
+    if simCount is None:
+        simCount = 10
 
     # Compute signal and noise power parameters
     EbNo = 10**(EbNodB/10)
-    P = 2*B*EbNo/n
-    s_n = 1
+    P = 2*EbNo*B/n
+    nvar = 1
     
     # Assign power to occupancy estimation and data transmission tasks
     pM = 80
@@ -230,7 +241,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED):
     dbid = np.sqrt(n*P*pM/(pM + n)) if NUM_BINS > 1 else 0
     assert np.abs(L*dcs**2 + dbid**2 - n*P) <= 1e-3, "Total power constraint violated."
 
-    # run simCount trials
+    # Run simCount trials
     for simIndex in range(simCount):
         print('**********Simulation Number: ' + str(simIndex))
         
@@ -254,10 +265,17 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED):
         ***************************************************************"""
 
         # Transmit bin identifier across channel
-        rxK = dbid * K + np.random.randn(NUM_BINS) * s_n
+        rxK = dbid * K + np.random.randn(NUM_BINS) * nvar
 
         # Perform LMMSE bin occupancy estimation
-        Kht = estimate_bin_occupancy(Ka, dbid, rxK, K, s_n, GENIE_AIDED) if NUM_BINS > 1 else K.copy()
+        Kht = estimate_bin_occupancy(Ka, dbid, rxK, K, nvar, GENIE_AIDED) if NUM_BINS > 1 else K.copy()
+        # Kht = estimate_bin_occupancy_blindly(dbid, rxK)
+        KaHt = np.sum(Kht) - NUM_BINS
+        print('True K: ' + str(K) + '\tKHt: ' + str(Kht))
+        print('True Ka: ' + str(Ka) + '\tKaHt: ' + str(KaHt))
+
+        # Compute number of AMP iterations
+        numAMPIter = min(max(10, 10 + 3*int((KaHt - 50) / 25)), 24)
         
         """*******************************************************************
         Step 3: outer/inner message encoding and transmission over AWGN channel
@@ -266,7 +284,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED):
         # Generate outer graphs
         OuterCodes = []
         for i in range(NUM_BINS):
-            OuterCodes.append(FGG.Triadic8(16))
+            OuterCodes.append(FGG.Triadic8(L))
 
         # Define data structures to hold encoding/decoding parameters
         txcodewords = 0                                     # list of all codewords transmitted
@@ -279,12 +297,11 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED):
         for i in range(NUM_BINS):
 
             # Outer encode each message
-            cdwds = OuterCodes[i].encodemessages(messages[i]) if len(messages[i]) > 0 else [np.zeros(L*M)]
+            cdwds = OuterCodes[i].encodemessages(messages[i])
             for cdwd in cdwds:                              # ensure that each codeword is valid
-                OuterCodes[i].testvalid(cdwd)
+                assert not np.isscalar(OuterCodes[i].testvalid(cdwd))
             codewords.append(cdwds)                         # add encoded messages to list of codewords
-
-            # Store codewords in 'txcodewords' for error computation
+            
             if K[i] > 0:
                 txcodewords = np.vstack((txcodewords, cdwds)) if not np.isscalar(txcodewords) else cdwds.copy()
 
@@ -306,7 +323,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED):
             x += dcs*Ab[i](sTrue[i])
         
         # Transmit signal X through AWGN channel
-        y = x + np.random.randn(n, 1) * s_n
+        y = x + np.random.randn(n, 1) * nvar
         
         """********************************************************
         Step 4: outer/inner decoding and message recovery using SIC
@@ -381,7 +398,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED):
             sortedcodewordestimates = sorted(recoveredcodewords.items(), key=lambda x: -x[0])
 
             # recover percentage of codewords based on SIC iteration
-            numCdwds = np.ceil(gamma*Ka).astype(int) if idxsiciter == 0 else (Ka - np.ceil(gamma*Ka).astype(int))
+            numCdwds = np.ceil(gamma*KaHt).astype(int) if idxsiciter == 0 else (KaHt - np.ceil(gamma*KaHt).astype(int))
             sortedcodewordestimates = sortedcodewordestimates[0:numCdwds]
 
             # remove contribution of recovered users from received signal and prepare for PUPE computation
@@ -400,7 +417,7 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED):
                 Kht[idxcdwdbin] = K[idxcdwdbin] - 1 if K[idxcdwdbin] > 0 else 0         # decrement estimated number of users in codeword's bin
 
             # Update number of matches
-            matches += FGG.numbermatches(txcodewords, codewordestimates)
+            matches += FGG.numbermatches(txcodewords, codewordestimates, maxcount=len(codewordestimates))
             print(str(matches) + ' matches after SIC iteration ' + str(idxsiciter))
 
         """*****************
@@ -408,32 +425,42 @@ def simulate(Ka, NUM_BINS, EbNodB, GENIE_AIDED):
         *****************"""
 
         # Compute error rate
-        errorRate += (Ka - matches) / (Ka * simCount)
+        # errorRate += (Ka - matches) / (Ka * simCount)
+        assert matches <= Ka
+        errorRate += ((Ka - matches)/Ka + max(0, (KaHt - Ka) / Ka)) / simCount
         print('Cumulative Error Rate: ' + str(errorRate*simCount/(simIndex+1)))
 
     return errorRate
 
 # Simulation parameters
-Ka = 64                             # total number of users
 NUM_BINS = 2                        # number of bins employed in simulation
 GENIE_AIDED = False                 # flag of whether to produce genie-aided bin occupancy estimates
-SNRs = [1.6, 1.8, 2.0, 2.2, 2.4]    # EbNo values to simulate
-errorRates = []                     # data structure to store error results
+Ka = [100]
+SNRs = [1.79]
+simCount = [100]
+
+# data structure to store error results
+errorRates = []
+
+# Ensure proper conditions are satisfied
+assert len(Ka) == len(SNRs)
+assert len(SNRs) == len(simCount)
 
 # Run simulation
-for snr in SNRs:
-    print('SNR = ' + str(snr))
-    a = simulate(Ka, NUM_BINS, snr, GENIE_AIDED)
+for idx in range(len(Ka)):
+    print('Ka = ' + str(Ka[idx]) + ', EbNo = ' + str(SNRs[idx]))
+    
+    a = simulate(Ka[idx], NUM_BINS, SNRs[idx], GENIE_AIDED, simCount[idx])
 
     print('*****************************************************************************************')
-    print('SNR: ' + str(snr) + ' Error rate: ' + str(a))
+    print('Ka: ' + str(Ka[idx]) + ', SNR: ' + str(SNRs[idx]) + ' Error rate: ' + str(a))
     print('*****************************************************************************************')
     
-    np.savetxt(str(NUM_BINS)+'_'+str(snr)+'_pupe_sic.txt', np.array([a]))
+    np.savetxt('B' + str(NUM_BINS)+'K'+str(Ka[idx])+'SNR'+str(SNRs[idx])+'.txt', np.array([a]))
     errorRates.append(a)
 
 # Print and store simulation results
 print('Simulation complete!')
 print(errorRates)
-filename = str(NUM_BINS) + '_final_pupe_sic.txt'
+filename = str(NUM_BINS) + 'CD0_error_rates.txt'
 np.savetxt(filename, errorRates)
