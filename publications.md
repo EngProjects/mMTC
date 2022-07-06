@@ -6,6 +6,18 @@ permalink: /Publications.html
 
 ## Journal Articles
 
+* A. K. Pradhan, V. K. Amalladinne, A. Vem, K. R. Narayanan, J.-F. Chamberland.
+[Sparse IDMA: A Joint Graph-Based Coding Scheme for Unsourced Random Access](https://doi.org/10.1109/TCOMM.2022.3183590).
+IEEE Transactions on Communications, Early Access, 2022.
+[arXiv](https://arxiv.org/abs/1906.05410)
+* J. R. Ebert, V. K. Amalladinne, S. Rini, J.-F. Chamberland, K. R. Narayanan.
+[Coded Demixing for Unsourced Random Access](https://doi.org/10.1109/TSP.2022.3182224).
+IEEE Transactions on Signal Processing, 70:2972-2984, June, 2022.
+[arXiv](https://arxiv.org/abs/2203.00239)
+* V. K. Amalladinne, J. R. Ebert, J.-F. Chamberland, and K. R. Narayanan.
+[An Enhanced Decoding Algorithm for Coded Compressed Sensing with Applications to Unsourced Random Access](https://doi.org/10.3390/s22020676).
+MDPI Sensors, Massive Machine-Type Communications Towards 6G, 22(2):676, 2022. 
+[arXiv](https://arxiv.org/abs/2112.00270)
 * V. K. Amalladinne, A. K. Pradhan, C. Rush, J.-F. Chamberland, K. R. Narayanan.
 [Unsourced random access with coded compressed sensing: Integrating AMP and belief propagation](https://dx.doi.org/10.1109/TIT.2021.3136437).
 IEEE Transactions on Information Theory, 68(4):2384-2409, April, 2022.
