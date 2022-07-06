@@ -55,6 +55,10 @@ Signal Processing and Communications (SPCOM) 2020 Conference, Indian Institute o
 
 ## Conference Proceedings
 
+* M. Gkagkos, K. R. Narayanan, J.-F. Chamberland, C. N. Georghiades.
+FASURA: A Scheme for Quasi-Static Massive MIMO Unsourced Random Access Channels.
+In International Workshop on Signal Processing Advances in Wireless Communication (SPAWC), Oulu, Finland, July 2022. IEEE.
+[arXiv](https://arxiv.org/abs/2202.11042)
 * V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
 Coded Compressed Sensing with Successive Cancellation List Decoding for Unsourced Random Access with Massive MIMO
 In Asilomar Conference on Signals, Systems, and Computers, Pacific Grove, CA, November 2021. IEEE.
