@@ -43,16 +43,6 @@ Under review, IEEE Transactions on Signal Processing.
 [arxiv](https://arxiv.org/abs/2104.05686).
 
 
-## Tutorial Presentations
-
-* J.-F. Chamberland, K.R. Narayanan, Y. Polyanskiy.
-Unsourced Multiple Access (UMAC): Information Theory and Coding
-* J.-F. Chamberland, K.R. Narayanan.
-Algorithms for Coded Random Access and Inference in Large Dimensional Spaces.
-Signal Processing and Communications (SPCOM) 2020 Conference, Indian Institute of Science.
-[YouTube](https://youtube.com/playlist?list=PLUd5FtcfdZfkT9gUpYw7q97yHUABQzZbL).
-
-
 ## Conference Proceedings
 
 * M. Gkagkos, K. R. Narayanan, J.-F. Chamberland, C. N. Georghiades.
@@ -112,4 +102,18 @@ In International Conference on Acoustics, Speech, and Signal Processing (ICASSP)
 * A. Vem, K. R. Narayanan, J. Cheng, and J.-F. Chamberland.
 [A user-independent serial interference cancellation based coding scheme for the unsourced random access Gaussian channel](https://dx.doi.org/10.1109/ITW.2017.8278023).
 In Information Theory Workshop (ITW), Kaohsiung, Taiwan, November 2017. IEEE.
+
+
+## Tutorial Presentations
+
+* J.-F. Chamberland, K.R. Narayanan.
+Unsourced Multiple Access (UMAC): Information Theory and Coding.
+Signal Processing and Communications Conference (SPCOM), Indian Institute of Science, 2022.
+* J.-F. Chamberland, K.R. Narayanan, Y. Polyanskiy.
+Unsourced Multiple Access (UMAC): Information Theory and Coding.
+International Symposium on Information Theory, Melbourne, Australia, 2021.
+* J.-F. Chamberland, K.R. Narayanan.
+Algorithms for Coded Random Access and Inference in Large Dimensional Spaces.
+Signal Processing and Communications Conference (SPCOM), Indian Institute of Science, 2020.
+[YouTube](https://youtube.com/playlist?list=PLUd5FtcfdZfkT9gUpYw7q97yHUABQzZbL).
 
