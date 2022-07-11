@@ -109,6 +109,7 @@ In Information Theory Workshop (ITW), Kaohsiung, Taiwan, November 2017. IEEE.
 * J.-F. Chamberland, K.R. Narayanan.
 Unsourced Multiple Access (UMAC): Information Theory and Coding.
 Signal Processing and Communications Conference (SPCOM), Indian Institute of Science, 2022.
+[PDF](assets/ePrint/SPCOM2022/SPCOM2022.pdf)
 * J.-F. Chamberland, K.R. Narayanan, Y. Polyanskiy.
 Unsourced Multiple Access (UMAC): Information Theory and Coding.
 International Symposium on Information Theory, Melbourne, Australia, 2021.

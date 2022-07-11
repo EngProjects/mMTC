@@ -40,7 +40,7 @@ Some aspects of the solution methodologies are also based on classical and highl
 
 ### Low-Complexity Algorithms for Unsourced Multiple Access and Compressed Sensing in Large Dimensions
 
-* [CCF-2131106](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2131106),
+* [CCF-2131106](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2131106)
 
 Wireless traffic is increasingly heterogeneous, with growth coming primarily from unattended devices.
 While early implementations of wireless communication systems have focused on voice telephony, subsequent generations of cellular infrastructures have enabled users to connect more broadly with the Internet, in support of applications such as gaming, browsing, and video watching.
@@ -63,7 +63,7 @@ Likely outcomes for this project include near-optimum, low-complexity schemes fo
 
 ### Massive Uncoordinated and Sporadic Multiple Access - Strengthening Connections between Coding and Random Access
 
-* [CCF-1619085](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1619085).
+* [CCF-1619085](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1619085)
 
 The wireless landscape is poised to change, once again, within the next few years due to the emergence of machine-driven communications.
 This creates new challenges for wireless traffic, with packets originating from sporadic transmissions rather than sustained connections.
