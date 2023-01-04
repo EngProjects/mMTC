@@ -33,20 +33,17 @@ IEEE Transactions on Communications, 67(12):8258–8272, December 2019.
 [An Enhanced Decoding Algorithm for Coded Compressed Sensing with Applications to Unsourced Random Access](https://doi.org/10.3390/s22020676).
 MDPI Sensors, Massive Machine-Type Communications Towards 6G, 22(2):676, 2022.
 [arXiv](https://arxiv.org/abs/2112.00270).
-* A. Pradhan, V. Amalladinne, K.R. Narayanan, and J.-F. Chamberland,
-Sparse IDMA: A Joint Graph-Based Coding Scheme for Unsourced Random Access.
-Under review, IEEE Transactions on Communications
-[arxiv](https://arxiv.org/abs/1906.05410).
-* J. R. Ebert, V. K. Amalladinne, S. Rini, J.-F. Chamberland, K. R. Narayanan.
-Stochastic Binning and Coded Demixing for Unsourced Random Access.
-Under review, IEEE Transactions on Signal Processing.
-[arxiv](https://arxiv.org/abs/2104.05686).
 
 
 ## Conference Proceedings
 
-* M. Gkagkos, K. R. Narayanan, J.-F. Chamberland, C. N. Georghiades.
-FASURA: A Scheme for Quasi-Static Massive MIMO Unsourced Random Access Channels.
+* J. R. Ebert, K. R. Narayanan, and J.-F. Chamberland.
+HashBeam: Enabling Feedback Through Downlink Beamforming in Unsourced Random Access. 
+In the 56th Annual Asilomar Conference on Signals, Systems, and Computers, Pacific Grove, CA, USA, November 2022. IEEE.
+[arXiv](https://arxiv.org/abs/2206.01684).
+[YouTube](https://www.youtube.com/watch?v=yCF-SypFDh4).
+* M. Gkagkos, K. R. Narayanan, J.-F. Chamberland, and C. N. Georghiades.
+[FASURA: A Scheme for Quasi-Static Massive MIMO Unsourced Random Access Channels](https://ieeexplore.ieee.org/abstract/document/9833940).
 In International Workshop on Signal Processing Advances in Wireless Communication (SPAWC), Oulu, Finland, July 2022. IEEE.
 [arXiv](https://arxiv.org/abs/2202.11042)
 * V. K. Amalladinne, J.-F. Chamberland, and K. R. Narayanan.
