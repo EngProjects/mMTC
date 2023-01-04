@@ -21,6 +21,9 @@ This branch contains the source code used to generate published simulation resul
   - `spawc2021.py`: Code used in *Stochastic Binning and Coded Demixing for Unsourced Random Access* (https://ieeexplore.ieee.org/document/9593113).
   - `icassp2021_treecode.ipynb`: Code used in *A Hybrid Approach to Coded Compressed Sensing Where Coupling Takes Place Via the Outer Code* (https://ieeexplore.ieee.org/document/9414469). The companion file `icassp2021_factorgraph.py` offers an alternative implementation of the same functionality. 
 - **FASURA**:
-  - Contains code used in *FASURA: A Scheme for Quasi-Static Massive MIMO Unsourced Random Access Channels* (https://arxiv.org/abs/2202.11042).
+  - Contains code used in *FASURA: A Scheme for Quasi-Static Massive MIMO Unsourced Random Access Channels* (https://ieeexplore.ieee.org/abstract/document/9833940).
 - **HybridUIR**:
   - `hashbeam.ipynb`: Code used in *HashBeam: Enabling Feedback Through Downlink Beamforming in Unsourced Random Access* (https://arxiv.org/abs/2206.01684). 
+- **SRLDPC**:
+  - `gfldpc.py`: Contains code for encoding and decoding non-binary LDPC codes
+  - `srldpc.py`: Code used to obtain results in *Sparse Regression LDPC Codes*
