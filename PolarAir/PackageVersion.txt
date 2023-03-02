@@ -1,0 +1,5 @@
+Python 3
+
+numpy: 1.21.3
+torch 1.9.0+cu102
+torchvision 0.10.0
