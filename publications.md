@@ -44,7 +44,7 @@ In Information Theory Workshop (ITW), Saint-Malo, France, April 2023. IEEE.
 * J. R. Ebert, J.-F. Chamberland, and K. R. Narayanan. 
 On Sparse Regression LDPC Codes. 
 Submitted to the International Symposium on Information Theory (ISIT),  Taipei, Taiwan, June 2023. IEEE.
-[arXiv] (https://arxiv.org/abs/2301.01899).
+[arXiv](https://arxiv.org/abs/2301.01899).
 * J. R. Ebert, K. R. Narayanan, and J.-F. Chamberland.
 [HashBeam: Enabling Feedback Through Downlink Beamforming in Unsourced Random Access](https://ieeexplore.ieee.org/document/10051879). 
 In the 56th Annual Asilomar Conference on Signals, Systems, and Computers, Pacific Grove, CA, USA, November 2022. IEEE.
