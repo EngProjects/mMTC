@@ -11,7 +11,7 @@ This research initiative is conducted primarily at [Texas A&M University](https:
 * [Michail Gkagkos](https://github.com/mgkagk01), [Google Scholar](https://scholar.google.com/citations?user=RLGpDtoAAAAJ)
 * [Jamison Ebert](https://github.com/jrebert), [Google Scholar](https://scholar.google.com/citations?user=fcxlpRIAAAAJ&hl=en&oi=ao)
 * [Kaushik Valmeekam](https://github.com/vcskaushik), [Google Scholar](https://scholar.google.com/citations?user=82xffx0AAAAJ)
-* [Siva Gooty](https://github.com/sivaadityag)
+* [Siva Aditya Gooty](https://github.com/sivaadityag)
 
 
 ### Team Alumni

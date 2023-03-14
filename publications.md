@@ -37,10 +37,17 @@ MDPI Sensors, Massive Machine-Type Communications Towards 6G, 22(2):676, 2022.
 
 ## Conference Proceedings
 
+* M. Gkagkos, K. R. Narayanan, J.-F. Chamberland, and C. N. Georghiades.
+PolarAir: A Compressed Sensing Scheme for Over-the-Air Federated Learning. 
+In Information Theory Workshop (ITW), Saint-Malo, France, April 2023. IEEE. 
+[arXiv](https://arxiv.org/abs/2301.10110). 
+* J. R. Ebert, J.-F. Chamberland, and K. R. Narayanan. 
+On Sparse Regression LDPC Codes. 
+Submitted to the International Symposium on Information Theory (ISIT),  Taipei, Taiwan, June 2023. IEEE.
+[arXiv] (https://arxiv.org/abs/2301.01899).
 * J. R. Ebert, K. R. Narayanan, and J.-F. Chamberland.
-HashBeam: Enabling Feedback Through Downlink Beamforming in Unsourced Random Access. 
+[HashBeam: Enabling Feedback Through Downlink Beamforming in Unsourced Random Access](https://ieeexplore.ieee.org/document/10051879). 
 In the 56th Annual Asilomar Conference on Signals, Systems, and Computers, Pacific Grove, CA, USA, November 2022. IEEE.
-[arXiv](https://arxiv.org/abs/2206.01684).
 [YouTube](https://www.youtube.com/watch?v=yCF-SypFDh4).
 * M. Gkagkos, K. R. Narayanan, J.-F. Chamberland, and C. N. Georghiades.
 [FASURA: A Scheme for Quasi-Static Massive MIMO Unsourced Random Access Channels](https://ieeexplore.ieee.org/abstract/document/9833940).
