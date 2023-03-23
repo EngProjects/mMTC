@@ -66,7 +66,7 @@ for Iter in range(nIter):
     H = (1 / np.sqrt(2)) * (np.random.normal(0, 1, (K, M)) + 1j * np.random.normal(0, 1, (K, M)))
 
     # --- Create a FASURA object
-    scheme = FASURA(K, nPilots, B, Bf, L, nc, nL, M, sigma2, H)
+    scheme = FASURA(K, nPilots, B, Bf, L, nc, nL, M, sigma2)
 
     # --- Encode the data
     XH = scheme.transmitter(msgs, H)
