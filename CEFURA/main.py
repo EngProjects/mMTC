@@ -56,7 +56,6 @@ Pt = 10e-3
 # --- To store results
 nIter = 150
 nUEsPoints = len(nUEsArray)
-iterRange = np.arange(nIter) + 1
 probDE = np.zeros((nUEsPoints, nIter))
 probFA = np.zeros((nUEsPoints, nIter))
 # ====================================== Simulation ====================================== #
@@ -71,7 +70,6 @@ print("Length of the code " +str(nc))
 print("Length of pilots " + str(nPilots))
 print("Length of message bits = " +str(B))
 print("Bf = " + str(Bf))
-print('Tx SNR (int): ' + str(int(10*np.log10(Pt/sigma2))) + 'dB')
 print('Tx power : ' + str(Pt) + 'W')
 print('Cell height/width : ' + str(D) + 'm')
 print('Distribution Type: ' + type)
