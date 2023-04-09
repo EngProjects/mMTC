@@ -3,7 +3,6 @@
 import numpy as np
 from Fasura import FASURA
 import time
-import sys
 
 
 
@@ -26,9 +25,6 @@ J = 2 ** Bf
 nL = 64
 
 nChanlUses = int((nc / np.log2(4))*L + nPilots)
-if nChanlUses > 3200:
-    print("The length of the channel input is larger than 3200")
-    sys.exit()
 
 
 # Number of Antennas
