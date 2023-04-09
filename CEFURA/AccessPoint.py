@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 class APs:
-    def __init__(self, nUEs, nAPs, nAnts, B, Bf, L, nc, nL, nPilots, sigma2, UEs, nRec, net):
+    def __init__(self, nUEs, nAPs, nAnts, B, Bf, L, nc, nL, nPilots, sigma2, UEs, nRec):
         ''' Parameters '''
         self.nUEs = nUEs  # Number of Users
         self.nAPs = nAPs  # Number of APs
@@ -24,7 +24,6 @@ class APs:
         self.UEs = UEs
         self.nRec = int(nRec)
         self.save = 0
-        self.net = net
         self.Pt = self.UEs.Pt
 
         ''' For polar code '''
