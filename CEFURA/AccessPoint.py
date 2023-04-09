@@ -1,5 +1,5 @@
 import numpy as np
-from utilities import LMMSE, scatterPlot, demQPSK
+from utilities import LMMSE
 import matplotlib.pyplot as plt
 
 
@@ -110,7 +110,7 @@ class APs:
                                                                       - np.dot(self.P[:, self.idxSSHat[ap,  0:self.recPerAP[ap]]], self.Hhat[0:self.recPerAP[ap], ap, :])
 
 
-        return checkEnergyDetector(self)
+        
 
 
 
