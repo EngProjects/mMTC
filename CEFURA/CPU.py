@@ -1,6 +1,6 @@
 import numpy as np
 from PolarCode import PolarCode
-from utilities import demQPSK, dec2bin, crcDecoder
+from utilities import dec2bin, crcDecoder
 
 class CPU:
     def __init__(self, nUEs, nAPs, B, Bf, nc, nL, sigma2):
