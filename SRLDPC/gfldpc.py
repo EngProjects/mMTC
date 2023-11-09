@@ -74,14 +74,14 @@ class CheckNode():
         for i in range(num_edges):
             in_msgs[i, :] = fht(in_msgs[i, :])
             
-        # Compute \overline{\mu}_{c \rightarrow v} according to Remark 8
+        # Compute \overline{\mu}_{c \rightarrow v}
         out_msgs = np.zeros(in_msgs.shape, dtype=float)
         for i in range(num_edges):
             indices = np.setdiff1d(np.arange(num_edges), i)
             out_msgs[i, :] = np.prod(in_msgs[indices, :], axis=0)
             out_msgs[i, :] = c*fht(c*out_msgs[i, :])
             
-        # Compute \mu_{c \rightarrow v} according to (21)
+        # Compute \mu_{c \rightarrow v}
         logindices = int_to_log[np.arange(1, q)]
         for i in range(num_edges):
             logweight = int_to_log[self.__weights[i]]
@@ -194,7 +194,6 @@ class VariableNode():
                 estimate (ndarray): estimated prob. dist. at variable node
         """
         in_msgs = messages[self.__edges, :].copy()
-        num_edges, q = in_msgs.shape
         
         # Compute estimate of probability distribution associated with var node
         self.estimate = np.prod(in_msgs, axis=0)*self._observation
@@ -217,7 +216,7 @@ class VariableNode():
         in_msgs = messages[self.__edges, :].copy()
         num_edges, q = in_msgs.shape
         
-        # Compute messages \mu_{v \rightarrow c} according to (23)
+        # Compute messages \mu_{v \rightarrow c}
         out_msgs = np.zeros(in_msgs.shape)
         for i in range(num_edges):
             indices = np.setdiff1d(np.arange(num_edges), i)
@@ -225,7 +224,7 @@ class VariableNode():
         out_msgs *= self._observation
         out_msgs /= (np.linalg.norm(out_msgs, axis=1, ord=1).reshape(-1, 1) + 1e-12)
         
-        # Compute messages \overline{\mu}_{v \rightarrow c} according to (20)
+        # Compute messages \overline{\mu}_{v \rightarrow c}
         logindices = int_to_log[np.arange(1, q).astype(int)]
         for i in range(num_edges):
             loginvweight = int_to_log[self.__invweights[i]]
@@ -272,12 +271,13 @@ class GFLDPC():
             field must be an extension of the binary field; i.e. q = 2**j
     """
 
-    def __init__(self, alist_file_name):
+    def __init__(self, alist_file_name, use_unit_weights=False):
         """
         Initialize GFLDPC class. 
 
             Parameters:
                 alist_file_name (str): name of file with alist code definition
+                use_unit_weights (bool): flag of whether to set all weights to 1
 
             Returns:
                  <none>
@@ -328,15 +328,20 @@ class GFLDPC():
             connections = curline[0::2]
             weights = curline[1::2]
             for (connection, weight) in zip(connections, weights):
-                self.variable_nodes[i].add_connection(idx_edge, weight, 
-                                            self.int_to_log, self.log_to_int)
-                self.check_nodes[connection-1].add_connection(idx_edge, i, weight)
+                if use_unit_weights:
+                    connection_weight = 1
+                else:
+                    connection_weight = weight
+                self.variable_nodes[i].add_connection(idx_edge,
+                        connection_weight, self.int_to_log, self.log_to_int)
+                self.check_nodes[connection-1].add_connection(idx_edge, 
+                        i, connection_weight)
                 self.pcm[connection-1, i] = weight
                 idx_edge += 1
                 
         # Row reduce parity check matrix (pcm) for encoding
         self.eliminationfq()
-        
+    
     def generate_field_polynomial(self, q):
         """
         Generate field polynomial for field of order q
@@ -593,7 +598,7 @@ class GFLDPC():
             for i in range(self.N):
                 self.variable_nodes[i].send_messages(self.messages,  \
                                                      self.int_to_log, \
-                                                     self.log_to_int)      
+                                                     self.log_to_int)
 
             # Check to variable node messages
             for i in range(self.M):
@@ -607,5 +612,4 @@ class GFLDPC():
             
             # End iterations early if codeword esimate is parity-consistent
             if self.check_consistency(cdwd_ht): 
-                # if max_iter > 1: print('breaking at iteration ' + str(idx_iter))
                 break
