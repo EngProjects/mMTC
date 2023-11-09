@@ -6,6 +6,9 @@ permalink: /Publications.html
 
 ## Journal Articles
 
+* M. Gkagkos, K. R. Narayanan, J.-F. Chamberland, and C. N. Georghiades.
+[FASURA: A Scheme for Quasi-Static Massive MIMO Unsourced Random Access Channels](https://ieeexplore.ieee.org/document/10185658).
+IEEE Transactions on Communications, Early Access, 2023. 
 * A. K. Pradhan, V. K. Amalladinne, A. Vem, K. R. Narayanan, J.-F. Chamberland.
 [Sparse IDMA: A Joint Graph-Based Coding Scheme for Unsourced Random Access](https://dx.doi.org/10.1109/TCOMM.2022.3183590).
 IEEE Transactions on Communications, Early Access, 2022.
@@ -29,21 +32,30 @@ IEEE Transactions on Information Theory, 66(10):6509–6533, October 2020.
 * A. Vem, K. R. Narayanan, J.-F. Chamberland, and J. Cheng.
 [A user-independent successive interference cancellation based coding scheme for the unsourced random access Gaussian channel](https://dx.doi.org/10.1109/TCOMM.2019.2940216).
 IEEE Transactions on Communications, 67(12):8258–8272, December 2019.
-* V. K. Amalladinne, J. R. Ebert, J.-F. Chamberland, and K. R. Narayanan.
-[An Enhanced Decoding Algorithm for Coded Compressed Sensing with Applications to Unsourced Random Access](https://doi.org/10.3390/s22020676).
-MDPI Sensors, Massive Machine-Type Communications Towards 6G, 22(2):676, 2022.
-[arXiv](https://arxiv.org/abs/2112.00270).
+
 
 
 ## Conference Proceedings
-
+* V. Rajagopalan, V. T. Kunde, C. S. K. Valmeekam, K. Narayanan, S. Shakkottai, D. Kalathil, J.-F. Chamberland.
+Transformers are Efficient In-Context Estimators for Wireless Communication.
+[arXiv](https://arxiv.org/abs/2311.00226).
+* C. S. K. Valmeekam, K. Narayanan, D. Kalathil, J.-F. Chamberland, S. Shakkottai. 
+LLMZip: Lossless Text Compression using Large Language Models. 
+[arXiv](https://arxiv.org/abs/2306.04050).
+* M. Gkagkos, J.-F. Chamberland, C. N. Georghiades, K. R. Narayanan.
+Scalable Cell-Free Massive MIMO Unsourced Random Access. 
+Submitted to the International Conference on Communications (ICC), Denver, CO, USA, June 2024. IEEE.
+[arXiv](https://arxiv.org/abs/2304.06105).
+* W. W. Zheng, J. R. Ebert, S. Rini, and J.-F. Chamberland.
+[Coding for the Unsourced A-Channel with Erasures: The Linked Loop Code](https://ieeexplore.ieee.org/document/10289955).
+In the 31st European Signal Processing Conference (EUSIPCO), Helsinki, Finland, September 2023. IEEE.
 * M. Gkagkos, K. R. Narayanan, J.-F. Chamberland, and C. N. Georghiades.
-PolarAir: A Compressed Sensing Scheme for Over-the-Air Federated Learning. 
+[PolarAir: A Compressed Sensing Scheme for Over-the-Air Federated Learning](https://ieeexplore.ieee.org/document/10161691). 
 In Information Theory Workshop (ITW), Saint-Malo, France, April 2023. IEEE. 
 [arXiv](https://arxiv.org/abs/2301.10110). 
 * J. R. Ebert, J.-F. Chamberland, and K. R. Narayanan. 
-On Sparse Regression LDPC Codes. 
-Submitted to the International Symposium on Information Theory (ISIT),  Taipei, Taiwan, June 2023. IEEE.
+[On Sparse Regression LDPC Codes](https://ieeexplore.ieee.org/document/10206818). 
+In International Symposium on Information Theory (ISIT),  Taipei, Taiwan, June 2023. IEEE.
 [arXiv](https://arxiv.org/abs/2301.01899).
 * J. R. Ebert, K. R. Narayanan, and J.-F. Chamberland.
 [HashBeam: Enabling Feedback Through Downlink Beamforming in Unsourced Random Access](https://ieeexplore.ieee.org/document/10051879). 
@@ -108,8 +120,10 @@ In International Conference on Acoustics, Speech, and Signal Processing (ICASSP)
 In Information Theory Workshop (ITW), Kaohsiung, Taiwan, November 2017. IEEE.
 
 
-## Tutorial Presentations
+## Tutorials/ Presentations
 
+* J.-F. Chamberland, Applications of Sparse Regression LDPC Codes, Communication Theory Workshop (CTW), Hualien, Taiwan, 2023.
+* K. Narayanan, Connections between Multiple Access and Sparse Recovery, Centre for Networked Intelligence, IISc, 2022. [YouTube](https://www.youtube.com/watch?v=J7STplm_nk0)
 * J.-F. Chamberland, K.R. Narayanan.
 Unsourced Multiple Access (UMAC): Information Theory and Coding.
 Signal Processing and Communications Conference (SPCOM), Indian Institute of Science, 2022.
