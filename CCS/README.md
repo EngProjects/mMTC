@@ -10,7 +10,7 @@ This folder contains all files related to:
 ### Repository Organization
 - Files:
     - **ccsfg.py**: Contains the necessary building blocks to implement a bipartite factor graph tailored to belief propagation.
-    - **FactorGraphGeneration.py`: Contains several pre-built factor graphs for use in connection with `ccsfg.py`. 
+    - **FactorGraphGeneration.py**: Contains several pre-built factor graphs for use in connection with `ccsfg.py`. 
     - **ccsinnercode.py**: A self-contained compressed sensing encoder/decoder using approximate message passing (AMP) that allows for dynamic information sharing between inner and outer codes. 
     - **ccssimulation.py**: A simple example of how to use `ccsfg.py`, `FactorGraphGeneration.py`, and `ccsinnercode.py` to construct a basic CCS-AMP simulation. 
     - **coded_demixing.py**: Code used in *Coded Demixing for Unsourced Random Access* (https://ieeexplore.ieee.org/document/9795083).
