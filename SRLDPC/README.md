@@ -4,12 +4,7 @@ This folder contains all files related to SRLDPC codes and single-user SPARCs.
 
 ### Repository Organization
 - Folders:
-    - __affine_experiment__: contains files related to affine BP experiments
     - __ldpc_graphs__: contains (modified) alist definition of various LDPC codes
-    - __legacy__: contains SU-SPARCs files created by Vamsi
-    - __results__: contains saved results from SRLDPC simulations
-    - __utils__: contains utilities such as PEG construction of LDPC codes, binary to non-binary alist transformation, etc
-    - __coded_demixing__: contains files related to SR-LDPC-CD
 - Files:
     - __benchmarks.py__: Sionna implementation of 5G-NR LDPC codes + 4PAM for benchmarking purposes
     - __gfldpc.py__: GF(2^j) LDPC encoder and BP decoder
