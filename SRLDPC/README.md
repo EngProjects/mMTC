@@ -6,7 +6,7 @@ This folder contains all files related to SRLDPC codes and single-user SPARCs.
 - Folders:
     - __ldpc_graphs__: contains (modified) alist definition of various LDPC codes
 - Files:
-    - __benchmarks.py__: Sionna implementation of 5G-NR LDPC codes + 4PAM for benchmarking purposes
+    - __benchmarks.ipynb__: Sionna implementation of 5G-NR LDPC codes + 4PAM for benchmarking purposes
     - __gfldpc.py__: GF(2^j) LDPC encoder and BP decoder
     - __srldpc_ber.py__: SR-LDPC BER simulation file
     - __gfldpc_se.py__: utility for MSE message passing
