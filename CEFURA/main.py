@@ -1,6 +1,5 @@
 import time
 import numpy as np
-import matplotlib.pyplot as plt
 from Network import Network
 from CPU import CPU
 from UserEquipment import UEs
@@ -9,13 +8,11 @@ np.random.seed(0)
 
 # ====================================== Initialization ====================================== #
 # --- Simulation
-debug = 0
-plot = 0
 # --- Wireless Network
 D = 550
 nUEsArray = np.array([50, 75, 100, 125, 150])
-nAPs = 1
-nAnts = 100
+nAPs = 49
+nAnts = 2
 
 # ============= Cluster Point Process Info
 type = 'B' # B: Binomial Point Process, P: Poisson Point Process  T: Thomas Cluster Point Process, M:  Matérn Cluster Point Process
@@ -54,7 +51,7 @@ Pt = 10e-3
 
 
 # --- To store results
-nIter = 150
+nIter = 10
 nUEsPoints = len(nUEsArray)
 probDE = np.zeros((nUEsPoints, nIter))
 probFA = np.zeros((nUEsPoints, nIter))
