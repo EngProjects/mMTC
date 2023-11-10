@@ -1,21 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from utilities import compuCov
+
 
 class Network:
     def __init__(self, D, nAPs, nAnts, nUEs, type, densityP, densityD, radius, sigma2P):
         self.D = D
-        self.nAPs = nAPs # Number of Access Points (AP)
-        self.nAnts = nAnts # Number of antennas per AP
-        self.nUEs = nUEs # Number of user equipment (UE)
-        self.ha = 15 # Height of AP
-        self.hu = 1.65 # Height of UE
+        self.nAPs = nAPs  # Number of Access Points (AP)
+        self.nAnts = nAnts  # Number of antennas per AP
+        self.nUEs = nUEs  # Number of user equipment (UE)
+        self.ha = 15  # Height of AP
+        self.hu = 1.65  # Height of UE
         self.L = -30.5
         self.computeCentroids()
         self.type = type
         self.densityP = densityP
-        self.densityD =densityD
+        self.densityD = densityD
         self.radius = radius
         self.sigma2P = sigma2P
+        self.ASD = np.deg2rad(10)
+        self.antSpac = 0.5
+        self.distribution = 'Gaussian'
+        self.SPATIAL = 1
 
     def computeCentroids(self):
 
@@ -24,7 +30,6 @@ class Network:
 
         # --- Find the number of AP in a col
         self.nAPsPerCol = self.nAPsPerRow
-
 
         # --- Compute the area
         self.area = self.D * self.D
@@ -48,12 +53,11 @@ class Network:
                 self.APsCoordinates[1, idx] = step * c + (lenght / 2)
                 idx += 1
 
-
     def plotCell(self):
 
         plt.scatter(self.APsCoordinates[0, :], self.APsCoordinates[1, :])
 
-        if True and self.UEsCoordinates[0,0] != 0:
+        if True and self.UEsCoordinates[0, 0] != 0:
             plt.scatter(self.UEsCoordinates[0, :], self.UEsCoordinates[1, :])
             plt.legend(['APs', 'UEs'], loc='upper right')
             for i, txt in enumerate(np.arange(self.nUEs)):
@@ -71,38 +75,38 @@ class Network:
         plt.ylabel('y-Axis')
         plt.show()
 
-
     def generateUsers(self):
-        self.UEsCoordinates, self.nUEs = clusterProcess(self.type , 0, 0, self.D, self.D, self.nUEs, \
-                                                            self.densityP, self.densityD, self.radius, self.sigma2P)
-
+        self.UEsCoordinates, self.nUEs = clusterProcess(self.type, 0, 0, self.D, self.D, self.nUEs, \
+                                                        self.densityP, self.densityD, self.radius, self.sigma2P)
 
         self.distUE2AP = np.zeros((self.nUEs, self.nAPs))
         self.distUE2UE = np.zeros((self.nUEs, self.nUEs))
         self.pathLoss = np.zeros((self.nUEs, self.nAPs))
         self.shadowingCovUEs = np.zeros((self.nUEs, self.nUEs))
+        self.covMatrices = np.zeros((self.nAnts, self.nAnts, self.nAPs, self.nUEs), dtype=complex)
+        self.sqrtRootOfCov = np.zeros((self.nAnts, self.nAnts, self.nAPs, self.nUEs), dtype=complex)
 
         self.computeLargeScaleCoeff()
+        if self.SPATIAL:
+            self.computeCovMatrices()
 
     def computeLargeScaleCoeff(self):
 
         # === From APs to UEs
         for ap in range(self.nAPs):
 
-            pointA = np.append(self.APsCoordinates[:,ap], self.ha)
+            pointA = np.append(self.APsCoordinates[:, ap], self.ha)
 
             for ue in range(self.nUEs):
-                pointB = np.append(self.UEsCoordinates[:,ue], self.hu)
+                pointB = np.append(self.UEsCoordinates[:, ue], self.hu)
 
                 # --- Compute the Distance
                 self.distUE2AP[ue, ap] = distance(pointA, pointB)
 
                 # --- Compute the Path Loss (large scale coefficient)
-                self.pathLoss[ue, ap] = np.sqrt(10 ** (self.computePathLossdB(self.distUE2AP[ue, ap])/10))
+                self.pathLoss[ue, ap] = np.sqrt(10 ** (self.computePathLossdB(self.distUE2AP[ue, ap]) / 10))
 
         self.contructShadowingCov()
-
-
 
     def contructShadowingCov(self):
         shadowingCovUEsTemp = np.zeros((self.nUEs, self.nUEs))
@@ -119,7 +123,7 @@ class Network:
                     self.distUE2UE[ueR, ueC] = distance(pointA, pointB)
 
                     # Compute joint Expectation
-                    shadowingCovUEsTemp[ueR, ueC] = 16 * (2 ** (-self.distUE2UE[ueR, ueC]/9))
+                    shadowingCovUEsTemp[ueR, ueC] = 16 * (2 ** (-self.distUE2UE[ueR, ueC] / 9))
                 else:
                     shadowingCovUEsTemp[ueR, ueC] = 8
 
@@ -131,24 +135,32 @@ class Network:
 
         self.WUEs = np.dot(U, np.sqrt(np.diag(S)))
 
-
-
-
     def computePathLossdB(self, distance):
 
-        pathLossTemp = -36.7*np.log10(distance)
+        pathLossTemp = -36.7 * np.log10(distance)
         return self.L + pathLossTemp
 
     def generateChannel(self):
 
         # --- Small scale
-        self.h = np.sqrt(0.5) * (np.random.normal(0,1, (self.nUEs, self.nAPs * self.nAnts)) + 1j*np.random.normal(0,1, (self.nUEs, self.nAPs * self.nAnts)))
+        self.h = np.sqrt(0.5) * (
+                    np.random.normal(0, 1, (self.nUEs, self.nAPs, self.nAnts)) + 1j * np.random.normal(0, 1, (
+            self.nUEs, self.nAPs, self.nAnts)))
+        if self.SPATIAL:
+            # Correlate Channels
+            temp = np.zeros(np.shape(self.h), dtype=complex)
+            for ap in range(self.nAPs):
+                for ue in range(self.nUEs):
+                    temp[ue, ap, :] = self.sqrtRootOfCov[:, :, ap, ue] @ self.h[ue, ap, :]
+
+            self.h = temp
+        self.h = np.reshape(self.h, (self.nUEs, self.nAPs * self.nAnts))
 
         # --- Large Scale
         # Shadowing
         shandowing = computeShadowing(self)
 
-        self.beta05 = self.pathLoss * np.sqrt(10 ** (shandowing/10))
+        self.beta05 = self.pathLoss * np.sqrt(10 ** (shandowing / 10))
 
         beta05Temp = np.matlib.repmat(self.beta05, 1, self.nAnts)
         beta05Temp = np.reshape(beta05Temp, (self.nUEs, self.nAnts, self.nAPs))
@@ -159,20 +171,28 @@ class Network:
         # return self.h
         return self.H
 
-def computeShadowing(self):
+    def computeCovMatrices(self):
+        for ap in range(self.nAPs):
+            for ue in range(self.nUEs):
+                # Compute the angle between UE and AP
+                diff = self.UEsCoordinates[:, ue] - self.APsCoordinates[:, ap]
+                angle = np.tan(diff[1] / diff[0])
+                self.covMatrices[:, :, ap, ue], self.sqrtRootOfCov[:, :, ap, ue] = compuCov(self.nAnts, angle, self.ASD,
+                                                                                            self.antSpac,
+                                                                                            self.distribution)
 
+
+def computeShadowing(self):
     z = np.random.normal(loc=0.0, scale=1, size=(self.nUEs, self.nAPs))
     F = np.dot(self.WUEs, z)
     return F
 
+
 def distance(pointA, pointB):
-    return np.sqrt(np.sum((pointA - pointB)**2))
+    return np.sqrt(np.sum((pointA - pointB) ** 2))
 
 
-
-def clusterProcess(type, xMin, yMin, xMax, yMax,  nUEs, densityP, densityD, radius, sigma2):
-
-
+def clusterProcess(type, xMin, yMin, xMax, yMax, nUEs, densityP, densityD, radius, sigma2):
     if type == 'B':
         # Binomial Point Process (BPP) i.e. Conditional PPP
         return np.vstack((np.random.uniform(xMin, xMax, nUEs), np.random.uniform(yMin, yMax, nUEs))), nUEs
@@ -195,7 +215,6 @@ def clusterProcess(type, xMin, yMin, xMax, yMax,  nUEs, densityP, densityD, radi
         # Calculate Area
         area = (xMaxExt - xMinExt) * (yMaxExt - yMinExt)
 
-
         # ---- Step 1: Parent Process
         # Generate the number of points clusters (Poisson)
         nParents = np.random.poisson(densityP * area)
@@ -204,14 +223,13 @@ def clusterProcess(type, xMin, yMin, xMax, yMax,  nUEs, densityP, densityD, radi
         xParents = xMinExt + (xMaxExt - xMinExt) * np.random.uniform(0, 1, nParents)
         yParents = yMinExt + (yMaxExt - yMinExt) * np.random.uniform(0, 1, nParents)
 
-
         # ---- Step 2: Daughter Process
         # Generate the number of points within the cluster (Poisson)
         nDaughterPerCluster = np.random.poisson(densityD, nParents)
         nPoints = sum(nDaughterPerCluster)
 
         if type == 'P':
-            return np.vstack((xParents,yParents)), len(yParents)
+            return np.vstack((xParents, yParents)), len(yParents)
         elif type == 'T':
             # Generate the locations (Gaussian)
             xPoints = np.random.normal(0, np.sqrt(sigma2), nPoints)
@@ -227,7 +245,6 @@ def clusterProcess(type, xMin, yMin, xMax, yMax,  nUEs, densityP, densityD, radi
             xPoints = rho * np.cos(theta)
             yPoints = rho * np.sin(theta)
 
-
         # --- Step 3: Shift all the points to their clusters
         # Pre-processing
         xParents = np.repeat(xParents, nDaughterPerCluster)
@@ -239,7 +256,4 @@ def clusterProcess(type, xMin, yMin, xMax, yMax,  nUEs, densityP, densityD, radi
 
         keep = ((xPoints >= xMin) & (xPoints <= xMax) & (yPoints >= yMin) & (yPoints <= yMax))
 
-
         return np.vstack((xPoints[keep], yPoints[keep])), len(yPoints[keep])
-
-
