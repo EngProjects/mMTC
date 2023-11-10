@@ -1,4 +1,6 @@
 import numpy as np
+from scipy.linalg import toeplitz, sqrtm
+import scipy.integrate as integrate
 
 # === Convert an array of integers to a 2D array of binary Strings === #
 def dec2bin(listDec, nBits):
@@ -174,4 +176,27 @@ def LMMSE(y, A, Qx, Qn):
 
     return xHat
 
+def compuCov(nAnt,AoD,ASD,antSpac, distribution):
+    q = np.zeros(nAnt, dtype=complex)
+    for m in range(nAnt):
+        delta = antSpac*m # Δ(m_1 - m_2)
+        if distribution == 'Gaussian':
+            q[m] = complexIntegral(lambda x:  np.exp(1j * 2 * np.pi * delta * np.sin(AoD + x)) * \
+                                         np.exp(-x**2/(2*(ASD**2)))/(np.sqrt(2*np.pi)*ASD), -20*ASD, 20*ASD)
+        elif distribution == 'Uniform':
+            q[m] = complexIntegral(lambda x:  np.exp(1j * 2 * np.pi * delta * np.sin(AoD + x)) / (2*np.sqrt(3)*ASD), -np.sqrt(3)*ASD, np.sqrt(3)*ASD)
+        elif distribution == 'Laplace':
+            q[m] = complexIntegral(lambda x:  np.exp(1j * 2 * np.pi * delta * np.sin(AoD + x)) * \
+                                         np.exp(-abs(x)/(ASD/np.sqrt(2)))/(2*ASD/np.sqrt(2)), -20*ASD, 20*ASD)
 
+    Q = toeplitz(q)
+    return Q,  sqrtm(Q)
+
+def complexIntegral(func, a, b,):
+    def realPart(x):
+        return np.real(func(x))
+    def imagPart(x):
+        return np.imag(func(x))
+    realIntegral = integrate.quad(realPart, a, b, limit=100)
+    imagIntegral = integrate.quad(imagPart, a, b, limit=200)
+    return realIntegral[0] + 1j*imagIntegral[0]
