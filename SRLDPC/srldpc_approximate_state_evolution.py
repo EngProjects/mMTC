@@ -205,6 +205,7 @@ def simulate(ebnodb, num_bp_denoiser_iter, N):
     k_bin = k_gf*bits_per_symbol
     num_chnl_uses = 7350
     R_tot = k_bin/num_chnl_uses
+    assert N == n_gf
 
     # Denoiser parameters
     # num_bp_denoiser_iter = -1 results in BP-N schedule
@@ -213,7 +214,7 @@ def simulate(ebnodb, num_bp_denoiser_iter, N):
 
     # Decoder parameters
     num_amp_iter = 20
-    max_sim_count = 250
+    max_sim_count = 500
 
     # Channel noise parameters
     ebno = 10**(ebnodb/10)
@@ -234,6 +235,7 @@ def simulate(ebnodb, num_bp_denoiser_iter, N):
             
         # Reset SRLDPC outer factor graph
         code.reset_graph()
+        codese.reset_graph()
 
         # Generate sparse representation through indexing - use all zero codeword
         sparse_codeword = np.zeros(q*n_gf)
@@ -280,14 +282,16 @@ def simulate(ebnodb, num_bp_denoiser_iter, N):
     np.savetxt(f'tau2s_N_{N}_{ebnodb}_{num_bp_denoiser_iter}.txt', tau2s)
     np.savetxt(f'tau2_hts_N_{N}_{ebnodb}_{num_bp_denoiser_iter}.txt', tau2s_ht)
 
-    return
+    return nvar
 
 if __name__ == '__main__':
 
     num_bp_denoiser_iters = np.array([1])
     snrs = np.array([2.5])
-    Nvals = np.array([898, 876, 856, 836, 818, 800, 783, 766, 751, 739])
+    Nvals = np.array([1100, 1080, 1060, 1040, 1020, 1000, 980, 960, 940, 920, 898, 876, 856, 836, 818, 800, 783, 766, 751, 739])
 
     tic = time()
-    res = Parallel(n_jobs=-1)(delayed(simulate)(ebnodb, numbpiter, N) for ebnodb in snrs for numbpiter in num_bp_denoiser_iters for N in Nvals)
+    nvars = Parallel(n_jobs=-1)(delayed(simulate)(ebnodb, numbpiter, N) for ebnodb in snrs for numbpiter in num_bp_denoiser_iters for N in Nvals)
     toc = time()
+
+    print(nvars)
