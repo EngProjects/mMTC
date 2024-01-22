@@ -12,26 +12,26 @@ from joblib import Parallel, delayed
 from gfldpc import GFLDPC
 
 __author__ = 'Ebert'
-__date__ = '1 November 2023'
+__date__ = '18 January 2023'
 
-def sparc_codebook(n_gf, q, num_channel_uses):
+def sparc_codebook(num_chnl_uses, q, n_gf):
     """
     Create functions for efficiently computing Ax and A^Tz. 
 
         Arguments:
-            n_gf (int): number of sections
+            num_chnl_uses (int): number of channel uses (real d.o.f.)
             q (int): length of each section
-            num_channel_uses (int): number of channel uses (real d.o.f.)
+            n_gf (int): number of sections
 
         Returns:
             Ab(b) (function): computes matrix-vector product Ab
             Az(z) (function): computes matrix-vector product A^Tz
     """
-    Ax, Ay, _ = block_sub_fht(num_channel_uses, q, n_gf, seed=None, ordering=None)
+    Ax, Ay, _ = block_sub_fht(num_chnl_uses, q, n_gf, seed=None, ordering=None)
     def Ab(b):
-        return Ax(b).reshape(-1, 1)/np.sqrt(num_channel_uses)
+        return Ax(b).reshape(-1, 1)/np.sqrt(num_chnl_uses)
     def Az(z):
-        return Ay(z).reshape(-1, 1)/np.sqrt(num_channel_uses) 
+        return Ay(z).reshape(-1, 1)/np.sqrt(num_chnl_uses) 
     return Ab, Az
 
 def compute_likelihood_vector(r0, tau, d, n, q):
@@ -134,7 +134,7 @@ def simulate(ebnodb,
              num_final_bp_iter=100, 
              max_sim_count=10000, 
              num_bp_denoiser_iter=1, 
-             keep_graph=False):
+             keep_graph=True):
     """
     Run SR-LDPC simulation at Eb/N0 = ebnodb dB. Store results in sim_dir.
 
@@ -146,7 +146,7 @@ def simulate(ebnodb,
             max_sim_count (int): max number of MC simulations to run
             num_bp_denoiser_iter (int): number of BP iterations to run per AMP 
                 iteration. If this value is -1, the BP-N schedule is used
-            keep_graph (bool): flag of whether to keep BP graph between AMP iters
+            keep_graph (bool): flag of whether to keep graph between AMP iters
     
         Returns:
             <none>
@@ -158,9 +158,10 @@ def simulate(ebnodb,
     code = GFLDPC(join(code_folder, code_filename))
 
     # Define filename
-    filename = f'./{sim_dir}/ebnodb_{ebnodb}_numampiter_{num_amp_iter}_' + \
+    filename = f'./{sim_dir}/ebnodb_{ebnodb}_2_numampiter_{num_amp_iter}_' + \
                f'numfinalbpiter_{num_final_bp_iter}_numbpdenoiseriter_' + \
-               f'{num_bp_denoiser_iter}_keepgraph_{keep_graph}_{code_filename[:-4]}.txt'
+               f'{num_bp_denoiser_iter}_keepgraph_{keep_graph}_' + \
+               f'{code_filename[:-4]}.txt'
 
     # Code parameters
     q = code.q
@@ -173,21 +174,20 @@ def simulate(ebnodb,
     R_tot = k_bin/num_chnl_uses
 
     # Decoder parameters
-    target_num_bit_errors = k_bin*10
+    target_num_block_errors = 50
 
     # Channel noise parameters
     ebno = 10**(ebnodb/10)
     nvar, sigma = 1, 1
     noise_psd = 2 * nvar
     energy_per_bit = ebno * noise_psd
-    total_energy = energy_per_bit * k_bin 
+    total_energy = energy_per_bit * k_bin
     column_energy_scaling = total_energy / n_gf
     d = np.sqrt(column_energy_scaling)
 
     # Printing options
     should_print = True
-    print_frequency = 500
-    write_frequency = 500
+    write_frequency = 50
 
     # Error-tracking data structures
     ber = 0.0
@@ -198,16 +198,16 @@ def simulate(ebnodb,
     snr = 0.0
 
     # Monte-carlo simulation to estimate BER/BLER
-    while (num_bit_errors < target_num_bit_errors) and (num_sims < max_sim_count):
+    while (num_block_errors < target_num_block_errors) and \
+          (num_sims < max_sim_count):
         
         # Periodically update data
-        if (should_print and (num_sims % print_frequency == 0)):
-            print(f'Eb/No: {ebnodb}dB\tNum Sims: {num_sims}\tBER: {ber}\tBLER: {bler}\tTimestamp: {time()}')
         if (should_print and (num_sims % write_frequency == 0)):
             log = open(filename, 'w')
             log.write(f'BER:\t{ber:.4e}\n')
             log.write(f'BLER:\t{bler:.4e}\n')
             log.write(f'Num Bit Errors:\t{num_bit_errors}\n')
+            log.write(f'Num Block Errors:\t{num_block_errors}\n')
             log.write(f'Completed sims:\t{num_sims}\n')
             log.write(f'Empirical SNR:\t{snr}\n')
             log.close()
@@ -215,7 +215,7 @@ def simulate(ebnodb,
         # Reset SRLDPC outer factor graph
         code.reset_graph()
 
-        # Generate random binary message
+        # Randomly select LDPC codeword
         bin_msg = np.random.randint(2, size=k_bin)
         
         # Encode message
@@ -227,7 +227,7 @@ def simulate(ebnodb,
         sparse_codeword[np.arange(n_gf)*q+codeword] = 1        
 
         # Generate the binned SPARC codebook
-        Ab, Az = sparc_codebook(n_gf, q, num_chnl_uses)
+        Ab, Az = sparc_codebook(num_chnl_uses, q, n_gf)
 
         # Generate transmitted signal
         x = d*Ab(sparse_codeword)
@@ -236,7 +236,8 @@ def simulate(ebnodb,
         z = sigma*np.random.randn(num_chnl_uses, 1)
         y = x + z
         nvarht = np.linalg.norm(z)**2 / num_chnl_uses
-        snr = (num_sims*snr + 10*np.log10(np.linalg.norm(x)**2 / (k_bin*2*nvarht))) / (num_sims+1)
+        snr = (num_sims*snr + 10*np.log10(np.linalg.norm(x)**2 / 
+                                          (k_bin*2*nvarht))) / (num_sims+1)
 
         # Prepare for AMP decoding
         z = y.copy()
@@ -262,14 +263,8 @@ def simulate(ebnodb,
 
             # Run BP decoder
             if idx_amp_iter == (num_amp_iter - 1):
-                tau = np.sqrt(np.sum(z**2)/num_chnl_uses)
-                r = (d*s + Az(z))
-                alpha = compute_likelihood_vector(r, tau, d, n_gf, q)
-                code.reset_graph()
-                for i in range(n_gf):
-                    code.set_observation(i, alpha[i, :])
-                code.bp_decoder(num_final_bp_iter)
-                s = code.get_estimates()
+                s = amp_state_update(z, s, d, Az, num_final_bp_iter, \
+                                     False, code)
 
         # Make hard decisions on final estimated vector 
         s = s.reshape(n_gf, q)
@@ -277,11 +272,12 @@ def simulate(ebnodb,
         
         # Compute BER/BLER
         update_bler = True
-        for i in range(k_gf):
+        for i in range(n_gf):
             err_i = codeword[i]^codeword_ht[i]
             binstr = '0'+ bin(err_i)[2:]
             err_i_bits = [int(bit) for bit in binstr]
-            num_bit_errors += np.sum(err_i_bits)
+            if i >= (n_gf - k_gf):
+                num_bit_errors += np.sum(err_i_bits)
             if update_bler and (np.sum(err_i_bits) > 0):
                 num_block_errors += 1
                 update_bler = False
@@ -297,9 +293,9 @@ def simulate(ebnodb,
     log.write(f'BER:\t{ber:.4e}\n')
     log.write(f'BLER:\t{bler:.4e}\n')
     log.write(f'Num Bit Errors:\t{num_bit_errors}\n')
+    log.write(f'Num Block Errors:\t{num_block_errors}\n')
     log.write(f'Completed sims:\t{num_sims}\n')
     log.write(f'Empirical SNR:\t{snr}\n')
-    log.write('========== COMPLETED ==========')
     log.close()
 
     return
@@ -308,12 +304,20 @@ if __name__ == '__main__':
     
     # Parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--run_full_ebno_range', type=int, default=1, help='Flag of whether to run over full range of Eb/N0 values')
-    parser.add_argument('--num_amp_iter', type=int, default=25, help='Number of AMP iterations to perform')
-    parser.add_argument('--num_final_bp_iter', type=int, default=100, help='Number of BP iterations to perform after AMP-BP process terminates')
-    parser.add_argument('--max_sim_count', type=int, default=50000, help='Max number of MC simulations to run')
-    parser.add_argument('--num_bp_denoiser_iter', type=int, default=1, help='Number of BP iterations to perform per AMP iteraiton. Value of -1 defaults to BP-N')
-    parser.add_argument('--keep_graph', type=int, default=1, help='Flag of whether to keep factor graph messages between AMP iterations')
+    parser.add_argument('--run_full_ebno_range', type=int, default=1, \
+                        help='Flag for running full range of Eb/N0 values')
+    parser.add_argument('--num_amp_iter', type=int, default=25, \
+                        help='Number of AMP iterations to perform')
+    parser.add_argument('--num_final_bp_iter', type=int, default=500, \
+                        help='Number of BP iter to perform after AMP-BP')
+    parser.add_argument('--max_sim_count', type=int, default=1000, \
+                        help='Max number of MC simulations to run')
+    parser.add_argument('--num_bp_denoiser_iter', type=int, default=1, \
+                        help='Number of BP iter to perform per AMP iteraiton. \
+                        Value of -1 indicates BP-N schedule.')
+    parser.add_argument('--keep_graph', type=int, default=1, \
+                        help='Flag for keeping factor graph messages \
+                            between AMP iterations')
     args = parser.parse_args()
 
     # Extract CL arguments
@@ -325,7 +329,7 @@ if __name__ == '__main__':
     keep_graph = args.keep_graph
 
     # Define simulation directory
-    sim_dir = 'results'
+    sim_dir = 'results/revisedbler'
     system(f'mkdir ./{sim_dir} -p')
     
     # Select Eb/N0 range
@@ -337,6 +341,13 @@ if __name__ == '__main__':
     # Execute simulation
     tic = time()
     print(f'Starting simulation at time {tic}')
-    res = Parallel(n_jobs=-1)(delayed(simulate)(snr, sim_dir, num_amp_iter, num_final_bp_iter, max_sim_count, num_bp_denoiser_iter, keep_graph) for snr in ebno_db_vals)
+    res = Parallel(n_jobs=-1)(delayed(simulate)(snr, 
+                                                sim_dir, 
+                                                num_amp_iter, 
+                                                num_final_bp_iter, 
+                                                max_sim_count, 
+                                                num_bp_denoiser_iter, 
+                                                keep_graph) 
+                                                for snr in ebno_db_vals)
     toc = time()
     print(f'Simulation complete. Elapsed time: {toc - tic}s')

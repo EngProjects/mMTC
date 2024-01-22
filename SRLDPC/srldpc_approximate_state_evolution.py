@@ -71,9 +71,9 @@ def approximate_ea0(q, N, d, tau2):
 
     return estimate
 
-def bp1_denoiser(r, code, tau, d, keep_graph, num_bp_iter=1):
+def bp_denoiser(r, code, tau, d, keep_graph, num_bp_iter=1):
     """
-    BP-1 Denoiser (Def 7) from Sparse Regression LDPC Codes.
+    BP Denoiser (Def 7) from Sparse Regression LDPC Codes.
 
         Arguments:
             r (LMx1 ndarray): AMP effective observation
@@ -120,7 +120,7 @@ def amp_state_update(z, s, d, Az, num_bp_iter, keep_graph, code):
     n = z.size
     tau = np.sqrt(np.sum(z**2)/n)
     r = (d*s + Az(z))
-    s_plus = bp1_denoiser(r, code, tau, d, keep_graph, num_bp_iter)
+    s_plus = bp_denoiser(r, code, tau, d, keep_graph, num_bp_iter)
 
     return s_plus, tau
 
@@ -282,16 +282,14 @@ def simulate(ebnodb, num_bp_denoiser_iter, N):
     np.savetxt(f'tau2s_N_{N}_{ebnodb}_{num_bp_denoiser_iter}.txt', tau2s)
     np.savetxt(f'tau2_hts_N_{N}_{ebnodb}_{num_bp_denoiser_iter}.txt', tau2s_ht)
 
-    return nvar
+    return
 
 if __name__ == '__main__':
 
     num_bp_denoiser_iters = np.array([1])
     snrs = np.array([2.5])
-    Nvals = np.array([1100, 1080, 1060, 1040, 1020, 1000, 980, 960, 940, 920, 898, 876, 856, 836, 818, 800, 783, 766, 751, 739])
+    Nvals = np.array([766])
 
     tic = time()
-    nvars = Parallel(n_jobs=-1)(delayed(simulate)(ebnodb, numbpiter, N) for ebnodb in snrs for numbpiter in num_bp_denoiser_iters for N in Nvals)
+    res = Parallel(n_jobs=-1)(delayed(simulate)(ebnodb, numbpiter, N) for ebnodb in snrs for numbpiter in num_bp_denoiser_iters for N in Nvals)
     toc = time()
-
-    print(nvars)
